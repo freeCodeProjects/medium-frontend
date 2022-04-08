@@ -4,14 +4,10 @@ import IconButton from '@mui/material/IconButton'
 import { useThemeStore } from '../../store/themeStore'
 
 const ThemeButton = () => {
-	const theme = useThemeStore((state) => state.theme)
-	const changeTheme = useThemeStore((state) => state.changeTheme)
+	const { theme, changeTheme } = useThemeStore()
 
 	return (
-		<IconButton
-			color="default"
-			sx={{ ml: 1 }}
-			onClick={() => changeTheme(theme === 'dark' ? 'light' : 'dark')}>
+		<IconButton color="default" sx={{ ml: 1 }} onClick={changeTheme}>
 			{theme === 'dark' ? <LightModeIcon /> : <NightlightRoundIcon />}
 		</IconButton>
 	)

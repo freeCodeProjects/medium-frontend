@@ -1,4 +1,5 @@
 import create from 'zustand'
+import { mountStoreDevtool } from 'simple-zustand-devtools'
 
 const prefersDarkMode = window.matchMedia(
 	'(prefers-color-scheme: dark)'
@@ -21,13 +22,19 @@ const getInitialTheme = (): 'light' | 'dark' => {
 
 type State = {
 	theme: 'light' | 'dark'
-	changeTheme: (newTheme: 'light' | 'dark') => void
+	changeTheme: () => void
 }
 
-export const useThemeStore = create<State>((set) => ({
+export const useThemeStore = create<State>((set, get) => ({
 	theme: getInitialTheme(),
-	changeTheme: (newTheme) => {
+	changeTheme: () => {
+		const newTheme = get().theme === 'dark' ? 'light' : 'dark'
 		set({ theme: newTheme })
 		localStorage.theme = newTheme
 	}
 }))
+
+//@ts-ignore
+if (process.env.NODE_ENV === 'development') {
+	mountStoreDevtool('ThemeStore', useThemeStore)
+}

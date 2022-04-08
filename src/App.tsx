@@ -1,4 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Auth from './components/auth/Auth'
 import Home from './pages/Home'
 import { useThemeStore } from './store/themeStore'
 
@@ -13,6 +14,7 @@ function App() {
 
 	return (
 		<ThemeProvider theme={MUItheme}>
+			<Auth />
 			<Home />
 		</ThemeProvider>
 	)

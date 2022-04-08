@@ -3,13 +3,15 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import SvgIcon from '@mui/material/SvgIcon'
-import { Container } from '@mui/material'
+import { Button, Container } from '@mui/material'
 import ThemeButton from '../nav/ThemeButton'
+import { useAuthStore } from '../../store/authStore'
 
 const Navbar = () => {
+	const { handleOpenAuthModal } = useAuthStore()
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static" color="primary" sx={{ boxShadow: 1 }}>
+			<AppBar position="static" color="inherit" sx={{ boxShadow: 1 }}>
 				<Container maxWidth="xl" sx={{ padding: 0 }}>
 					<Toolbar>
 						<Box
@@ -37,6 +39,12 @@ const Navbar = () => {
 								Medium
 							</Typography>
 						</Box>
+						<Button
+							variant="outlined"
+							color="primary"
+							onClick={handleOpenAuthModal}>
+							Get Started
+						</Button>
 						<ThemeButton />
 					</Toolbar>
 				</Container>
