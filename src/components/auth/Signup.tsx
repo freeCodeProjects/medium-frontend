@@ -1,14 +1,59 @@
 import { Box, Typography, TextField, Button } from '@mui/material'
+import { useForm } from 'react-hook-form'
+import { object, string } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+type SignupForm = {
+	name: string
+	email: string
+	password: string
+	confirmPassword: string
+}
+
+const schema = object({
+	name: string()
+		.nonempty({ message: 'Name is required' })
+		.min(3, {
+			message: 'Name must be 3 or more characters long'
+		})
+		.max(50, {
+			message: 'Name must be less than 50 characters long'
+		}),
+	email: string().nonempty({ message: 'Email is required' }).email({
+		message: 'Invalid email address'
+	}),
+	password: string().nonempty({ message: 'Password is required' }).min(6, {
+		message: 'Password must be 6 or more characters long'
+	}),
+	confirmPassword: string()
+		.nonempty({ message: 'Confirm password is required' })
+		.min(6, {
+			message: 'ConfirmPassword must be 6 or more characters long'
+		})
+}).refine(({ password, confirmPassword }) => password === confirmPassword, {
+	message: "Passwords don't match",
+	path: ['confirmPassword']
+})
 
 const Signup = () => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm<SignupForm>({
+		resolver: zodResolver(schema)
+	})
+	const onSubmit = (data: any) => console.log(data)
+
 	return (
 		<>
+			{/* <div>{JSON.stringify(errors)}</div> */}
 			<Typography variant="h5" align="center" component="div">
 				Join Medium
 			</Typography>
 			<Box sx={{ display: 'flex', justifyContent: 'center' }}>
 				<Box
-					//onSubmit={}
+					onSubmit={handleSubmit(onSubmit)}
 					component="form"
 					noValidate
 					autoComplete="off"
@@ -16,23 +61,44 @@ const Signup = () => {
 						width: { xs: 9 / 10, sm: 2 / 3 },
 						display: 'flex',
 						flexDirection: 'column',
-						gap: 2
+						gap: 1
 					}}>
-					<TextField fullWidth label="Name" variant="standard" />
-					<TextField fullWidth label="Email" type="email" variant="standard" />
 					<TextField
+						error={Boolean(errors.name)}
+						helperText={errors.name?.message}
+						{...register('name')}
+						fullWidth
+						label="Name"
+						variant="standard"
+					/>
+					<TextField
+						error={Boolean(errors.email)}
+						helperText={errors.email?.message}
+						{...register('email')}
+						fullWidth
+						label="Email"
+						type="email"
+						variant="standard"
+					/>
+					<TextField
+						error={Boolean(errors.password)}
+						helperText={errors.password?.message}
+						{...register('password')}
 						fullWidth
 						label="Password"
 						type="password"
 						variant="standard"
 					/>
 					<TextField
+						error={Boolean(errors.confirmPassword)}
+						helperText={errors.confirmPassword?.message}
+						{...register('confirmPassword')}
 						fullWidth
 						label="Confirm Password"
 						type="password"
 						variant="standard"
 					/>
-					<Button variant="contained" sx={{ mt: 2 }}>
+					<Button type="submit" variant="contained" sx={{ mt: 2 }}>
 						Register
 					</Button>
 				</Box>

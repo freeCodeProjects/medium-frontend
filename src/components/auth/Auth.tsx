@@ -35,7 +35,7 @@ const Auth = () => {
 			<Dialog
 				PaperProps={{
 					sx: {
-						height: 500
+						height: 540
 					}
 				}}
 				maxWidth="sm"
