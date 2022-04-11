@@ -2,6 +2,8 @@ import { Box, Typography, TextField, Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { object, string } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from 'react-query'
+import axiosInstance from '../../utils/axios'
 
 type SignupForm = {
 	name: string
@@ -36,6 +38,10 @@ const schema = object({
 })
 
 const Signup = () => {
+	const { mutate, isLoading, isError, data } = useMutation((data) => {
+		return axiosInstance.post('/api/signup', data)
+	})
+
 	const {
 		register,
 		handleSubmit,
@@ -43,11 +49,13 @@ const Signup = () => {
 	} = useForm<SignupForm>({
 		resolver: zodResolver(schema)
 	})
-	const onSubmit = (data: any) => console.log(data)
+	const onSubmit = (data: any) => {
+		mutate(data)
+	}
 
 	return (
 		<>
-			{/* <div>{JSON.stringify(errors)}</div> */}
+			<div>{JSON.stringify(data)}</div>
 			<Typography variant="h5" align="center" component="div">
 				Join Medium
 			</Typography>
