@@ -5,10 +5,10 @@ import Typography from '@mui/material/Typography'
 import SvgIcon from '@mui/material/SvgIcon'
 import { Button, Container } from '@mui/material'
 import ThemeButton from '../nav/ThemeButton'
-import { useAuthStore } from '../../store/authStore'
+import { useAppStore } from '../../store/appStore'
 
 const Navbar = () => {
-	const { handleOpenAuthModal } = useAuthStore()
+	const { handleOpenAuthModal } = useAppStore()
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static" color="inherit" sx={{ boxShadow: 1 }}>

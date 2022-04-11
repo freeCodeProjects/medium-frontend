@@ -4,6 +4,8 @@ import Home from './pages/Home'
 import { useThemeStore } from './store/themeStore'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import CustomAlert from './components/ui/CustomAlert'
+import ErrorContextProvider from './context/ErrorContext'
 
 const queryClient = new QueryClient()
 
@@ -18,11 +20,14 @@ function App() {
 
 	return (
 		<ThemeProvider theme={MUItheme}>
-			<QueryClientProvider client={queryClient}>
-				<Auth />
-				<Home />
-				<ReactQueryDevtools initialIsOpen />
-			</QueryClientProvider>
+			<ErrorContextProvider>
+				<QueryClientProvider client={queryClient}>
+					<CustomAlert />
+					<Auth />
+					<Home />
+					<ReactQueryDevtools initialIsOpen />
+				</QueryClientProvider>
+			</ErrorContextProvider>
 		</ThemeProvider>
 	)
 }

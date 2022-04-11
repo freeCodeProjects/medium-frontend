@@ -4,6 +4,9 @@ import { object, string } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from 'react-query'
 import axiosInstance from '../../utils/axios'
+import { useAppStore } from '../../store/appStore'
+import { useContext } from 'react'
+import { ErrorContext } from '../../context/ErrorContext'
 
 type SignupForm = {
 	name: string
@@ -38,14 +41,30 @@ const schema = object({
 })
 
 const Signup = () => {
-	const { mutate, isLoading, isError, data } = useMutation((data) => {
-		return axiosInstance.post('/api/signup', data)
-	})
+	const { setAlertData, handleCloseAuthModal } = useAppStore()
+	const { serverErrorHandler } = useContext(ErrorContext)
+
+	const { mutate } = useMutation(
+		(data) => {
+			return axiosInstance.post('/api/signup', data)
+		},
+		{
+			onSettled: (data: any, error: any, variables, context) => {
+				if (error) {
+					serverErrorHandler(error)
+				}
+				setAlertData(data.data.message)
+				reset()
+				handleCloseAuthModal()
+			}
+		}
+	)
 
 	const {
 		register,
 		handleSubmit,
-		formState: { errors }
+		formState: { errors },
+		reset
 	} = useForm<SignupForm>({
 		resolver: zodResolver(schema)
 	})
@@ -55,7 +74,6 @@ const Signup = () => {
 
 	return (
 		<>
-			<div>{JSON.stringify(data)}</div>
 			<Typography variant="h5" align="center" component="div">
 				Join Medium
 			</Typography>

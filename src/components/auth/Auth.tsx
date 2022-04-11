@@ -7,7 +7,7 @@ import {
 	Tab,
 	Box
 } from '@mui/material'
-import { useAuthStore } from '../../store/authStore'
+import { useAppStore } from '../../store/appStore'
 import { TransitionProps } from '@mui/material/transitions'
 import { forwardRef, useState } from 'react'
 import Signup from './Signup'
@@ -23,7 +23,7 @@ const Transition = forwardRef(function Transition(
 })
 
 const Auth = () => {
-	const { openAuthModal, handleCloseAuthModal } = useAuthStore()
+	const { openAuthModal, handleCloseAuthModal } = useAppStore()
 	const [value, setValue] = useState('login')
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
