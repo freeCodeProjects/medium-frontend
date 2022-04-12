@@ -1,31 +1,48 @@
 import { Box, Typography, TextField, Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { object, string } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-type LoginForm = {
-	email: string
-	password: string
-}
-
-const schema = object({
-	email: string().nonempty({ message: 'Email is required' }).email({
-		message: 'Invalid email address'
-	}),
-	password: string().nonempty({ message: 'Password is required' }).min(6, {
-		message: 'Password must be 6 or more characters long'
-	})
-})
+import { useMutation } from 'react-query'
+import { UserLoginData, LoginSchema } from '../../types/userTypes'
+import { useAppStore } from '../../store/appStore'
+import { useContext } from 'react'
+import { ErrorContext } from '../../context/ErrorContext'
+import { loginUser } from '../../api/userAPI'
+import { LoadingButton } from '@mui/lab'
 
 const Login = () => {
+	const { setAlertData, handleCloseAuthModal, setUser } = useAppStore()
+	const { serverErrorHandler } = useContext(ErrorContext)
+
+	const { mutate, isLoading } = useMutation(
+		(data: UserLoginData) => {
+			return loginUser(data)
+		},
+		{
+			onError: (error: any) => {
+				serverErrorHandler(error)
+			},
+			onSuccess: (data: any) => {
+				setAlertData('Logged in.')
+				setUser(data.data.user)
+				reset()
+				handleCloseAuthModal()
+			}
+		}
+	)
+
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors }
-	} = useForm<LoginForm>({
-		resolver: zodResolver(schema)
+	} = useForm<UserLoginData>({
+		resolver: zodResolver(LoginSchema)
 	})
-	const onSubmit = (data: any) => console.log(data)
+
+	const onSubmit = (data: UserLoginData) => {
+		console.log(data)
+		mutate(data)
+	}
 
 	return (
 		<>
@@ -62,9 +79,13 @@ const Login = () => {
 						type="password"
 						variant="standard"
 					/>
-					<Button type="submit" variant="contained" sx={{ mt: 2 }}>
+					<LoadingButton
+						loading={isLoading}
+						type="submit"
+						variant="contained"
+						sx={{ mt: 2 }}>
 						Login
-					</Button>
+					</LoadingButton>
 					<Button sx={{ textTransform: 'capitalize', alignSelf: 'start' }}>
 						Forgot password?
 					</Button>

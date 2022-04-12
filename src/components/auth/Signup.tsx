@@ -1,53 +1,21 @@
 import { Box, Typography, TextField } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { object, string } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from 'react-query'
-import axiosInstance from '../../utils/axios'
 import { useAppStore } from '../../store/appStore'
 import { useContext } from 'react'
 import { ErrorContext } from '../../context/ErrorContext'
 import { LoadingButton } from '@mui/lab'
-
-type SignupForm = {
-	name: string
-	email: string
-	password: string
-	confirmPassword: string
-}
-
-const schema = object({
-	name: string()
-		.nonempty({ message: 'Name is required' })
-		.min(3, {
-			message: 'Name must be 3 or more characters long'
-		})
-		.max(50, {
-			message: 'Name must be less than 50 characters long'
-		}),
-	email: string().nonempty({ message: 'Email is required' }).email({
-		message: 'Invalid email address'
-	}),
-	password: string().nonempty({ message: 'Password is required' }).min(6, {
-		message: 'Password must be 6 or more characters long'
-	}),
-	confirmPassword: string()
-		.nonempty({ message: 'Confirm password is required' })
-		.min(6, {
-			message: 'ConfirmPassword must be 6 or more characters long'
-		})
-}).refine(({ password, confirmPassword }) => password === confirmPassword, {
-	message: "Passwords don't match",
-	path: ['confirmPassword']
-})
+import { signupUser } from '../../api/userAPI'
+import { UserSignupData, SignupSchema } from '../../types/userTypes'
 
 const Signup = () => {
 	const { setAlertData, handleCloseAuthModal } = useAppStore()
 	const { serverErrorHandler } = useContext(ErrorContext)
 
 	const { mutate, isLoading } = useMutation(
-		(data) => {
-			return axiosInstance.post('/api/signup', data)
+		(data: UserSignupData) => {
+			return signupUser(data)
 		},
 		{
 			onError: (error: any) => {
@@ -66,10 +34,10 @@ const Signup = () => {
 		handleSubmit,
 		formState: { errors },
 		reset
-	} = useForm<SignupForm>({
-		resolver: zodResolver(schema)
+	} = useForm<UserSignupData>({
+		resolver: zodResolver(SignupSchema)
 	})
-	const onSubmit = (data: any) => {
+	const onSubmit = (data: UserSignupData) => {
 		mutate(data)
 	}
 

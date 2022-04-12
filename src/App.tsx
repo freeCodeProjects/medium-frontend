@@ -1,11 +1,9 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import Auth from './components/auth/Auth'
-import Home from './pages/Home'
 import { useThemeStore } from './store/themeStore'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import CustomAlert from './components/ui/CustomAlert'
 import ErrorContextProvider from './context/ErrorContext'
+import AppRouter from './routes/AppRouter'
 
 const queryClient = new QueryClient()
 
@@ -22,9 +20,7 @@ function App() {
 		<ThemeProvider theme={MUItheme}>
 			<ErrorContextProvider>
 				<QueryClientProvider client={queryClient}>
-					<CustomAlert />
-					<Auth />
-					<Home />
+					<AppRouter />
 					<ReactQueryDevtools initialIsOpen />
 				</QueryClientProvider>
 			</ErrorContextProvider>

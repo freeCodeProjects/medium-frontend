@@ -1,8 +1,12 @@
 import create from 'zustand'
 import { mountStoreDevtool } from 'simple-zustand-devtools'
 import { AlertColor } from '@mui/material'
+import { User } from '../types/userTypes'
 
 type State = {
+	userId: string
+	user: User | {}
+	setUser: (user: User) => void
 	openAuthModal: boolean
 	handleOpenAuthModal: () => void
 	handleCloseAuthModal: () => void
@@ -15,7 +19,13 @@ type State = {
 }
 
 export const useAppStore = create<State>((set) => ({
-	openAlert: true,
+	userId: localStorage.getItem('userId') || '',
+	user: {},
+	setUser: (user) => {
+		set({ userId: user._id, user })
+		localStorage.setItem('userId', user._id)
+	},
+	openAlert: false,
 	alertType: 'success',
 	alertMessage: '',
 	setAlertData: (message, type = 'success') => {
@@ -34,5 +44,5 @@ export const useAppStore = create<State>((set) => ({
 
 //@ts-ignore
 if (process.env.NODE_ENV === 'development') {
-	mountStoreDevtool('Store', useAppStore)
+	mountStoreDevtool('AppStore', useAppStore)
 }

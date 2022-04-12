@@ -1,0 +1,48 @@
+import { object, string, TypeOf } from 'zod'
+
+export const SignupSchema = object({
+	name: string()
+		.nonempty({ message: 'Name is required' })
+		.min(3, {
+			message: 'Name must be 3 or more characters long'
+		})
+		.max(50, {
+			message: 'Name must be less than 50 characters long'
+		}),
+	email: string().nonempty({ message: 'Email is required' }).email({
+		message: 'Invalid email address'
+	}),
+	password: string().nonempty({ message: 'Password is required' }).min(6, {
+		message: 'Password must be 6 or more characters long'
+	}),
+	confirmPassword: string()
+		.nonempty({ message: 'Confirm password is required' })
+		.min(6, {
+			message: 'ConfirmPassword must be 6 or more characters long'
+		})
+}).refine(({ password, confirmPassword }) => password === confirmPassword, {
+	message: "Passwords don't match",
+	path: ['confirmPassword']
+})
+
+export const LoginSchema = object({
+	email: string().nonempty({ message: 'Email is required' }).email({
+		message: 'Invalid email address'
+	}),
+	password: string().nonempty({ message: 'Password is required' }).min(6, {
+		message: 'Password must be 6 or more characters long'
+	})
+})
+
+export type UserSignupData = TypeOf<typeof SignupSchema>
+export type UserLoginData = TypeOf<typeof LoginSchema>
+
+export interface User {
+	_id: string
+	name: string
+	userName: string
+	photo: string
+	followerCount: number
+	followingCount: number
+	bookmarks: string[]
+}

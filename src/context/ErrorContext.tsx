@@ -13,18 +13,22 @@ const ErrorContextProvider = ({ children }: { children: ReactNode }) => {
 	const { setAlertData } = useAppStore()
 
 	const serverErrorHandler = (error: any) => {
-		const {
-			response: { status, data }
-		} = error
-		console.log('Server error', status, data.message)
-		if (status === 401 || status === 403) {
-			setAlertData('Please Authenticate', 'error')
-		} else if (status === 400) {
-			setAlertData('Required data not provided.', 'error')
-		} else if (status === 500) {
-			setAlertData('Backend server error', 'error')
+		if (error.response) {
+			const {
+				response: { status, data }
+			} = error
+			console.log('Server error', status, data.message)
+			if (status === 401 || status === 403) {
+				setAlertData('Please Authenticate', 'error')
+			} else if (status === 400) {
+				setAlertData('Required data not provided.', 'error')
+			} else if (status === 500) {
+				setAlertData('Backend server error', 'error')
+			} else {
+				setAlertData(data.message, 'error')
+			}
 		} else {
-			setAlertData(data.message, 'error')
+			setAlertData(error.message, 'error')
 		}
 		return 'Error Occured'
 	}
