@@ -26,6 +26,7 @@ const ErrorContextProvider = ({ children }: { children: ReactNode }) => {
 		} else {
 			setAlertData(data.message, 'error')
 		}
+		return 'Error Occured'
 	}
 	return (
 		<ErrorContext.Provider value={{ serverErrorHandler }}>

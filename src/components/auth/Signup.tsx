@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, Button } from '@mui/material'
+import { Box, Typography, TextField } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { object, string } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -7,6 +7,7 @@ import axiosInstance from '../../utils/axios'
 import { useAppStore } from '../../store/appStore'
 import { useContext } from 'react'
 import { ErrorContext } from '../../context/ErrorContext'
+import { LoadingButton } from '@mui/lab'
 
 type SignupForm = {
 	name: string
@@ -44,15 +45,15 @@ const Signup = () => {
 	const { setAlertData, handleCloseAuthModal } = useAppStore()
 	const { serverErrorHandler } = useContext(ErrorContext)
 
-	const { mutate } = useMutation(
+	const { mutate, isLoading } = useMutation(
 		(data) => {
 			return axiosInstance.post('/api/signup', data)
 		},
 		{
-			onSettled: (data: any, error: any, variables, context) => {
-				if (error) {
-					serverErrorHandler(error)
-				}
+			onError: (error: any) => {
+				serverErrorHandler(error)
+			},
+			onSuccess: (data: any) => {
 				setAlertData(data.data.message)
 				reset()
 				handleCloseAuthModal()
@@ -124,9 +125,13 @@ const Signup = () => {
 						type="password"
 						variant="standard"
 					/>
-					<Button type="submit" variant="contained" sx={{ mt: 2 }}>
+					<LoadingButton
+						loading={isLoading}
+						type="submit"
+						variant="contained"
+						sx={{ mt: 2 }}>
 						Register
-					</Button>
+					</LoadingButton>
 				</Box>
 			</Box>
 		</>
