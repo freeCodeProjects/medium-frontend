@@ -1,14 +1,18 @@
-import { object, string, TypeOf } from 'zod'
+import { object, string, preprocess, TypeOf } from 'zod'
+import { trimString } from '../utils/helper'
 
 export const SignupSchema = object({
-	name: string()
-		.nonempty({ message: 'Name is required' })
-		.min(3, {
-			message: 'Name must be 3 or more characters long'
-		})
-		.max(50, {
-			message: 'Name must be less than 50 characters long'
-		}),
+	name: preprocess(
+		trimString,
+		string()
+			.nonempty({ message: 'Name is required' })
+			.min(3, {
+				message: 'Name must be 3 or more characters long'
+			})
+			.max(50, {
+				message: 'Name must be less than 50 characters long'
+			})
+	),
 	email: string().nonempty({ message: 'Email is required' }).email({
 		message: 'Invalid email address'
 	}),

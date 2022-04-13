@@ -4,9 +4,11 @@ import { AlertColor } from '@mui/material'
 import { User } from '../types/userTypes'
 
 type State = {
+	isLoggedIn: boolean
 	userId: string
 	user: User | {}
 	setUser: (user: User) => void
+	deleteUser: () => void
 	openAuthModal: boolean
 	handleOpenAuthModal: () => void
 	handleCloseAuthModal: () => void
@@ -19,11 +21,17 @@ type State = {
 }
 
 export const useAppStore = create<State>((set) => ({
+	isLoggedIn: false,
 	userId: localStorage.getItem('userId') || '',
 	user: {},
 	setUser: (user) => {
-		set({ userId: user._id, user })
+		console.log(user)
+		set({ userId: user._id, user, isLoggedIn: true })
 		localStorage.setItem('userId', user._id)
+	},
+	deleteUser: () => {
+		set({ userId: '', user: {}, isLoggedIn: false })
+		localStorage.removeItem('userId')
 	},
 	openAlert: false,
 	alertType: 'success',
