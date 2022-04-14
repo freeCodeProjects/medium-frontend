@@ -7,7 +7,7 @@ const ThemeButton = () => {
 	const { theme, changeTheme } = useThemeStore()
 
 	return (
-		<IconButton color="default" sx={{ ml: 1 }} onClick={changeTheme}>
+		<IconButton color="default" onClick={changeTheme}>
 			{theme === 'dark' ? <LightModeIcon /> : <NightlightRoundIcon />}
 		</IconButton>
 	)

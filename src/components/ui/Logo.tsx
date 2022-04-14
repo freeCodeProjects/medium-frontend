@@ -12,7 +12,6 @@ const Logo = () => {
 			sx={{
 				display: 'flex',
 				alignItems: 'center',
-				flexGrow: 1,
 				gap: 1,
 				cursor: 'pointer'
 			}}>

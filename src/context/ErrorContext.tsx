@@ -10,7 +10,7 @@ export const ErrorContext = createContext<AppContextInterface>({
 })
 
 const ErrorContextProvider = ({ children }: { children: ReactNode }) => {
-	const { setAlertData } = useAppStore()
+	const { setAlertData, deleteUser } = useAppStore()
 
 	const serverErrorHandler = (error: any) => {
 		if (error.response) {
@@ -20,8 +20,9 @@ const ErrorContextProvider = ({ children }: { children: ReactNode }) => {
 			console.log('Server error', status, data.message)
 			if (status === 401 || status === 403) {
 				setAlertData('Please Authenticate', 'error')
+				deleteUser()
 			} else if (status === 400) {
-				setAlertData('Required data not provided.', 'error')
+				setAlertData('Bad request.', 'error')
 			} else if (status === 500) {
 				setAlertData('Backend server error', 'error')
 			} else {

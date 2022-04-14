@@ -5,8 +5,7 @@ import { User } from '../types/userTypes'
 
 type State = {
 	isLoggedIn: boolean
-	userId: string
-	user: User | {}
+	user: User | null
 	setUser: (user: User) => void
 	deleteUser: () => void
 	openAuthModal: boolean
@@ -21,17 +20,16 @@ type State = {
 }
 
 export const useAppStore = create<State>((set) => ({
-	isLoggedIn: false,
-	userId: localStorage.getItem('userId') || '',
-	user: {},
+	isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn') || 'false'),
+	user: null,
 	setUser: (user) => {
 		console.log(user)
-		set({ userId: user._id, user, isLoggedIn: true })
-		localStorage.setItem('userId', user._id)
+		set({ user, isLoggedIn: true })
+		localStorage.setItem('isLoggedIn', JSON.stringify(true))
 	},
 	deleteUser: () => {
-		set({ userId: '', user: {}, isLoggedIn: false })
-		localStorage.removeItem('userId')
+		set({ user: null, isLoggedIn: false })
+		localStorage.removeItem('isLoggedIn')
 	},
 	openAlert: false,
 	alertType: 'success',
