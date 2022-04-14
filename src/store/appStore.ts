@@ -23,7 +23,6 @@ export const useAppStore = create<State>((set) => ({
 	isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn') || 'false'),
 	user: null,
 	setUser: (user) => {
-		console.log(user)
 		set({ user, isLoggedIn: true })
 		localStorage.setItem('isLoggedIn', JSON.stringify(true))
 	},

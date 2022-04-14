@@ -6,7 +6,7 @@ export const signupUser = (data: UserSignupData) => {
 }
 
 export const verifyUser = (token: string) => {
-	return axiosInstance.get(`/user/verifyUser?token=${token}`)
+	return axiosInstance.get(`/user/verify?token=${token}`)
 }
 
 export const loginUser = (data: UserLoginData) => {

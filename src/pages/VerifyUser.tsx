@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { verifyUser } from '../api/userAPI'
@@ -7,22 +7,23 @@ import { useAppStore } from '../store/appStore'
 import { ErrorContext } from '../context/ErrorContext'
 
 const VerifyUser = () => {
-	const { setAlertData, setUser } = useAppStore()
+	const { setAlertData, setUser, isLoggedIn } = useAppStore()
 	const { serverErrorHandler } = useContext(ErrorContext)
 	const navigate = useNavigate()
 	const [searchParams] = useSearchParams()
 	const [token, setToken] = useState('')
 
 	const { refetch } = useQuery(
-		'user',
+		'verifyUser',
 		() => {
 			return verifyUser(token)
 		},
 		{
 			enabled: false,
 			staleTime: Infinity,
-			cacheTime: Infinity,
+			retry: false,
 			onError: (error: any) => {
+				console.log('dfdfsdfs')
 				serverErrorHandler(error)
 			},
 			onSuccess: (data: any) => {
@@ -34,6 +35,13 @@ const VerifyUser = () => {
 			}
 		}
 	)
+
+	useLayoutEffect(() => {
+		console.log(isLoggedIn)
+		if (isLoggedIn) {
+			navigate(-1)
+		}
+	}, [])
 
 	useEffect(() => {
 		const tokenQuery = searchParams.get('token')!
