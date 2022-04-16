@@ -1,4 +1,8 @@
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import {
+	createTheme,
+	ThemeProvider,
+	responsiveFontSizes
+} from '@mui/material/styles'
 import { useThemeStore } from './store/themeStore'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -10,14 +14,16 @@ const queryClient = new QueryClient()
 function App() {
 	const theme = useThemeStore((state) => state.theme)
 
-	const MUItheme = createTheme({
+	let MUITheme = createTheme({
 		palette: {
 			mode: theme
 		}
 	})
 
+	MUITheme = responsiveFontSizes(MUITheme)
+
 	return (
-		<ThemeProvider theme={MUItheme}>
+		<ThemeProvider theme={MUITheme}>
 			<ErrorContextProvider>
 				<QueryClientProvider client={queryClient}>
 					<AppRouter />
