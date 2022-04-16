@@ -2,30 +2,30 @@ import { Box, Button, Input, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import BoldTypography from '../ui/BoldTypography'
-import { Name, NameSchema } from '../../types/userTypes'
-import { useAppStore } from '../../store/appStore'
-import { useState, useRef, useContext } from 'react'
-import { useMutation } from 'react-query'
-import { updateName } from '../../api/userAPI'
+import { BioSchema, Bio } from '../../types/userTypes'
+import { useContext, useRef, useState } from 'react'
 import { ErrorContext } from '../../context/ErrorContext'
+import { useAppStore } from '../../store/appStore'
+import { useMutation } from 'react-query'
 import { LoadingButton } from '@mui/lab'
+import { updateBio } from '../../api/userAPI'
 
-const NameSetting = () => {
+const BioSetting = () => {
 	const { user, setUser, setAlertData } = useAppStore()
 	const { serverErrorHandler } = useContext(ErrorContext)
 	const [editing, setEditing] = useState(false)
 	const nameRef = useRef<HTMLInputElement | null>(null)
 
 	const { mutate, isLoading } = useMutation(
-		(data: Name) => {
-			return updateName(data)
+		(data: Bio) => {
+			return updateBio(data)
 		},
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)
 			},
 			onSuccess: (data: any) => {
-				setAlertData('Name updated!')
+				setAlertData('Bio updated!')
 				setUser(data.data.user)
 				setEditing(false)
 			}
@@ -33,19 +33,19 @@ const NameSetting = () => {
 	)
 
 	// https://react-hook-form.com/faqs#Howtosharerefusage
-	const defaultValues = { name: user?.name }
+	const defaultValues = { bio: user?.bio }
 	const {
 		register,
 		reset,
 		handleSubmit,
 		formState: { errors, isDirty }
-	} = useForm<Name>({
-		resolver: zodResolver(NameSchema),
+	} = useForm<Bio>({
+		resolver: zodResolver(BioSchema),
 		defaultValues
 	})
-	const { ref, ...rest } = register('name')
+	const { ref, ...rest } = register('bio')
 
-	const onSubmit = (data: Name) => {
+	const onSubmit = (data: Bio) => {
 		if (isDirty) {
 			mutate(data)
 			console.log(data)
@@ -66,7 +66,7 @@ const NameSetting = () => {
 
 	return (
 		<Box sx={{ mt: 3 }}>
-			<BoldTypography variant="h6">Name</BoldTypography>
+			<BoldTypography variant="h6">Short Bio</BoldTypography>
 			<Box
 				onSubmit={handleSubmit(onSubmit)}
 				component="form"
@@ -84,21 +84,23 @@ const NameSetting = () => {
 					}}>
 					<Input
 						disabled={!editing}
-						error={Boolean(errors.name)}
+						error={Boolean(errors.bio)}
 						defaultValue=""
-						placeholder="name"
+						placeholder="bio"
 						{...rest}
-						name="name"
+						name="bio"
 						ref={(e: HTMLInputElement) => {
 							ref(e)
 							nameRef.current = e
 						}}
+						multiline
+						rows={2}
 						sx={{ mt: 1 }}
 					/>
-					<div>{errors.name?.message}</div>
+					<div>{errors.bio?.message}</div>
 					<Typography variant="body2" sx={{ mt: 2 }}>
-						Your name appears on your Profile page, as your byline, and in your
-						responses. It is a required field.
+						Your bio appears on your Profile and next to your stories. Max 160
+						characters.
 					</Typography>
 				</Box>
 				<Box
@@ -137,4 +139,4 @@ const NameSetting = () => {
 		</Box>
 	)
 }
-export default NameSetting
+export default BioSetting

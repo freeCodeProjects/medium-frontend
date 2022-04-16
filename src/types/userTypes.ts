@@ -69,9 +69,14 @@ export const UserNameSchema = object({
 export const BioSchema = object({
 	bio: preprocess(
 		trimString,
-		string().max(160, {
-			message: 'Bio must be less than 160 characters long'
-		})
+		string()
+			.nonempty({ message: 'Field cannot be empty.' })
+			.min(6, {
+				message: 'Bio must be 6 or more characters long'
+			})
+			.max(160, {
+				message: 'Bio must be less than 160 characters long'
+			})
 	)
 })
 
@@ -90,6 +95,7 @@ export interface User {
 	_id: string
 	name: string
 	userName: string
+	bio: string
 	photo: string
 	followerCount: number
 	followingCount: number

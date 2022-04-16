@@ -2,6 +2,7 @@ import { Container } from '@mui/material'
 import CustomDivider from '../components/ui/CustomDivider'
 import BoldTypography from '../components/ui/BoldTypography'
 import NameSetting from '../components/settings/NameSetting'
+import BioSetting from '../components/settings/BioSetting'
 import { useAppStore } from '../store/appStore'
 
 const Setting = () => {
@@ -13,6 +14,7 @@ const Setting = () => {
 			{user && (
 				<>
 					<NameSetting />
+					<BioSetting />
 				</>
 			)}
 		</Container>
