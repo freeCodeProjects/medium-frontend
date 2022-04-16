@@ -1,4 +1,4 @@
-import { UserSignupData, UserLoginData } from '../types/userTypes'
+import { UserSignupData, UserLoginData, UserName } from '../types/userTypes'
 import axiosInstance from '../utils/axios'
 
 export const signupUser = (data: UserSignupData) => {
@@ -19,4 +19,8 @@ export const getLoggedInUser = () => {
 
 export const logoutUser = () => {
 	return axiosInstance.get('/user/logout')
+}
+
+export const updateName = (data: UserName) => {
+	return axiosInstance.patch('/user/name', data)
 }

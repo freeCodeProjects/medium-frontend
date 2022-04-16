@@ -1,4 +1,4 @@
-import { object, string, preprocess, TypeOf } from 'zod'
+import { object, string, preprocess, TypeOf, z } from 'zod'
 import { trimString } from '../utils/helper'
 
 export const SignupSchema = object({
@@ -38,8 +38,53 @@ export const LoginSchema = object({
 	})
 })
 
+export const NameSchema = object({
+	name: preprocess(
+		trimString,
+		string()
+			.nonempty({ message: 'Name is required' })
+			.min(3, {
+				message: 'Name must be 3 or more characters long'
+			})
+			.max(50, {
+				message: 'Name must be less than 50 characters long'
+			})
+	)
+})
+
+export const UserNameSchema = object({
+	name: preprocess(
+		trimString,
+		string()
+			.nonempty({ message: 'Name is required' })
+			.min(3, {
+				message: 'Name must be 3 or more characters long'
+			})
+			.max(50, {
+				message: 'Name must be less than 50 characters long'
+			})
+	)
+})
+
+export const BioSchema = object({
+	bio: preprocess(
+		trimString,
+		string().max(160, {
+			message: 'Bio must be less than 160 characters long'
+		})
+	)
+})
+
+export const UserPhotoSchema = object({
+	profile: z.instanceof(File)
+})
+
 export type UserSignupData = TypeOf<typeof SignupSchema>
 export type UserLoginData = TypeOf<typeof LoginSchema>
+export type UserName = TypeOf<typeof UserNameSchema>
+export type Name = TypeOf<typeof NameSchema>
+export type Bio = TypeOf<typeof BioSchema>
+export type UserPhoto = TypeOf<typeof UserPhotoSchema>
 
 export interface User {
 	_id: string

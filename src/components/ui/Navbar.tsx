@@ -12,7 +12,9 @@ const Navbar = () => {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="fixed" color="inherit" sx={{ boxShadow: 1 }}>
-				<Container maxWidth="xl" sx={{ padding: 0 }}>
+				<Container
+					maxWidth="xl"
+					sx={{ padding: { xs: '0 0', sm: '0 12px', md: '0 24px' } }}>
 					<Toolbar>
 						<Box sx={{ flexGrow: 1 }}>
 							<Logo />

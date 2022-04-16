@@ -36,13 +36,6 @@ const VerifyUser = () => {
 		}
 	)
 
-	useLayoutEffect(() => {
-		console.log(isLoggedIn)
-		if (isLoggedIn) {
-			navigate(-1)
-		}
-	}, [])
-
 	useEffect(() => {
 		const tokenQuery = searchParams.get('token')!
 

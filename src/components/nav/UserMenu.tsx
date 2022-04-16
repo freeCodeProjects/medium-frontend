@@ -17,8 +17,10 @@ import { useQuery } from 'react-query'
 import { useAppStore } from '../../store/appStore'
 import { getLoggedInUser, logoutUser } from '../../api/userAPI'
 import { ErrorContext } from '../../context/ErrorContext'
+import { useNavigate } from 'react-router-dom'
 
 const UserMenu = () => {
+	const navigate = useNavigate()
 	const { user, setUser, deleteUser } = useAppStore()
 	const { serverErrorHandler } = useContext(ErrorContext)
 
@@ -52,6 +54,11 @@ const UserMenu = () => {
 	}
 	const handleClose = () => {
 		setAnchorEl(null)
+	}
+
+	const navigateTo = (to: string) => {
+		navigate(to)
+		handleClose()
 	}
 
 	const logout = () => {
@@ -132,7 +139,7 @@ const UserMenu = () => {
 								</ListItemIcon>
 								Stories
 							</MenuItem>
-							<MenuItem onClick={handleClose}>
+							<MenuItem onClick={() => navigateTo('/settings')}>
 								<ListItemIcon>
 									<SettingsOutlined fontSize="small" />
 								</ListItemIcon>
