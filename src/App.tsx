@@ -17,6 +17,17 @@ function App() {
 	let MUITheme = createTheme({
 		palette: {
 			mode: theme
+		},
+		components: {
+			// Name of the component
+			MuiMenuItem: {
+				styleOverrides: {
+					root: {
+						// fix minHeight issue on 'xs' breakpoint
+						minHeight: 'auto'
+					}
+				}
+			}
 		}
 	})
 
