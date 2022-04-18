@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import BoldTypography from '../ui/BoldTypography'
 import { Name, NameSchema } from '../../types/userTypes'
 import { useAppStore } from '../../store/appStore'
-import { useState, useRef, useContext } from 'react'
+import { useState, useRef, useContext, useEffect } from 'react'
 import { useMutation } from 'react-query'
 import { updateName } from '../../api/userAPI'
 import { ErrorContext } from '../../context/ErrorContext'
@@ -27,7 +27,6 @@ const NameSetting = () => {
 			onSuccess: (data: any) => {
 				setAlertData('Name updated!')
 				setUser(data.data.user)
-				setEditing(false)
 			}
 		}
 	)
@@ -64,6 +63,10 @@ const NameSetting = () => {
 		}, 0)
 	}
 
+	useEffect(() => {
+		cancelEdit()
+	}, [user])
+
 	return (
 		<Box sx={{ mt: 3 }}>
 			<BoldTypography variant="h6">Name</BoldTypography>
@@ -71,7 +74,8 @@ const NameSetting = () => {
 				onSubmit={handleSubmit(onSubmit)}
 				component="form"
 				sx={{
-					display: 'flex'
+					display: 'flex',
+					flexWrap: 'wrap'
 				}}
 				noValidate
 				autoComplete="off">
@@ -80,12 +84,11 @@ const NameSetting = () => {
 						display: 'flex',
 						flexDirection: 'column',
 						mr: 2,
-						width: { xs: '80%', sm: '70%' }
+						width: { xs: '100%', sm: '65%', md: '75%' }
 					}}>
 					<Input
 						disabled={!editing}
 						error={Boolean(errors.name)}
-						defaultValue=""
 						placeholder="name"
 						{...rest}
 						name="name"
@@ -105,8 +108,9 @@ const NameSetting = () => {
 					sx={{
 						flexGrow: 1,
 						display: 'flex',
-						justifyContent: 'flex-end',
-						alignItems: 'start'
+						justifyContent: { sm: 'flex-end' },
+						alignItems: { sm: 'start' },
+						mt: { xs: 1, sm: 0 }
 					}}>
 					{!editing ? (
 						<Button variant="outlined" onClick={startEdit}>

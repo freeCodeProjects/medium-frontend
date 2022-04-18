@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import BoldTypography from '../ui/BoldTypography'
 import { BioSchema, Bio } from '../../types/userTypes'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useRef, useState, useEffect } from 'react'
 import { ErrorContext } from '../../context/ErrorContext'
 import { useAppStore } from '../../store/appStore'
 import { useMutation } from 'react-query'
@@ -14,7 +14,7 @@ const BioSetting = () => {
 	const { user, setUser, setAlertData } = useAppStore()
 	const { serverErrorHandler } = useContext(ErrorContext)
 	const [editing, setEditing] = useState(false)
-	const nameRef = useRef<HTMLInputElement | null>(null)
+	const bioRef = useRef<HTMLTextAreaElement | null>(null)
 
 	const { mutate, isLoading } = useMutation(
 		(data: Bio) => {
@@ -27,13 +27,13 @@ const BioSetting = () => {
 			onSuccess: (data: any) => {
 				setAlertData('Bio updated!')
 				setUser(data.data.user)
-				setEditing(false)
 			}
 		}
 	)
 
 	// https://react-hook-form.com/faqs#Howtosharerefusage
 	const defaultValues = { bio: user?.bio }
+
 	const {
 		register,
 		reset,
@@ -60,9 +60,14 @@ const BioSetting = () => {
 	const startEdit = () => {
 		setEditing(true)
 		setTimeout(() => {
-			nameRef.current?.firstChild?.focus()
+			bioRef.current?.firstChild?.setSelectionRange(-1, -1)
+			bioRef.current?.firstChild?.focus()
 		}, 0)
 	}
+
+	useEffect(() => {
+		cancelEdit()
+	}, [user])
 
 	return (
 		<Box sx={{ mt: 3 }}>
@@ -71,7 +76,8 @@ const BioSetting = () => {
 				onSubmit={handleSubmit(onSubmit)}
 				component="form"
 				sx={{
-					display: 'flex'
+					display: 'flex',
+					flexWrap: 'wrap'
 				}}
 				noValidate
 				autoComplete="off">
@@ -80,21 +86,21 @@ const BioSetting = () => {
 						display: 'flex',
 						flexDirection: 'column',
 						mr: 2,
-						width: { xs: '80%', sm: '70%' }
+						width: { xs: '100%', sm: '65%', md: '75%' }
 					}}>
 					<Input
+						multiline
+						//Getting below error when using rhf defaultValues - "Material-UI: Too many re-renders. The layout is unstable. TextareaAutosize limits the number of renders to prevent an infinite loop". That's why manually adding defaultValue
+						defaultValue={defaultValues.bio}
 						disabled={!editing}
 						error={Boolean(errors.bio)}
-						defaultValue=""
 						placeholder="bio"
 						{...rest}
 						name="bio"
-						ref={(e: HTMLInputElement) => {
+						ref={(e: HTMLTextAreaElement) => {
 							ref(e)
-							nameRef.current = e
+							bioRef.current = e
 						}}
-						multiline
-						rows={2}
 						sx={{ mt: 1 }}
 					/>
 					<div>{errors.bio?.message}</div>
@@ -107,8 +113,9 @@ const BioSetting = () => {
 					sx={{
 						flexGrow: 1,
 						display: 'flex',
-						justifyContent: 'flex-end',
-						alignItems: 'start'
+						justifyContent: { sm: 'flex-end' },
+						alignItems: { sm: 'start' },
+						mt: { xs: 1, sm: 0 }
 					}}>
 					{!editing ? (
 						<Button variant="outlined" onClick={startEdit}>
