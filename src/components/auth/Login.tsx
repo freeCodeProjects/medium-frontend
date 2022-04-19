@@ -40,7 +40,6 @@ const Login = () => {
 	})
 
 	const onSubmit = (data: UserLoginData) => {
-		console.log(data)
 		mutate(data)
 	}
 
