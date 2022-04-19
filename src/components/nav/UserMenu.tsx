@@ -75,10 +75,7 @@ const UserMenu = () => {
 						alt={user.name}
 						onClick={handleClick}
 						sx={{
-							height: 32,
-							width: 32,
 							bgcolor: 'grey.400',
-							padding: 0.5,
 							cursor: 'pointer'
 						}}
 					/>

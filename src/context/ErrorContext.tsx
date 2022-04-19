@@ -22,7 +22,15 @@ const ErrorContextProvider = ({ children }: { children: ReactNode }) => {
 				setAlertData('Please Authenticate', 'error')
 				deleteUser()
 			} else if (status === 400) {
-				setAlertData('Bad request.', 'error')
+				let message = ''
+				if (Array.isArray(data)) {
+					data.forEach((error) => {
+						message += error.message + '. '
+					})
+				} else {
+					message = data.message
+				}
+				setAlertData(message, 'error')
 			} else if (status === 500) {
 				setAlertData('Backend server error', 'error')
 			} else {
