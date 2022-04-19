@@ -53,15 +53,15 @@ export const NameSchema = object({
 })
 
 export const UserNameSchema = object({
-	name: preprocess(
+	userName: preprocess(
 		trimString,
 		string()
-			.nonempty({ message: 'Name is required' })
+			.nonempty({ message: 'User name is required' })
 			.min(3, {
-				message: 'Name must be 3 or more characters long'
+				message: 'User name must be 3 or more characters long'
 			})
 			.max(50, {
-				message: 'Name must be less than 50 characters long'
+				message: 'User name must be less than 50 characters long'
 			})
 	)
 })

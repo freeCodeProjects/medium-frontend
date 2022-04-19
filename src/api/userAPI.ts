@@ -1,4 +1,10 @@
-import { UserSignupData, UserLoginData, Name, Bio } from '../types/userTypes'
+import {
+	UserSignupData,
+	UserLoginData,
+	Name,
+	Bio,
+	UserName
+} from '../types/userTypes'
 import axiosInstance from '../utils/axios'
 
 export const signupUser = (data: UserSignupData) => {
@@ -33,9 +39,13 @@ export const updatePhoto = (file: File) => {
 	console.log(file)
 	const formData = new FormData()
 	formData.append('profile', file)
-	return axiosInstance.post('/user/photo', formData, {
+	return axiosInstance.patch('/user/photo', formData, {
 		headers: {
 			'Content-Type': 'multipart/form-data'
 		}
 	})
+}
+
+export const updateUserName = (data: UserName) => {
+	return axiosInstance.patch('/user/userName', data)
 }

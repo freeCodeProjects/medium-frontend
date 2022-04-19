@@ -108,6 +108,7 @@ const PhotoSetting = () => {
 						sx={{
 							height: 100,
 							minWidth: 100,
+							maxWidth: 100,
 							borderRadius: '50%',
 							border: '2px solid rgba(105,105,105, 0.2)',
 							position: 'relative'

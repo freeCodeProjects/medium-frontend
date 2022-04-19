@@ -5,6 +5,7 @@ import NameSetting from '../components/settings/NameSetting'
 import BioSetting from '../components/settings/BioSetting'
 import { useAppStore } from '../store/appStore'
 import PhotoSetting from '../components/settings/PhotoSetting'
+import UserNameSetting from '../components/settings/UserNameSetting'
 
 const Setting = () => {
 	const { user } = useAppStore()
@@ -17,6 +18,7 @@ const Setting = () => {
 					<NameSetting />
 					<BioSetting />
 					<PhotoSetting />
+					<UserNameSetting />
 				</>
 			)}
 		</Container>
