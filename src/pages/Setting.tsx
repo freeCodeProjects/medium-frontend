@@ -4,6 +4,7 @@ import BoldTypography from '../components/ui/BoldTypography'
 import NameSetting from '../components/settings/NameSetting'
 import BioSetting from '../components/settings/BioSetting'
 import { useAppStore } from '../store/appStore'
+import PhotoSetting from '../components/settings/PhotoSetting'
 
 const Setting = () => {
 	const { user } = useAppStore()
@@ -15,6 +16,7 @@ const Setting = () => {
 				<>
 					<NameSetting />
 					<BioSetting />
+					<PhotoSetting />
 				</>
 			)}
 		</Container>

@@ -28,3 +28,14 @@ export const updateName = (data: Name) => {
 export const updateBio = (data: Bio) => {
 	return axiosInstance.patch('/user/bio', data)
 }
+
+export const updatePhoto = (file: File) => {
+	console.log(file)
+	const formData = new FormData()
+	formData.append('profile', file)
+	return axiosInstance.post('/user/photo', formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		}
+	})
+}

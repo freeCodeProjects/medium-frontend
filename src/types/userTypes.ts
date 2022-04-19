@@ -1,5 +1,5 @@
 import { object, string, preprocess, TypeOf, z } from 'zod'
-import { trimString } from '../utils/helper'
+import { trimString, isFileImage, validateFileSize } from '../utils/helper'
 
 export const SignupSchema = object({
 	name: preprocess(
@@ -69,19 +69,26 @@ export const UserNameSchema = object({
 export const BioSchema = object({
 	bio: preprocess(
 		trimString,
-		string()
-			.nonempty({ message: 'Field cannot be empty.' })
-			.min(6, {
-				message: 'Bio must be 6 or more characters long'
-			})
-			.max(160, {
-				message: 'Bio must be less than 160 characters long'
-			})
+		string().max(160, {
+			message: 'Bio must be less than 160 characters long'
+		})
 	)
 })
 
 export const UserPhotoSchema = object({
-	profile: z.instanceof(File)
+	profile: preprocess(
+		(value: any) => {
+			return value.length > 0 ? value : false
+		},
+		z
+			.instanceof(FileList)
+			.refine((value) => value && isFileImage(value[0]), {
+				message: 'Selected file is not an image.'
+			})
+			.refine((value) => value && validateFileSize(value[0], 1), {
+				message: 'File size is more than 1 MB.'
+			})
+	)
 })
 
 export type UserSignupData = TypeOf<typeof SignupSchema>
