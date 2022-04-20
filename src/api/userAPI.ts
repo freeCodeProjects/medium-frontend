@@ -49,3 +49,7 @@ export const updatePhoto = (file: File) => {
 export const updateUserName = (data: UserName) => {
 	return axiosInstance.patch('/user/userName', data)
 }
+
+export const deleteUser = () => {
+	return axiosInstance.delete('/user')
+}
