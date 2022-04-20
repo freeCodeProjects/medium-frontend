@@ -53,17 +53,17 @@ export const NameSchema = object({
 })
 
 export const UserNameSchema = object({
-	userName: preprocess(
-		trimString,
-		string()
-			.nonempty({ message: 'User name is required' })
-			.min(3, {
-				message: 'User name must be 3 or more characters long'
-			})
-			.max(50, {
-				message: 'User name must be less than 50 characters long'
-			})
-	)
+	userName: string()
+		.nonempty({ message: 'User name is required' })
+		.min(3, {
+			message: 'User name must be 3 or more characters long'
+		})
+		.max(50, {
+			message: 'User name must be less than 50 characters long'
+		})
+		.regex(/^[a-zA-Z0-9_.!@#$%]*$/, {
+			message: 'Allowed chars are "a-zA-Z0-9!@#$%._"'
+		})
 })
 
 export const BioSchema = object({

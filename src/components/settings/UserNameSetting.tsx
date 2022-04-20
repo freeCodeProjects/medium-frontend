@@ -5,16 +5,18 @@ import BoldTypography from '../ui/BoldTypography'
 import { UserName, UserNameSchema } from '../../types/userTypes'
 import { useAppStore } from '../../store/appStore'
 import { useState, useRef, useContext, useEffect } from 'react'
-import { useMutation } from 'react-query'
-import { updateUserName } from '../../api/userAPI'
+import { useMutation, useQuery } from 'react-query'
+import { updateUserName, isUserNameUnique } from '../../api/userAPI'
 import { ErrorContext } from '../../context/ErrorContext'
 import { LoadingButton } from '@mui/lab'
+import useDebounce from '../../hooks/useDebounce'
 
 const UserNameSetting = () => {
 	const { user, setUser, setAlertData } = useAppStore()
 	const { serverErrorHandler } = useContext(ErrorContext)
 	const [editing, setEditing] = useState(false)
-	const nameRef = useRef<HTMLInputElement | null>(null)
+	const [isUnique, setIsUnique] = useState(false)
+	const userNameRef = useRef<HTMLInputElement | null>(null)
 
 	const { mutate, isLoading } = useMutation(
 		(data: UserName) => {
@@ -31,18 +33,41 @@ const UserNameSetting = () => {
 		}
 	)
 
-	// https://react-hook-form.com/faqs#Howtosharerefusage
+	const { refetch: isUserNameUniqueTrigger } = useQuery(
+		'isUserNameUnique',
+		() => {
+			return isUserNameUnique(debouncedValue)
+		},
+		{
+			enabled: false,
+			staleTime: Infinity,
+			cacheTime: Infinity,
+			onError: (error: any) => {
+				serverErrorHandler(error)
+			},
+			onSuccess: (data: any) => {
+				console.log(data)
+				setIsUnique(data.data.isUnique)
+			}
+		}
+	)
+
 	const defaultValues = { userName: user?.userName }
 	const {
 		register,
 		reset,
 		handleSubmit,
-		formState: { errors, isDirty }
+		watch,
+		formState: { errors, isDirty, isValid }
 	} = useForm<UserName>({
 		resolver: zodResolver(UserNameSchema),
-		defaultValues
+		defaultValues,
+		mode: 'onChange'
 	})
 	const { ref, ...rest } = register('userName')
+
+	const currUserName = watch('userName')
+	const debouncedValue = useDebounce(currUserName.trim(), 500)
 
 	const onSubmit = (data: UserName) => {
 		if (isDirty) {
@@ -59,9 +84,31 @@ const UserNameSetting = () => {
 	const startEdit = () => {
 		setEditing(true)
 		setTimeout(() => {
-			nameRef.current?.firstChild?.focus()
+			userNameRef.current?.firstChild?.setSelectionRange(-1, -1)
+			userNameRef.current?.firstChild?.focus()
 		}, 0)
 	}
+
+	const isUniqueJSX = () => {
+		if (isDirty && isValid) {
+			return isUnique ? (
+				<Typography sx={{ color: 'success.main' }}>
+					Username is available
+				</Typography>
+			) : (
+				<Typography sx={{ color: 'error.main' }}>
+					Username is not available
+				</Typography>
+			)
+		}
+	}
+
+	useEffect(() => {
+		if (isDirty && isValid) {
+			console.log(debouncedValue)
+			isUserNameUniqueTrigger(debouncedValue)
+		}
+	}, [debouncedValue])
 
 	useEffect(() => {
 		cancelEdit()
@@ -99,11 +146,12 @@ const UserNameSetting = () => {
 							name="userName"
 							ref={(e: HTMLInputElement) => {
 								ref(e)
-								nameRef.current = e
+								userNameRef.current = e
 							}}
 							sx={{ width: { xs: '100%' } }}
 						/>
-						<div>{errors.userName?.message}</div>
+						<Typography color="error">{errors.userName?.message}</Typography>
+						{isUniqueJSX()}
 					</Box>
 					<BoldTypography variant="body1">URL</BoldTypography>
 					<Typography
@@ -139,6 +187,7 @@ const UserNameSetting = () => {
 							}}>
 							<LoadingButton
 								loading={isLoading}
+								disabled={!isUnique || !isDirty || !isValid}
 								type="submit"
 								variant="outlined"
 								color="success">

@@ -46,6 +46,10 @@ export const updatePhoto = (file: File) => {
 	})
 }
 
+export const isUserNameUnique = (userName: string) => {
+	return axiosInstance.get(`/user/isNameUnique?userName=${userName}`)
+}
+
 export const updateUserName = (data: UserName) => {
 	return axiosInstance.patch('/user/userName', data)
 }
