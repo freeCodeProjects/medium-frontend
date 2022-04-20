@@ -36,7 +36,6 @@ export const updateBio = (data: Bio) => {
 }
 
 export const updatePhoto = (file: File) => {
-	console.log(file)
 	const formData = new FormData()
 	formData.append('profile', file)
 	return axiosInstance.patch('/user/photo', formData, {

@@ -23,7 +23,6 @@ const VerifyUser = () => {
 			staleTime: Infinity,
 			retry: false,
 			onError: (error: any) => {
-				console.log('dfdfsdfs')
 				serverErrorHandler(error)
 			},
 			onSuccess: (data: any) => {
@@ -46,7 +45,6 @@ const VerifyUser = () => {
 	}, [])
 
 	useEffect(() => {
-		console.log('token', token)
 		if (token) {
 			refetch()
 		}

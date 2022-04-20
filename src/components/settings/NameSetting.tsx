@@ -47,7 +47,6 @@ const NameSetting = () => {
 	const onSubmit = (data: Name) => {
 		if (isDirty) {
 			mutate(data)
-			console.log(data)
 		}
 	}
 

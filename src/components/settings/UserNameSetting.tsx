@@ -46,7 +46,6 @@ const UserNameSetting = () => {
 				serverErrorHandler(error)
 			},
 			onSuccess: (data: any) => {
-				console.log(data)
 				setIsUnique(data.data.isUnique)
 			}
 		}
@@ -72,7 +71,6 @@ const UserNameSetting = () => {
 	const onSubmit = (data: UserName) => {
 		if (isDirty) {
 			mutate(data)
-			console.log(data)
 		}
 	}
 
@@ -105,7 +103,6 @@ const UserNameSetting = () => {
 
 	useEffect(() => {
 		if (isDirty && isValid) {
-			console.log(debouncedValue)
 			isUserNameUniqueTrigger(debouncedValue)
 		}
 	}, [debouncedValue])

@@ -48,7 +48,6 @@ const BioSetting = () => {
 	const onSubmit = (data: Bio) => {
 		if (isDirty) {
 			mutate(data)
-			console.log(data)
 		}
 	}
 
