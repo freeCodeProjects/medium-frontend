@@ -59,6 +59,7 @@ const NameSetting = () => {
 	const startEdit = () => {
 		setEditing(true)
 		setTimeout(() => {
+			nameRef.current?.firstChild?.setSelectionRange(-1, -1)
 			nameRef.current?.firstChild?.focus()
 		}, 0)
 	}
@@ -98,7 +99,7 @@ const NameSetting = () => {
 						}}
 						sx={{ mt: 1 }}
 					/>
-					<div>{errors.name?.message}</div>
+					<Typography color="error">{errors.name?.message}</Typography>
 					<Typography variant="body2" sx={{ mt: 2 }}>
 						Your name appears on your Profile page, as your byline, and in your
 						responses. It is a required field.

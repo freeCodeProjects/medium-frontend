@@ -103,7 +103,7 @@ const BioSetting = () => {
 						}}
 						sx={{ mt: 1 }}
 					/>
-					<div>{errors.bio?.message}</div>
+					<Typography color="error">{errors.bio?.message}</Typography>
 					<Typography variant="body2" sx={{ mt: 2 }}>
 						Your bio appears on your Profile and next to your stories. Max 160
 						characters.
