@@ -6,6 +6,7 @@ import {
 	UserName
 } from '../types/userTypes'
 import axiosInstance from '../utils/axios'
+import { ResetPasswordMailData } from '../types/userTypes'
 
 export const signupUser = (data: UserSignupData) => {
 	return axiosInstance.post('/user/signup', data)
@@ -55,4 +56,8 @@ export const updateUserName = (data: UserName) => {
 
 export const deleteUser = () => {
 	return axiosInstance.delete('/user')
+}
+
+export const sendResetPasswordMail = (data: ResetPasswordMailData) => {
+	return axiosInstance.post('/user/passwordResetMail', data)
 }

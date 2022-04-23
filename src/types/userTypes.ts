@@ -91,8 +91,15 @@ export const UserPhotoSchema = object({
 	)
 })
 
+export const ResetPasswordMailSchema = object({
+	email: string().nonempty({ message: 'Email is required' }).email({
+		message: 'Invalid email address'
+	})
+})
+
 export type UserSignupData = TypeOf<typeof SignupSchema>
 export type UserLoginData = TypeOf<typeof LoginSchema>
+export type ResetPasswordMailData = TypeOf<typeof ResetPasswordMailSchema>
 export type UserName = TypeOf<typeof UserNameSchema>
 export type Name = TypeOf<typeof NameSchema>
 export type Bio = TypeOf<typeof BioSchema>

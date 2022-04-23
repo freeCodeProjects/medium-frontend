@@ -1,28 +1,33 @@
-import { Box, Typography, TextField } from '@mui/material'
+import { Box, Typography, TextField, Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from 'react-query'
+import { UserLoginData, LoginSchema } from '../../types/userTypes'
 import { useAppStore } from '../../store/appStore'
 import { useContext } from 'react'
 import { ErrorContext } from '../../context/ErrorContext'
+import { loginUser } from '../../api/userAPI'
 import { LoadingButton } from '@mui/lab'
-import { signupUser } from '../../api/userAPI'
-import { UserSignupData, SignupSchema } from '../../types/userTypes'
 
-const Signup = () => {
-	const { setAlertData, handleCloseAuthModal } = useAppStore()
+type IProps = {
+	setPasswordResetPage: Function
+}
+
+const LoginForm = ({ setPasswordResetPage }: IProps) => {
+	const { setAlertData, handleCloseAuthModal, setUser } = useAppStore()
 	const { serverErrorHandler } = useContext(ErrorContext)
 
 	const { mutate, isLoading } = useMutation(
-		(data: UserSignupData) => {
-			return signupUser(data)
+		(data: UserLoginData) => {
+			return loginUser(data)
 		},
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)
 			},
 			onSuccess: (data: any) => {
-				setAlertData(data.data.message)
+				setAlertData('Logged in.')
+				setUser(data.data.user)
 				reset()
 				handleCloseAuthModal()
 			}
@@ -32,12 +37,13 @@ const Signup = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
-		reset
-	} = useForm<UserSignupData>({
-		resolver: zodResolver(SignupSchema)
+		reset,
+		formState: { errors }
+	} = useForm<UserLoginData>({
+		resolver: zodResolver(LoginSchema)
 	})
-	const onSubmit = (data: UserSignupData) => {
+
+	const onSubmit = (data: UserLoginData) => {
 		mutate(data)
 	}
 
@@ -46,11 +52,17 @@ const Signup = () => {
 			<Typography
 				variant="h5"
 				align="center"
-				component="div"
-				sx={{ fontWeight: 600 }}>
-				Join Medium
+				sx={{ fontWeight: 600 }}
+				component="div">
+				Welcome back
 			</Typography>
-			<Box sx={{ display: 'flex', justifyContent: 'center' }}>
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					flexDirection: 'column',
+					gap: 3
+				}}>
 				<Box
 					onSubmit={handleSubmit(onSubmit)}
 					component="form"
@@ -62,14 +74,6 @@ const Signup = () => {
 						flexDirection: 'column',
 						gap: 1
 					}}>
-					<TextField
-						error={Boolean(errors.name)}
-						helperText={errors.name?.message}
-						{...register('name')}
-						fullWidth
-						label="Name"
-						variant="standard"
-					/>
 					<TextField
 						error={Boolean(errors.email)}
 						helperText={errors.email?.message}
@@ -88,25 +92,21 @@ const Signup = () => {
 						type="password"
 						variant="standard"
 					/>
-					<TextField
-						error={Boolean(errors.confirmPassword)}
-						helperText={errors.confirmPassword?.message}
-						{...register('confirmPassword')}
-						fullWidth
-						label="Confirm Password"
-						type="password"
-						variant="standard"
-					/>
 					<LoadingButton
 						loading={isLoading}
 						type="submit"
 						variant="contained"
 						sx={{ mt: 2 }}>
-						Register
+						Login
 					</LoadingButton>
 				</Box>
+				<Button
+					onClick={() => setPasswordResetPage(true)}
+					sx={{ textTransform: 'capitalize' }}>
+					Forgot password?
+				</Button>
 			</Box>
 		</>
 	)
 }
-export default Signup
+export default LoginForm
