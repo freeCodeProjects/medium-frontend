@@ -57,8 +57,11 @@ const UserMenu = () => {
 	}
 
 	const navigateTo = (to: string) => {
-		navigate(to)
 		handleClose()
+		//workaround to close menu when page is visited first time, this bug exist when using React.lazy for code splitting.
+		setTimeout(() => {
+			navigate(to)
+		}, 100)
 	}
 
 	const logout = () => {

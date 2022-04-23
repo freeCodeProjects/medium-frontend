@@ -49,5 +49,6 @@ export const useAppStore = create<State>((set) => ({
 
 //@ts-ignore
 if (process.env.NODE_ENV === 'development') {
+	//@ts-ignore
 	mountStoreDevtool('AppStore', useAppStore)
 }

@@ -82,7 +82,9 @@ const UserNameSetting = () => {
 	const startEdit = () => {
 		setEditing(true)
 		setTimeout(() => {
+			//@ts-ignore
 			userNameRef.current?.firstChild?.setSelectionRange(-1, -1)
+			//@ts-ignore
 			userNameRef.current?.firstChild?.focus()
 		}, 0)
 	}

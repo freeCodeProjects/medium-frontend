@@ -36,5 +36,6 @@ export const useThemeStore = create<State>((set, get) => ({
 
 //@ts-ignore
 if (process.env.NODE_ENV === 'development') {
+	//@ts-ignore
 	mountStoreDevtool('ThemeStore', useThemeStore)
 }

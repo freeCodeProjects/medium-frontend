@@ -59,7 +59,9 @@ const BioSetting = () => {
 	const startEdit = () => {
 		setEditing(true)
 		setTimeout(() => {
+			//@ts-ignore
 			bioRef.current?.firstChild?.setSelectionRange(-1, -1)
+			//@ts-ignore
 			bioRef.current?.firstChild?.focus()
 		}, 0)
 	}

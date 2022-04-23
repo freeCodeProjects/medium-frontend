@@ -58,7 +58,9 @@ const NameSetting = () => {
 	const startEdit = () => {
 		setEditing(true)
 		setTimeout(() => {
+			//@ts-ignore
 			nameRef.current?.firstChild?.setSelectionRange(-1, -1)
+			//@ts-ignore
 			nameRef.current?.firstChild?.focus()
 		}, 0)
 	}
