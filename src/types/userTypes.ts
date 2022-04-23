@@ -97,9 +97,24 @@ export const ResetPasswordMailSchema = object({
 	})
 })
 
+export const ResetPasswordSchema = object({
+	password: string().nonempty({ message: 'Password is required' }).min(6, {
+		message: 'Password must be 6 or more characters long'
+	}),
+	confirmPassword: string()
+		.nonempty({ message: 'Confirm password is required' })
+		.min(6, {
+			message: 'ConfirmPassword must be 6 or more characters long'
+		})
+}).refine(({ password, confirmPassword }) => password === confirmPassword, {
+	message: "Passwords don't match",
+	path: ['confirmPassword']
+})
+
 export type UserSignupData = TypeOf<typeof SignupSchema>
 export type UserLoginData = TypeOf<typeof LoginSchema>
 export type ResetPasswordMailData = TypeOf<typeof ResetPasswordMailSchema>
+export type ResetPasswordData = TypeOf<typeof ResetPasswordSchema>
 export type UserName = TypeOf<typeof UserNameSchema>
 export type Name = TypeOf<typeof NameSchema>
 export type Bio = TypeOf<typeof BioSchema>

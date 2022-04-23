@@ -9,6 +9,7 @@ import NotProtectedRoute from './NotProtectedRoute'
 import CustomAlert from '../components/ui/CustomAlert'
 import Auth from '../components/auth/Auth'
 import { useAppStore } from '../store/appStore'
+import ResetPassword from '../pages/ResetPassword'
 const Home = React.lazy(() => import('../pages/Home'))
 const Setting = React.lazy(() => import('../pages/Setting'))
 const VerifyUser = React.lazy(() => import('../pages/VerifyUser'))
@@ -45,6 +46,10 @@ const AppRouter = () => {
 								<Route
 									path="/verifyUser"
 									element={<NotProtectedRoute Component={VerifyUser} />}
+								/>
+								<Route
+									path="/resetpassword"
+									element={<NotProtectedRoute Component={ResetPassword} />}
 								/>
 								<Route path="*" element={<Navigate to="/" replace />} />
 							</Routes>
