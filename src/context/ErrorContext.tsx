@@ -17,9 +17,9 @@ const ErrorContextProvider = ({ children }: { children: ReactNode }) => {
 			const {
 				response: { status, data }
 			} = error
-			console.log('Server error', status, data.message)
+			console.log('Server error', status, data)
 			if (status === 401 || status === 403) {
-				setAlertData('Please Authenticate', 'error')
+				setAlertData(data.message, 'error')
 				deleteUser()
 			} else if (status === 400) {
 				let message = ''
