@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import BoldTypography from '../ui/BoldTypography'
 import { BioSchema, Bio } from '../../types/userTypes'
 import { useContext, useRef, useState, useEffect } from 'react'
-import { ErrorContext } from '../../context/ErrorContext'
+import { AppContext } from '../../context/AppContext'
 import { useAppStore } from '../../store/appStore'
 import { useMutation } from 'react-query'
 import { LoadingButton } from '@mui/lab'
@@ -12,14 +12,12 @@ import { updateBio } from '../../api/userAPI'
 
 const BioSetting = () => {
 	const { user, setUser, setAlertData } = useAppStore()
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 	const [editing, setEditing] = useState(false)
 	const bioRef = useRef<HTMLTextAreaElement | null>(null)
 
 	const { mutate, isLoading } = useMutation(
-		(data: Bio) => {
-			return updateBio(data)
-		},
+		(data: Bio) => checkIsOnlineWrapper(() => updateBio(data)),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)

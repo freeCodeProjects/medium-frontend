@@ -15,7 +15,7 @@ import { forwardRef, useState, useContext } from 'react'
 import { useQuery } from 'react-query'
 import BoldTypography from '../ui/BoldTypography'
 import { deleteUser as deleteUserAPI } from '../../api/userAPI'
-import { ErrorContext } from '../../context/ErrorContext'
+import { AppContext } from '../../context/AppContext'
 import { useAppStore } from '../../store/appStore'
 
 const Transition = forwardRef(function Transition(
@@ -30,13 +30,11 @@ const Transition = forwardRef(function Transition(
 const DeleteAccountSetting = () => {
 	const [open, setOpen] = useState(false)
 	const [input, setInput] = useState('')
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 	const { deleteUser, setAlertData } = useAppStore()
 
-	const { refetch: deleteUserTrigger } = useQuery('deleteUser', deleteUserAPI, {
+	const { refetch: deleteUserTrigger } = useQuery('deleteUser', () => checkIsOnlineWrapper(deleteUserAPI), {
 		enabled: false,
-		staleTime: Infinity,
-		cacheTime: Infinity,
 		onError: (error: any) => {
 			serverErrorHandler(error)
 		},

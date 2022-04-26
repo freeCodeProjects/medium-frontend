@@ -4,24 +4,20 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { verifyUser } from '../api/userAPI'
 import { useAppStore } from '../store/appStore'
-import { ErrorContext } from '../context/ErrorContext'
+import { AppContext } from '../context/AppContext'
 
 const VerifyUser = () => {
-	const { setAlertData, setUser, isLoggedIn } = useAppStore()
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { setAlertData, setUser } = useAppStore()
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 	const navigate = useNavigate()
 	const [searchParams] = useSearchParams()
 	const [token, setToken] = useState('')
 
 	const { refetch } = useQuery(
 		'verifyUser',
-		() => {
-			return verifyUser(token)
-		},
+		() => checkIsOnlineWrapper(() => verifyUser(token)),
 		{
 			enabled: false,
-			staleTime: Infinity,
-			retry: false,
 			onError: (error: any) => {
 				serverErrorHandler(error)
 			},

@@ -3,7 +3,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
-import { ErrorContext } from '../../context/ErrorContext'
+import { AppContext } from '../../context/AppContext'
 import { useAppStore } from '../../store/appStore'
 import { sendResetPasswordMail } from '../../api/userAPI'
 import {
@@ -17,13 +17,11 @@ type IProps = {
 }
 
 const PasswordResetForm = ({ setPasswordResetPage }: IProps) => {
-	const { setAlertData, handleCloseAuthModal, setUser } = useAppStore()
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { setAlertData, handleCloseAuthModal } = useAppStore()
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 
 	const { mutate, isLoading } = useMutation(
-		(data: ResetPasswordMailData) => {
-			return sendResetPasswordMail(data)
-		},
+		(data: ResetPasswordMailData) => checkIsOnlineWrapper(() => sendResetPasswordMail(data)),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)

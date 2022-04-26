@@ -6,10 +6,18 @@ import {
 import { useThemeStore } from './store/themeStore'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import ErrorContextProvider from './context/ErrorContext'
+import AppContextProvider from './context/AppContext'
 import AppRouter from './routes/AppRouter'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: Infinity,
+			cacheTime: Infinity,
+			retry: 1
+		}
+	}
+})
 
 function App() {
 	const theme = useThemeStore((state) => state.theme)
@@ -35,12 +43,12 @@ function App() {
 
 	return (
 		<ThemeProvider theme={MUITheme}>
-			<ErrorContextProvider>
+			<AppContextProvider>
 				<QueryClientProvider client={queryClient}>
 					<AppRouter />
 					<ReactQueryDevtools initialIsOpen />
 				</QueryClientProvider>
-			</ErrorContextProvider>
+			</AppContextProvider>
 		</ThemeProvider>
 	)
 }

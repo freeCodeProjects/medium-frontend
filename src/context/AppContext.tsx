@@ -1,16 +1,27 @@
 import { createContext, ReactNode } from 'react'
+import { onlineManager } from 'react-query'
 import { useAppStore } from '../store/appStore'
 
 interface AppContextInterface {
 	serverErrorHandler: (error: any) => void
+	checkIsOnlineWrapper: (fn: Function) => Promise<any>
 }
 
-export const ErrorContext = createContext<AppContextInterface>({
-	serverErrorHandler: () => {}
+export const AppContext = createContext<AppContextInterface>({
+	serverErrorHandler: () => {},
+	checkIsOnlineWrapper: () => new Promise(() => {})
 })
 
-const ErrorContextProvider = ({ children }: { children: ReactNode }) => {
+const AppContextProvider = ({ children }: { children: ReactNode }) => {
 	const { setAlertData, deleteUser } = useAppStore()
+
+	const checkIsOnlineWrapper = (fn: Function) => {
+		if (onlineManager.isOnline()) {
+			return Promise.resolve(fn())
+		}
+		setAlertData('You are offline!', 'error')
+		return Promise.reject({ message: 'You are offline!' })
+	}
 
 	const serverErrorHandler = (error: any) => {
 		if (error.response) {
@@ -42,9 +53,9 @@ const ErrorContextProvider = ({ children }: { children: ReactNode }) => {
 		return 'Error Occured'
 	}
 	return (
-		<ErrorContext.Provider value={{ serverErrorHandler }}>
+		<AppContext.Provider value={{ serverErrorHandler, checkIsOnlineWrapper }}>
 			{children}
-		</ErrorContext.Provider>
+		</AppContext.Provider>
 	)
 }
-export default ErrorContextProvider
+export default AppContextProvider

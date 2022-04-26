@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from 'react-query'
 import { LoadingButton } from '@mui/lab'
 import { useAppStore } from '../store/appStore'
-import { ErrorContext } from '../context/ErrorContext'
+import { AppContext } from '../context/AppContext'
 import { useContext, useState, useEffect } from 'react'
 import { ResetPasswordData, ResetPasswordSchema } from '../types/userTypes'
 import { resetPassword } from '../api/userAPI'
@@ -12,15 +12,14 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const ResetPassword = () => {
 	const { setAlertData } = useAppStore()
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 	const navigate = useNavigate()
 	const [searchParams] = useSearchParams()
 	const [token, setToken] = useState('')
 
 	const { mutate, isLoading } = useMutation(
-		(data: ResetPasswordData) => {
-			return resetPassword({ token, ...data })
-		},
+		(data: ResetPasswordData) =>
+			checkIsOnlineWrapper(() => resetPassword({ token, ...data })),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)

@@ -4,19 +4,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from 'react-query'
 import { useAppStore } from '../../store/appStore'
 import { useContext } from 'react'
-import { ErrorContext } from '../../context/ErrorContext'
+import { AppContext } from '../../context/AppContext'
 import { LoadingButton } from '@mui/lab'
 import { signupUser } from '../../api/userAPI'
 import { UserSignupData, SignupSchema } from '../../types/userTypes'
 
 const Signup = () => {
 	const { setAlertData, handleCloseAuthModal } = useAppStore()
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 
 	const { mutate, isLoading } = useMutation(
-		(data: UserSignupData) => {
-			return signupUser(data)
-		},
+		(data: UserSignupData) => checkIsOnlineWrapper(() => signupUser(data)),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)

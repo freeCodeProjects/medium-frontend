@@ -16,36 +16,38 @@ import { useContext, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useAppStore } from '../../store/appStore'
 import { getLoggedInUser, logoutUser } from '../../api/userAPI'
-import { ErrorContext } from '../../context/ErrorContext'
+import { AppContext } from '../../context/AppContext'
 import { useNavigate } from 'react-router-dom'
 
 const UserMenu = () => {
 	const navigate = useNavigate()
 	const { user, setUser, deleteUser } = useAppStore()
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 
-	useQuery('user', getLoggedInUser, {
-		staleTime: Infinity,
-		cacheTime: Infinity,
+	useQuery('user', () => checkIsOnlineWrapper(getLoggedInUser), {
 		onError: (error: any) => {
 			serverErrorHandler(error)
 		},
 		onSuccess: (data: any) => {
 			setUser(data.data.user)
-		}
+		},
+		refetchOnWindowFocus: 'always',
+		refetchOnReconnect: 'always'
 	})
 
-	const { refetch: logoutUserTrigger } = useQuery('logout', logoutUser, {
-		enabled: false,
-		staleTime: Infinity,
-		cacheTime: Infinity,
-		onError: (error: any) => {
-			serverErrorHandler(error)
-		},
-		onSuccess: (data: any) => {
-			deleteUser()
+	const { refetch: logoutUserTrigger } = useQuery(
+		'logout',
+		() => () => checkIsOnlineWrapper(logoutUser),
+		{
+			enabled: false,
+			onError: (error: any) => {
+				serverErrorHandler(error)
+			},
+			onSuccess: (data: any) => {
+				deleteUser()
+			}
 		}
-	})
+	)
 
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 	const open = Boolean(anchorEl)
@@ -127,7 +129,7 @@ const UserMenu = () => {
 								</Box>
 							</Box>
 							<Divider sx={{ my: 1 }} />
-							<MenuItem onClick={handleClose}>
+							<MenuItem onClick={() => navigateTo('/add')}>
 								<ListItemIcon>
 									<CreateOutlined fontSize="small" />
 								</ListItemIcon>

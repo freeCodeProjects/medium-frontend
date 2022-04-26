@@ -7,21 +7,19 @@ import { useAppStore } from '../../store/appStore'
 import { useState, useRef, useContext, useEffect } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { updateUserName, isUserNameUnique } from '../../api/userAPI'
-import { ErrorContext } from '../../context/ErrorContext'
+import { AppContext } from '../../context/AppContext'
 import { LoadingButton } from '@mui/lab'
 import useDebounce from '../../hooks/useDebounce'
 
 const UserNameSetting = () => {
 	const { user, setUser, setAlertData } = useAppStore()
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 	const [editing, setEditing] = useState(false)
 	const [isUnique, setIsUnique] = useState(false)
 	const userNameRef = useRef<HTMLInputElement | null>(null)
 
 	const { mutate, isLoading } = useMutation(
-		(data: UserName) => {
-			return updateUserName(data)
-		},
+		(data: UserName) => checkIsOnlineWrapper(() => updateUserName(data)),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)
@@ -35,13 +33,9 @@ const UserNameSetting = () => {
 
 	const { refetch: isUserNameUniqueTrigger } = useQuery(
 		'isUserNameUnique',
-		() => {
-			return isUserNameUnique(debouncedValue)
-		},
+		() => checkIsOnlineWrapper(() => isUserNameUnique(debouncedValue)),
 		{
 			enabled: false,
-			staleTime: Infinity,
-			cacheTime: Infinity,
 			onError: (error: any) => {
 				serverErrorHandler(error)
 			},

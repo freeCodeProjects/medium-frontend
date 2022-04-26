@@ -7,19 +7,17 @@ import { useAppStore } from '../../store/appStore'
 import { useState, useRef, useContext, useEffect } from 'react'
 import { useMutation } from 'react-query'
 import { updateName } from '../../api/userAPI'
-import { ErrorContext } from '../../context/ErrorContext'
+import { AppContext } from '../../context/AppContext'
 import { LoadingButton } from '@mui/lab'
 
 const NameSetting = () => {
 	const { user, setUser, setAlertData } = useAppStore()
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 	const [editing, setEditing] = useState(false)
 	const nameRef = useRef<HTMLInputElement | null>(null)
 
 	const { mutate, isLoading } = useMutation(
-		(data: Name) => {
-			return updateName(data)
-		},
+		(data: Name) => checkIsOnlineWrapper(() => updateName(data)),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)

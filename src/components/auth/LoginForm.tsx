@@ -5,7 +5,7 @@ import { useMutation } from 'react-query'
 import { UserLoginData, LoginSchema } from '../../types/userTypes'
 import { useAppStore } from '../../store/appStore'
 import { useContext } from 'react'
-import { ErrorContext } from '../../context/ErrorContext'
+import { AppContext } from '../../context/AppContext'
 import { loginUser } from '../../api/userAPI'
 import { LoadingButton } from '@mui/lab'
 
@@ -15,12 +15,10 @@ type IProps = {
 
 const LoginForm = ({ setPasswordResetPage }: IProps) => {
 	const { setAlertData, handleCloseAuthModal, setUser } = useAppStore()
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 
 	const { mutate, isLoading } = useMutation(
-		(data: UserLoginData) => {
-			return loginUser(data)
-		},
+		(data: UserLoginData) => checkIsOnlineWrapper(() => loginUser(data)),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)

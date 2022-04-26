@@ -7,7 +7,7 @@ import { useState, useEffect, FormEvent, useContext } from 'react'
 import { useAppStore } from '../../store/appStore'
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined'
 import { LoadingButton } from '@mui/lab'
-import { ErrorContext } from '../../context/ErrorContext'
+import { AppContext } from '../../context/AppContext'
 import { useMutation } from 'react-query'
 import { updatePhoto } from '../../api/userAPI'
 
@@ -16,12 +16,10 @@ const PhotoSetting = () => {
 	const [image, setImage] = useState(user?.photo)
 	const [validFile, setValidFile] = useState<File | null>(null)
 	const [editing, setEditing] = useState(false)
-	const { serverErrorHandler } = useContext(ErrorContext)
+	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 
 	const { mutate, isLoading } = useMutation(
-		(data: File) => {
-			return updatePhoto(data)
-		},
+		(data: File) => checkIsOnlineWrapper(() => updatePhoto(data)),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)
