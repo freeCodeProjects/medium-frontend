@@ -24,3 +24,29 @@ code {
   overflow     : hidden;
   text-overflow: ellipsis;
 }
+
+.codex-editor .codex-editor__redactor {
+  padding-bottom: 100px !important;
+}
+
+.ce-toolbar__plus {
+  border-radius: 50%;
+  border       : 1px solid gray;
+}
+
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn,
+.ce-toolbox__button,
+.ce-inline-toolbar__dropdown,
+.ce-conversion-tool,
+.ce-conversion-tool__icon {
+  color: gray;
+}
+
+.ce-block--selected .ce-block__content {
+  background-color: #549cd391;
+}
+
+::selection {
+  background-color: #549cd391;
+}

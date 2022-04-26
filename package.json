@@ -8,6 +8,8 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@editorjs/editorjs": "^2.23.2",
+		"@editorjs/header": "^2.6.2",
 		"@emotion/react": "^11.8.2",
 		"@emotion/styled": "^11.8.1",
 		"@hookform/resolvers": "^2.8.8",
@@ -15,6 +17,7 @@
 		"@mui/lab": "^5.0.0-alpha.77",
 		"@mui/material": "^5.5.3",
 		"axios": "^0.26.1",
+		"editorjs-undo": "2.0.0-rc.2",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
 		"react-hook-form": "^7.29.0",

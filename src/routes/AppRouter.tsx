@@ -8,8 +8,9 @@ import ProtectedRoute from './ProtectedRoute'
 import NotProtectedRoute from './NotProtectedRoute'
 import CustomAlert from '../components/ui/CustomAlert'
 import Auth from '../components/auth/Auth'
-import { useAppStore } from '../store/appStore'
 import ResetPassword from '../pages/ResetPassword'
+import CheckNetworkStatus from '../components/utils/CheckNetworkStatus'
+const AddOrUpdateBlog = React.lazy(() => import('../pages/AddOrUpdateBlog'))
 const Home = React.lazy(() => import('../pages/Home'))
 const Setting = React.lazy(() => import('../pages/Setting'))
 const VerifyUser = React.lazy(() => import('../pages/VerifyUser'))
@@ -19,6 +20,7 @@ const AppRouter = () => {
 		<Suspense fallback={<SuspenseLoader />}>
 			<BrowserRouter>
 				<CustomAlert />
+				<CheckNetworkStatus />
 				<Auth />
 				<Navbar />
 				<Box
@@ -41,15 +43,21 @@ const AppRouter = () => {
 								<Route path="/" element={<Home />} />
 								<Route
 									path="/settings"
-									element={<ProtectedRoute Component={Setting} />}
+									element={<ProtectedRoute Component={<Setting />} />}
 								/>
 								<Route
 									path="/verifyUser"
-									element={<NotProtectedRoute Component={VerifyUser} />}
+									element={<NotProtectedRoute Component={<VerifyUser />} />}
 								/>
 								<Route
 									path="/resetpassword"
-									element={<NotProtectedRoute Component={ResetPassword} />}
+									element={<NotProtectedRoute Component={<ResetPassword />} />}
+								/>
+								<Route
+									path="/add"
+									element={
+										<ProtectedRoute Component={<AddOrUpdateBlog newBlog />} />
+									}
 								/>
 								<Route path="*" element={<Navigate to="/" replace />} />
 							</Routes>
