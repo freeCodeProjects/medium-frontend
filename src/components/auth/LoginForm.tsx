@@ -15,10 +15,10 @@ type IProps = {
 
 const LoginForm = ({ setPasswordResetPage }: IProps) => {
 	const { setAlertData, handleCloseAuthModal, setUser } = useAppStore()
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 
 	const { mutate, isLoading } = useMutation(
-		(data: UserLoginData) => checkIsOnlineWrapper(() => loginUser(data)),
+		(data: UserLoginData) => loginUser(data),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)

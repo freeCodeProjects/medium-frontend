@@ -13,13 +13,13 @@ import useDebounce from '../../hooks/useDebounce'
 
 const UserNameSetting = () => {
 	const { user, setUser, setAlertData } = useAppStore()
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 	const [editing, setEditing] = useState(false)
 	const [isUnique, setIsUnique] = useState(false)
 	const userNameRef = useRef<HTMLInputElement | null>(null)
 
 	const { mutate, isLoading } = useMutation(
-		(data: UserName) => checkIsOnlineWrapper(() => updateUserName(data)),
+		(data: UserName) => updateUserName(data),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)
@@ -33,7 +33,7 @@ const UserNameSetting = () => {
 
 	const { refetch: isUserNameUniqueTrigger } = useQuery(
 		'isUserNameUnique',
-		() => checkIsOnlineWrapper(() => isUserNameUnique(debouncedValue)),
+		() => isUserNameUnique(debouncedValue),
 		{
 			enabled: false,
 			onError: (error: any) => {

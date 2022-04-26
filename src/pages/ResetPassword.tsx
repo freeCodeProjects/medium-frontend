@@ -12,14 +12,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const ResetPassword = () => {
 	const { setAlertData } = useAppStore()
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 	const navigate = useNavigate()
 	const [searchParams] = useSearchParams()
 	const [token, setToken] = useState('')
 
 	const { mutate, isLoading } = useMutation(
-		(data: ResetPasswordData) =>
-			checkIsOnlineWrapper(() => resetPassword({ token, ...data })),
+		(data: ResetPasswordData) => resetPassword({ token, ...data }),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)

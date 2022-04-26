@@ -22,9 +22,9 @@ import { useNavigate } from 'react-router-dom'
 const UserMenu = () => {
 	const navigate = useNavigate()
 	const { user, setUser, deleteUser } = useAppStore()
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 
-	useQuery('user', () => checkIsOnlineWrapper(getLoggedInUser), {
+	useQuery('user', getLoggedInUser, {
 		onError: (error: any) => {
 			serverErrorHandler(error)
 		},
@@ -35,19 +35,15 @@ const UserMenu = () => {
 		refetchOnReconnect: 'always'
 	})
 
-	const { refetch: logoutUserTrigger } = useQuery(
-		'logout',
-		() => () => checkIsOnlineWrapper(logoutUser),
-		{
-			enabled: false,
-			onError: (error: any) => {
-				serverErrorHandler(error)
-			},
-			onSuccess: (data: any) => {
-				deleteUser()
-			}
+	const { refetch: logoutUserTrigger } = useQuery('logout', logoutUser, {
+		enabled: false,
+		onError: (error: any) => {
+			serverErrorHandler(error)
+		},
+		onSuccess: (data: any) => {
+			deleteUser()
 		}
-	)
+	})
 
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 	const open = Boolean(anchorEl)

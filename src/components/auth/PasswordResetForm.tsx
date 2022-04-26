@@ -18,10 +18,10 @@ type IProps = {
 
 const PasswordResetForm = ({ setPasswordResetPage }: IProps) => {
 	const { setAlertData, handleCloseAuthModal } = useAppStore()
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 
 	const { mutate, isLoading } = useMutation(
-		(data: ResetPasswordMailData) => checkIsOnlineWrapper(() => sendResetPasswordMail(data)),
+		(data: ResetPasswordMailData) => sendResetPasswordMail(data),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)

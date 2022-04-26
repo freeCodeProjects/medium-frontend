@@ -12,22 +12,19 @@ import { LoadingButton } from '@mui/lab'
 
 const NameSetting = () => {
 	const { user, setUser, setAlertData } = useAppStore()
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 	const [editing, setEditing] = useState(false)
 	const nameRef = useRef<HTMLInputElement | null>(null)
 
-	const { mutate, isLoading } = useMutation(
-		(data: Name) => checkIsOnlineWrapper(() => updateName(data)),
-		{
-			onError: (error: any) => {
-				serverErrorHandler(error)
-			},
-			onSuccess: (data: any) => {
-				setAlertData('Name updated!')
-				setUser(data.data.user)
-			}
+	const { mutate, isLoading } = useMutation((data: Name) => updateName(data), {
+		onError: (error: any) => {
+			serverErrorHandler(error)
+		},
+		onSuccess: (data: any) => {
+			setAlertData('Name updated!')
+			setUser(data.data.user)
 		}
-	)
+	})
 
 	// https://react-hook-form.com/faqs#Howtosharerefusage
 	const defaultValues = { name: user?.name }

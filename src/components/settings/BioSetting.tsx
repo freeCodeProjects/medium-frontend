@@ -12,22 +12,19 @@ import { updateBio } from '../../api/userAPI'
 
 const BioSetting = () => {
 	const { user, setUser, setAlertData } = useAppStore()
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 	const [editing, setEditing] = useState(false)
 	const bioRef = useRef<HTMLTextAreaElement | null>(null)
 
-	const { mutate, isLoading } = useMutation(
-		(data: Bio) => checkIsOnlineWrapper(() => updateBio(data)),
-		{
-			onError: (error: any) => {
-				serverErrorHandler(error)
-			},
-			onSuccess: (data: any) => {
-				setAlertData('Bio updated!')
-				setUser(data.data.user)
-			}
+	const { mutate, isLoading } = useMutation((data: Bio) => updateBio(data), {
+		onError: (error: any) => {
+			serverErrorHandler(error)
+		},
+		onSuccess: (data: any) => {
+			setAlertData('Bio updated!')
+			setUser(data.data.user)
 		}
-	)
+	})
 
 	// https://react-hook-form.com/faqs#Howtosharerefusage
 	const defaultValues = { bio: user?.bio }

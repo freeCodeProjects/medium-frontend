@@ -8,28 +8,24 @@ import { AppContext } from '../context/AppContext'
 
 const VerifyUser = () => {
 	const { setAlertData, setUser } = useAppStore()
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 	const navigate = useNavigate()
 	const [searchParams] = useSearchParams()
 	const [token, setToken] = useState('')
 
-	const { refetch } = useQuery(
-		'verifyUser',
-		() => checkIsOnlineWrapper(() => verifyUser(token)),
-		{
-			enabled: false,
-			onError: (error: any) => {
-				serverErrorHandler(error)
-			},
-			onSuccess: (data: any) => {
-				setAlertData('Account verified and Logged in.')
-				setUser(data.data.user)
-			},
-			onSettled: () => {
-				navigate('/', { replace: true })
-			}
+	const { refetch } = useQuery('verifyUser', () => verifyUser(token), {
+		enabled: false,
+		onError: (error: any) => {
+			serverErrorHandler(error)
+		},
+		onSuccess: (data: any) => {
+			setAlertData('Account verified and Logged in.')
+			setUser(data.data.user)
+		},
+		onSettled: () => {
+			navigate('/', { replace: true })
 		}
-	)
+	})
 
 	useEffect(() => {
 		const tokenQuery = searchParams.get('token')!

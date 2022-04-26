@@ -16,20 +16,17 @@ const PhotoSetting = () => {
 	const [image, setImage] = useState(user?.photo)
 	const [validFile, setValidFile] = useState<File | null>(null)
 	const [editing, setEditing] = useState(false)
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 
-	const { mutate, isLoading } = useMutation(
-		(data: File) => checkIsOnlineWrapper(() => updatePhoto(data)),
-		{
-			onError: (error: any) => {
-				serverErrorHandler(error)
-			},
-			onSuccess: (data: any) => {
-				setAlertData('Photo updated!')
-				setUser(data.data.user)
-			}
+	const { mutate, isLoading } = useMutation((data: File) => updatePhoto(data), {
+		onError: (error: any) => {
+			serverErrorHandler(error)
+		},
+		onSuccess: (data: any) => {
+			setAlertData('Photo updated!')
+			setUser(data.data.user)
 		}
-	)
+	})
 
 	const {
 		register,

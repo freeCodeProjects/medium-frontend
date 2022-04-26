@@ -11,10 +11,10 @@ import { UserSignupData, SignupSchema } from '../../types/userTypes'
 
 const Signup = () => {
 	const { setAlertData, handleCloseAuthModal } = useAppStore()
-	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
+	const { serverErrorHandler } = useContext(AppContext)
 
 	const { mutate, isLoading } = useMutation(
-		(data: UserSignupData) => checkIsOnlineWrapper(() => signupUser(data)),
+		(data: UserSignupData) => signupUser(data),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)
