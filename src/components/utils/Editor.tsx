@@ -7,11 +7,12 @@ import { useEffect, useRef } from 'react'
 type IProps = {
 	data: object | null
 	setData: Function
+	isFocus?: boolean
 }
 
 const EDITTOR_HOLDER_ID = 'editorjs'
 
-const Editor = ({ data, setData }: IProps) => {
+const Editor = ({ data, setData, isFocus }: IProps) => {
 	const ejInstance = useRef()
 
 	// This will run only once
@@ -44,6 +45,10 @@ const Editor = ({ data, setData }: IProps) => {
 			onReady: () => {
 				ejInstance.current = editor
 				new Undo({ editor })
+				//focus to end of the cursor
+				if (isFocus) {
+					editor.focus(true)
+				}
 			},
 			onChange: async (api) => {
 				let content = await api.saver.save()

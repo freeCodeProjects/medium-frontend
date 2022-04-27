@@ -15,7 +15,7 @@ const AddBlog = () => {
 	const [editorData, setEditorData] = useState<EditorData | null>(null)
 	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 
-	const debouncedEditorValue = useDebounce(editorData, 2000)
+	const debouncedEditorValue = useDebounce(editorData, 100)
 
 	const { mutate: addBlogHandler, isLoading } = useMutation(
 		(data: BlogEditorData) => checkIsOnlineWrapper(() => addBlog(data)),
@@ -30,7 +30,7 @@ const AddBlog = () => {
 	)
 
 	useEffect(() => {
-		if (editorData && !isLoading) {
+		if (editorData && editorData.blocks.length > 0 && !isLoading) {
 			addBlogHandler({ content: editorData!, title })
 		}
 	}, [debouncedEditorValue])

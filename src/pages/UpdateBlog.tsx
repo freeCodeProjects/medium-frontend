@@ -8,12 +8,14 @@ import { getBlog, updateBlog } from '../api/blogAPI'
 import { BlogEditorData, Blog, EditorData } from '../types/blogTypes'
 import useDebounce from '../hooks/useDebounce'
 import { useParams } from 'react-router-dom'
+import NotFound from '../components/ui/NotFound'
 
 const UpdateBlog = () => {
 	const params = useParams()
 	const [editorData, setEditorData] = useState<EditorData | null>(null)
 	const [title, setTitle] = useState('')
 	const [blogData, setBlogData] = useState<Partial<Blog>>({})
+	const [error, setError] = useState(false)
 	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 
 	const debouncedTitleValue = useDebounce(title, 2000)
@@ -22,7 +24,7 @@ const UpdateBlog = () => {
 	useQuery(['blog', params.id], () => getBlog(params.id!), {
 		refetchOnMount: 'always',
 		onError: (error: any) => {
-			serverErrorHandler(error)
+			setError(true)
 		},
 		onSuccess: (data: any) => {
 			const blog = data.data.blog
@@ -46,40 +48,44 @@ const UpdateBlog = () => {
 	)
 
 	useEffect(() => {
-		if (editorData && !isLoading) {
+		if (editorData && editorData.blocks.length > 0 && !isLoading) {
 			updateBlogHandler({ content: editorData!, title })
 		}
 	}, [debouncedEditorValue, debouncedTitleValue])
 
-	return (
-		<Box
-			sx={{
-				position: 'relative'
-			}}>
-			<Tooltip title="Publish">
-				<Fab
-					color="secondary"
-					size="small"
-					sx={{ position: 'sticky', top: 12, float: 'right' }}>
-					<PublishOutlinedIcon />
-				</Fab>
-			</Tooltip>
-			<Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-				<TextField
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-					fullWidth
-					InputProps={{
-						disableUnderline: true,
-						sx: { fontSize: '2rem' }
-					}}
-					variant="standard"
-					placeholder="Title"
-					sx={{ maxWidth: 650, margin: '0 auto', border: 0 }}
-				/>
-				{editorData && <Editor data={editorData} setData={setEditorData} />}
+	return !error ? (
+		editorData && (
+			<Box
+				sx={{
+					position: 'relative'
+				}}>
+				<Tooltip title="Publish">
+					<Fab
+						color="secondary"
+						size="small"
+						sx={{ position: 'sticky', top: 12, float: 'right' }}>
+						<PublishOutlinedIcon />
+					</Fab>
+				</Tooltip>
+				<Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+					<TextField
+						value={title}
+						onChange={(e) => setTitle(e.target.value)}
+						fullWidth
+						InputProps={{
+							disableUnderline: true,
+							sx: { fontSize: '2rem' }
+						}}
+						variant="standard"
+						placeholder="Title"
+						sx={{ maxWidth: 650, margin: '0 auto', border: 0 }}
+					/>
+					<Editor data={editorData} setData={setEditorData} isFocus />
+				</Box>
 			</Box>
-		</Box>
+		)
+	) : (
+		<NotFound message={'Blog not Found.'} />
 	)
 }
 
