@@ -59,7 +59,13 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 				}
 			},
 			tools: {
-				header: Header
+				header: {
+					class: Header,
+					config: {
+						levels: [2, 3, 4],
+						defaultLevel: 3
+					}
+				}
 			},
 			placeholder: 'Tell your story...'
 		})

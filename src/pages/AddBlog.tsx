@@ -1,13 +1,14 @@
-import Editor from '../components/utils/Editor'
+import Editor from '../components/blog/Editor'
 import { useState, useContext, useEffect } from 'react'
 import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined'
-import { Box, Fab, TextField, Tooltip } from '@mui/material'
+import { Box, Fab, Tooltip } from '@mui/material'
 import { useMutation } from 'react-query'
 import { AppContext } from '../context/AppContext'
 import { addBlog } from '../api/blogAPI'
 import { BlogEditorData, EditorData } from '../types/blogTypes'
 import useDebounce from '../hooks/useDebounce'
 import { useNavigate } from 'react-router-dom'
+import BlogTitle from '../components/blog/BlogTitle'
 
 const AddBlog = () => {
 	const navigate = useNavigate()
@@ -49,18 +50,7 @@ const AddBlog = () => {
 				</Fab>
 			</Tooltip>
 			<Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-				<TextField
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-					fullWidth
-					InputProps={{
-						disableUnderline: true,
-						sx: { fontSize: '2rem' }
-					}}
-					variant="standard"
-					placeholder="Title"
-					sx={{ maxWidth: 650, margin: '0 auto', border: 0 }}
-				/>
+				<BlogTitle title={title} setTitle={setTitle} />
 				<Editor data={editorData} setData={setEditorData} />
 			</Box>
 		</Box>
