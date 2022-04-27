@@ -10,7 +10,8 @@ import CustomAlert from '../components/ui/CustomAlert'
 import Auth from '../components/auth/Auth'
 import ResetPassword from '../pages/ResetPassword'
 import CheckNetworkStatus from '../components/utils/CheckNetworkStatus'
-const AddOrUpdateBlog = React.lazy(() => import('../pages/AddOrUpdateBlog'))
+const AddBlog = React.lazy(() => import('../pages/AddBlog'))
+const UpdateBlog = React.lazy(() => import('../pages/UpdateBlog'))
 const Home = React.lazy(() => import('../pages/Home'))
 const Setting = React.lazy(() => import('../pages/Setting'))
 const VerifyUser = React.lazy(() => import('../pages/VerifyUser'))
@@ -55,9 +56,11 @@ const AppRouter = () => {
 								/>
 								<Route
 									path="/add"
-									element={
-										<ProtectedRoute Component={<AddOrUpdateBlog newBlog />} />
-									}
+									element={<ProtectedRoute Component={<AddBlog />} />}
+								/>
+								<Route
+									path="/update/:id"
+									element={<ProtectedRoute Component={<UpdateBlog />} />}
 								/>
 								<Route path="*" element={<Navigate to="/" replace />} />
 							</Routes>

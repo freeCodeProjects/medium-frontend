@@ -20,7 +20,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 			return Promise.resolve(fn())
 		}
 		setAlertData('You are offline!', 'error')
-		return Promise.reject({ message: 'You are offline!' })
+		return Promise.reject({ message: 'Action Failed. You are offline!' })
 	}
 
 	const serverErrorHandler = (error: any) => {

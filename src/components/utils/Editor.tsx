@@ -2,28 +2,17 @@
 import EditorJS from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 import Undo from 'editorjs-undo'
-import { useEffect, useRef, useState } from 'react'
-
-const DEFAULT_INITIAL_DATA = () => {
-	return {
-		time: new Date().getTime(),
-		blocks: [
-			{
-				type: 'paragraph'
-			}
-		]
-	}
-}
+import { useEffect, useRef } from 'react'
 
 type IProps = {
-	data: object
+	data: object | null
+	setData: Function
 }
 
 const EDITTOR_HOLDER_ID = 'editorjs'
 
-const Editor = ({ data }: IProps) => {
+const Editor = ({ data, setData }: IProps) => {
 	const ejInstance = useRef()
-	const [editorData, setEditorData] = useState(data)
 
 	// This will run only once
 	useEffect(() => {
@@ -51,7 +40,7 @@ const Editor = ({ data }: IProps) => {
 		const editor = new EditorJS({
 			holder: EDITTOR_HOLDER_ID,
 			logLevel: 'ERROR',
-			data: editorData,
+			data,
 			onReady: () => {
 				ejInstance.current = editor
 				new Undo({ editor })
@@ -61,7 +50,7 @@ const Editor = ({ data }: IProps) => {
 				// Put your logic here to save this data to your DB
 
 				if (content) {
-					setEditorData(content)
+					setData(content)
 				}
 			},
 			tools: {
@@ -74,7 +63,7 @@ const Editor = ({ data }: IProps) => {
 	return (
 		<>
 			<div id={EDITTOR_HOLDER_ID}></div>
-			<div>{JSON.stringify(editorData, null, 2)}</div>
+			<div>{JSON.stringify(data, null, 2)}</div>
 		</>
 	)
 }
