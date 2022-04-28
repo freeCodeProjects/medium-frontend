@@ -32,7 +32,7 @@ const PhotoSetting = () => {
 	const {
 		register,
 		watch,
-		formState: { errors, isValidating, isValid }
+		formState: { errors, isValidating }
 	} = useForm<UserPhoto>({
 		resolver: zodResolver(UserPhotoSchema),
 		mode: 'onChange'
