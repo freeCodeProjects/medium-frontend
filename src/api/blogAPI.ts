@@ -12,3 +12,17 @@ export const getBlog = (id: string) => {
 export const updateBlog = (id: string, data: BlogEditorData) => {
 	return axiosInstance.patch(`/blog/${id}`, data)
 }
+
+export const uploadEditorImageFile = (file: File) => {
+	const formData = new FormData()
+	formData.append('image', file)
+	return axiosInstance.post('/blog/editor/imageFile', formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		}
+	})
+}
+
+export const updateEditorImageUrl = (url: string) => {
+	return axiosInstance.post(`/blog/editor/imageUrl`, { url })
+}

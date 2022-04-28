@@ -2,7 +2,11 @@
 import EditorJS from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 import Undo from 'editorjs-undo'
-import { useEffect, useRef } from 'react'
+import ImageTool from '@editorjs/image'
+import { useEffect, useRef, useContext } from 'react'
+import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
+import { AppContext } from '../../context/AppContext'
+import { validateFileSize, isFileImage } from '../../utils/helper'
 
 type IProps = {
 	data: object | null
@@ -12,7 +16,17 @@ type IProps = {
 
 const EDITTOR_HOLDER_ID = 'editorjs'
 
+const removeImageBlockAndNotificationOnError = () => {
+	//manually delete the image-tool loading element. This occur when catching error on frontend because element is not created before we throw error. That's why using setTimeOut.
+	setTimeout(() => {
+		document.querySelector('.image-tool--loading')?.remove()
+		document.querySelector('.image-tool--empty')?.remove()
+		document.querySelector('.cdx-notify')?.remove()
+	}, 50)
+}
+
 const Editor = ({ data, setData, isFocus }: IProps) => {
+	const { serverErrorHandler } = useContext(AppContext)
 	const ejInstance = useRef()
 
 	// This will run only once
@@ -41,6 +55,7 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 		const editor = new EditorJS({
 			holder: EDITTOR_HOLDER_ID,
 			logLevel: 'ERROR',
+			placeholder: 'Tell your story...',
 			data,
 			onReady: () => {
 				ejInstance.current = editor
@@ -65,9 +80,54 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 						levels: [2, 3, 4],
 						defaultLevel: 3
 					}
+				},
+				image: {
+					class: ImageTool,
+					config: {
+						uploader: {
+							async uploadByFile(file) {
+								try {
+									const isValidFileSize = validateFileSize(file, 3)
+									if (!isValidFileSize) {
+										throw Error('File size is more than 3 MB.')
+									}
+
+									const res = await uploadEditorImageFile(file)
+									return res.data
+								} catch (error) {
+									serverErrorHandler(error)
+									removeImageBlockAndNotificationOnError()
+								}
+							},
+							async uploadByUrl(url) {
+								try {
+									const fileImg = await fetch(url)
+										.then((r) => r.blob())
+										.catch((error) => {
+											throw Error('Incorrect file provided.')
+										})
+
+									const isImage = isFileImage(fileImg)
+									if (!isImage) {
+										throw Error('File is not image.')
+									}
+
+									const isValidFileSize = validateFileSize(fileImg, 3)
+									if (!isValidFileSize) {
+										throw Error('File size is more than 3 MB.')
+									}
+
+									const res = await updateEditorImageUrl(url)
+									return res.data
+								} catch (error) {
+									serverErrorHandler(error)
+									removeImageBlockAndNotificationOnError()
+								}
+							}
+						}
+					}
 				}
-			},
-			placeholder: 'Tell your story...'
+			}
 		})
 	}
 
