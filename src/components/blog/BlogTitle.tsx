@@ -1,4 +1,5 @@
 import { TextField } from '@mui/material'
+import { randomString } from '../../utils/helper'
 
 type IProps = {
 	title: string
@@ -6,6 +7,8 @@ type IProps = {
 }
 
 const BlogTitle = ({ title, setTitle }: IProps) => {
+	//using random id as name to avoid autoComplete
+	const id = randomString(6)
 	return (
 		<TextField
 			value={title}
@@ -13,9 +16,9 @@ const BlogTitle = ({ title, setTitle }: IProps) => {
 			fullWidth
 			InputProps={{
 				disableUnderline: true,
-				sx: { fontSize: '2.5rem' },
-				autoComplete: 'none'
+				sx: { fontSize: '2.5rem' }
 			}}
+			name={id}
 			variant="standard"
 			placeholder="Title"
 			sx={{ maxWidth: 650, margin: '0 auto', border: 0 }}

@@ -31,7 +31,6 @@ const UserMenu = () => {
 		onSuccess: (data: any) => {
 			setUser(data.data.user)
 		},
-		refetchOnWindowFocus: 'always',
 		refetchOnReconnect: 'always'
 	})
 

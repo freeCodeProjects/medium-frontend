@@ -8,3 +8,18 @@ export const validateFileSize = (file: File, sizeInMB: number) => {
 	let size = file.size / (sizeInMB * 1024 * 1024)
 	return size < sizeInMB
 }
+
+export const randomString = (length: number) => {
+	var chars =
+		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('')
+
+	if (!length) {
+		length = Math.floor(Math.random() * chars.length)
+	}
+
+	var str = ''
+	for (var i = 0; i < length; i++) {
+		str += chars[Math.floor(Math.random() * chars.length)]
+	}
+	return str
+}

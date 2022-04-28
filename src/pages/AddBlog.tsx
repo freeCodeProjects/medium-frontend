@@ -25,7 +25,14 @@ const AddBlog = () => {
 				serverErrorHandler(error)
 			},
 			onSuccess: (data: any) => {
-				navigate(`/update/${data.data.blog._id}`, { replace: true })
+				navigate(`/update/${data.data.blog._id}`, {
+					replace: true,
+					state: {
+						title,
+						editorData,
+						blogData: data.data.blog
+					}
+				})
 			}
 		}
 	)

@@ -5,7 +5,9 @@ const NotFound = ({ message }: { message: string }) => {
 	return (
 		<Box
 			sx={{
+				boxSizing: 'border-box',
 				height: '100%',
+				p: 2,
 				display: 'flex',
 				justifyContent: 'center',
 				alignItems: 'center',
