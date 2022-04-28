@@ -78,7 +78,7 @@ export const BioSchema = object({
 export const UserPhotoSchema = object({
 	profile: preprocess(
 		(value: any) => {
-			return value.length > 0 ? value : false
+			return value && value.length > 0 ? value : false
 		},
 		z
 			.instanceof(FileList)
