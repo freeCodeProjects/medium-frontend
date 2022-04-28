@@ -32,7 +32,7 @@ const NameSetting = () => {
 		register,
 		reset,
 		handleSubmit,
-		formState: { errors, isDirty }
+		formState: { errors, isDirty, isValid }
 	} = useForm<Name>({
 		resolver: zodResolver(NameSchema),
 		defaultValues
@@ -123,6 +123,7 @@ const NameSetting = () => {
 							}}>
 							<LoadingButton
 								loading={isLoading}
+								disabled={!isDirty || !isValid}
 								type="submit"
 								variant="outlined"
 								color="success">

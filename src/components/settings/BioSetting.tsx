@@ -33,7 +33,7 @@ const BioSetting = () => {
 		register,
 		reset,
 		handleSubmit,
-		formState: { errors, isDirty }
+		formState: { errors, isDirty, isValid }
 	} = useForm<Bio>({
 		resolver: zodResolver(BioSchema),
 		defaultValues
@@ -127,6 +127,7 @@ const BioSetting = () => {
 							}}>
 							<LoadingButton
 								loading={isLoading}
+								disabled={!isDirty || !isValid}
 								type="submit"
 								variant="outlined"
 								color="success">

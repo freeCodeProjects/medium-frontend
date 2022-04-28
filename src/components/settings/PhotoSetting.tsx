@@ -25,13 +25,14 @@ const PhotoSetting = () => {
 		onSuccess: (data: any) => {
 			setAlertData('Photo updated!')
 			setUser(data.data.user)
+			setValidFile(null)
 		}
 	})
 
 	const {
 		register,
 		watch,
-		formState: { errors, isValidating }
+		formState: { errors, isValidating, isValid }
 	} = useForm<UserPhoto>({
 		resolver: zodResolver(UserPhotoSchema),
 		mode: 'onChange'
@@ -171,6 +172,7 @@ const PhotoSetting = () => {
 							}}>
 							<LoadingButton
 								loading={isLoading}
+								disabled={!validFile}
 								type="submit"
 								variant="outlined"
 								color="success">
