@@ -257,6 +257,11 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
+"@calumk/editorjs-nested-checklist@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@calumk/editorjs-nested-checklist/-/editorjs-nested-checklist-1.0.9.tgz#75cb33d3a9127bfd8314579e9dad6eda7ba06f78"
+  integrity sha512-cBitZ4BYfn2iLxLVYVAmAzkLmhr1IzSJprB7GJjeEYE4p9WpqkPjKOdGtZTktSMl7ERUu3hCM98s1Jbjd/8lIA==
+
 "@date-io/core@^2.13.1":
   version "2.13.1"
   resolved "https://registry.yarnpkg.com/@date-io/core/-/core-2.13.1.tgz#f041765aff5c55fbc7e37fdd75fc1792733426d6"

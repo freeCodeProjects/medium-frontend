@@ -4,11 +4,12 @@ import Header from '@editorjs/header'
 import Undo from 'editorjs-undo'
 import ImageTool from '@editorjs/image'
 import InlineImage from 'editorjs-inline-image'
+import editorjsNestedChecklist from '@calumk/editorjs-nested-checklist'
 import { useEffect, useRef, useContext } from 'react'
 import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
 import { validateFileSize, isFileImage } from '../../utils/helper'
-
+import EditorBlockInfoTune from '../../utils/editorBlockInfoTune.ts'
 type IProps = {
 	data: object | null
 	setData: Function
@@ -75,6 +76,11 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 				}
 			},
 			tools: {
+				editorBlockInfoTune: EditorBlockInfoTune,
+				nestedchecklist: {
+					class: editorjsNestedChecklist,
+					tunes: ['editorBlockInfoTune']
+				},
 				header: {
 					class: Header,
 					config: {
