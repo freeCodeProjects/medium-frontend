@@ -687,6 +687,13 @@ ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
+axios@0.26.0:
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.0.tgz#9a318f1c69ec108f8cd5f3c3d390366635e13928"
+  integrity sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==
+  dependencies:
+    follow-redirects "^1.14.8"
+
 axios@^0.26.1:
   version "0.26.1"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.1.tgz#1ede41c51fcf51bbbd6fd43669caaa4f0495aaa9"
@@ -839,6 +846,13 @@ dom-helpers@^5.0.1:
   dependencies:
     "@babel/runtime" "^7.8.7"
     csstype "^3.0.2"
+
+editorjs-inline-image@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/editorjs-inline-image/-/editorjs-inline-image-1.1.0.tgz#efbb4163d52422c7a8bbde754f0dc953af0183b8"
+  integrity sha512-TPBAuZLT9MOCwaGI5/q+pG5YIUYuik174Vf59jRZFS/iu8VCj2aUcW8t1jno140sV/YyBRMlCxgZ6sUeAzVAAg==
+  dependencies:
+    axios "0.26.0"
 
 editorjs-undo@2.0.0-rc.2:
   version "2.0.0-rc.2"

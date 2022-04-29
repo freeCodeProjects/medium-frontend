@@ -3,6 +3,7 @@ import EditorJS from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 import Undo from 'editorjs-undo'
 import ImageTool from '@editorjs/image'
+import InlineImage from 'editorjs-inline-image'
 import { useEffect, useRef, useContext } from 'react'
 import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
@@ -126,6 +127,18 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 							}
 						}
 					}
+				},
+				inlineImage: {
+					class: InlineImage,
+					config: {
+						embed: {
+							display: true
+						},
+						unsplash: {
+							appName: 'Pixabay Clone',
+							clientId: import.meta.env.VITE_UNSPLASH_SECRET
+						}
+					}
 				}
 			}
 		})
@@ -134,7 +147,9 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 	return (
 		<>
 			<div id={EDITTOR_HOLDER_ID}></div>
-			<div>{JSON.stringify(data, null, 2)}</div>
+			<pre style={{ width: '100%', whiteSpace: 'pre-wrap' }}>
+				{JSON.stringify(data, null, 4)}
+			</pre>
 		</>
 	)
 }
