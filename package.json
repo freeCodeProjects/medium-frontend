@@ -8,6 +8,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@calumk/editorjs-codeflask": "^1.0.9",
 		"@calumk/editorjs-nested-checklist": "^1.0.9",
 		"@editorjs/editorjs": "^2.23.2",
 		"@editorjs/header": "^2.6.2",

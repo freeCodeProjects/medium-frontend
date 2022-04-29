@@ -13,16 +13,6 @@ body {
   height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-  padding         : 0.2em 0.4em;
-  margin          : 0.2em;
-  font-size       : 85%;
-  background-color: rgba(175, 184, 193, 0.5);
-  border-radius   : 6px;
-}
-
 .truncate {
   display      : block;
   white-space  : nowrap;
@@ -30,6 +20,7 @@ code {
   text-overflow: ellipsis;
 }
 
+/* Start Override style of Editor for dark mode and other */
 .codex-editor .codex-editor__redactor {
   padding-bottom: 100px !important;
 }
@@ -55,3 +46,42 @@ code {
 ::selection {
   background-color: #549cd391;
 }
+
+.nestedChecklistBlockInfoTune code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+  padding         : 0.2em 0.4em;
+  margin          : 0.2em;
+  font-size       : 85%;
+  background-color: rgba(175, 184, 193, 0.5);
+  border-radius   : 6px;
+}
+
+/* End */
+
+/* Start Override style of Editor code block */
+
+/* Alert Order is important for below 2 blocks. */
+.codeflask__flatten {
+  width: unset !important;
+}
+
+.codeflask__textarea {
+  tab-size: 2;
+  width   : calc(100% - 40px) !important;
+}
+
+.codeflask__pre {
+  tab-size: 2;
+}
+
+.codeflask__lines {
+  z-index         : 3 !important;
+  background-color: #fff;
+}
+
+.nice-select {
+  color: #000;
+}
+
+/* End */

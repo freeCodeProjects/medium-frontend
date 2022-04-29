@@ -5,6 +5,7 @@ import Undo from 'editorjs-undo'
 import ImageTool from '@editorjs/image'
 import InlineImage from 'editorjs-inline-image'
 import editorjsNestedChecklist from '@calumk/editorjs-nested-checklist'
+import editorjsCodeflask from '@calumk/editorjs-codeflask'
 import { useEffect, useRef, useContext } from 'react'
 import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
@@ -77,6 +78,7 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 			},
 			tools: {
 				editorNestedChecklistBlockInfoTune: EditorNestedChecklistBlockInfoTune,
+				code: editorjsCodeflask,
 				nestedchecklist: {
 					class: editorjsNestedChecklist,
 					tunes: ['editorNestedChecklistBlockInfoTune']

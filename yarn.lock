@@ -257,6 +257,15 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
+"@calumk/editorjs-codeflask@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@calumk/editorjs-codeflask/-/editorjs-codeflask-1.0.9.tgz#3dbbcd19eabd7dbf505a5d5a44a9dcd84ed6f751"
+  integrity sha512-AC3QfGx248hP5utjq0+8Pjt/wiT8p/S5Dg/upJSWFNc0QrG0y/4PaLscDMcYb3RUhfNJNAdULww8kqQEMLHM6A==
+  dependencies:
+    codeflask "^1.4.1"
+    nice-select2 "^2.0.0"
+    prismjs-components-importer "^0.1.0"
+
 "@calumk/editorjs-nested-checklist@^1.0.9":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@calumk/editorjs-nested-checklist/-/editorjs-nested-checklist-1.0.9.tgz#75cb33d3a9127bfd8314579e9dad6eda7ba06f78"
@@ -631,6 +640,11 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
+"@types/prismjs@^1.9.1":
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/@types/prismjs/-/prismjs-1.26.0.tgz#a1c3809b0ad61c62cac6d4e0c56d610c910b7654"
+  integrity sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==
+
 "@types/prop-types@*", "@types/prop-types@^15.7.4":
   version "15.7.4"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
@@ -781,6 +795,14 @@ clsx@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
+
+codeflask@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/codeflask/-/codeflask-1.4.1.tgz#c5229854e3f648377922a75f1145f7316030d3db"
+  integrity sha512-4vb2IbE/iwvP0Uubhd2ixVeysm3KNC2pl7SoDaisxq1juhZzvap3qbaX7B2CtpQVvv5V9sjcQK8hO0eTcY0V9Q==
+  dependencies:
+    "@types/prismjs" "^1.9.1"
+    prismjs "^1.14.0"
 
 codex-notifier@^1.1.2:
   version "1.1.2"
@@ -1209,6 +1231,11 @@ nanoid@^3.3.1:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.2.tgz#c89622fafb4381cd221421c69ec58547a1eec557"
   integrity sha512-CuHBogktKwpm5g2sRgv83jEy2ijFzBwMoYA60orPDR7ynsLijJDqgsi4RDGj3OJpy3Ieb+LYwiRmIOGyytgITA==
 
+nice-select2@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/nice-select2/-/nice-select2-2.0.0.tgz#0ed3016a2825f5fa6020dad69b84877c4a8278a4"
+  integrity sha512-VeBynMpjIe0DkGBC5by575YH+m1c7UaMOsByiGUhMBQ3JJa4+loimaHXwFXixk3ItPH7f9JonZ4rf5vsx6IWQw==
+
 node-releases@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.2.tgz#7139fe71e2f4f11b47d4d2986aaf8c48699e0c01"
@@ -1281,6 +1308,16 @@ postcss@^8.4.12:
     nanoid "^3.3.1"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
+
+prismjs-components-importer@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/prismjs-components-importer/-/prismjs-components-importer-0.1.0.tgz#e6c58493b5f4b5eca46585234e7cc15b6b174e18"
+  integrity sha512-r+XHZW6IdECmNfzVT3H1fE/YQoEKtciMBJ9eSjz8jbp9RqlX3uTKvvn8knBJGmGDl4kbeBJjog5h0BhXAAUwsg==
+
+prismjs@^1.14.0:
+  version "1.28.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.28.0.tgz#0d8f561fa0f7cf6ebca901747828b149147044b6"
+  integrity sha512-8aaXdYvl1F7iC7Xm1spqSaY/OJBpYW3v+KJ+F17iYxvdc8sfjW194COK5wVhMZX45tGteiBQgdvD/nhxcRwylw==
 
 prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.8.1"
