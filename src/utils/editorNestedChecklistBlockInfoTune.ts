@@ -1,4 +1,4 @@
-export default class EditorBlockInfoTune {
+export default class EditorNestedChecklistBlockInfoTune {
 	api: any = undefined
 
 	static get isTune() {

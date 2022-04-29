@@ -9,7 +9,7 @@ import { useEffect, useRef, useContext } from 'react'
 import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
 import { validateFileSize, isFileImage } from '../../utils/helper'
-import EditorBlockInfoTune from '../../utils/editorBlockInfoTune.ts'
+import EditorNestedChecklistBlockInfoTune from '../../utils/editorNestedChecklistBlockInfoTune'
 type IProps = {
 	data: object | null
 	setData: Function
@@ -76,10 +76,10 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 				}
 			},
 			tools: {
-				editorBlockInfoTune: EditorBlockInfoTune,
+				editorNestedChecklistBlockInfoTune: EditorNestedChecklistBlockInfoTune,
 				nestedchecklist: {
 					class: editorjsNestedChecklist,
-					tunes: ['editorBlockInfoTune']
+					tunes: ['editorNestedChecklistBlockInfoTune']
 				},
 				header: {
 					class: Header,
