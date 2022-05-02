@@ -10,7 +10,8 @@
 	"dependencies": {
 		"@calumk/editorjs-codeflask": "^1.0.9",
 		"@calumk/editorjs-nested-checklist": "^1.0.9",
-		"@editorjs/editorjs": "^2.23.2",
+		"@editorjs/editorjs": "^2.24.2",
+		"@editorjs/embed": "^2.5.1",
 		"@editorjs/header": "^2.6.2",
 		"@editorjs/image": "^2.6.2",
 		"@emotion/react": "^11.8.2",
@@ -22,6 +23,7 @@
 		"axios": "^0.26.1",
 		"editorjs-inline-image": "^1.1.0",
 		"editorjs-undo": "2.0.0-rc.2",
+		"html-react-parser": "^1.4.12",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
 		"react-hook-form": "^7.29.0",

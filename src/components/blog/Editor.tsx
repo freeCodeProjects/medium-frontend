@@ -6,8 +6,13 @@ import ImageTool from '@editorjs/image'
 import InlineImage from 'editorjs-inline-image'
 import editorjsNestedChecklist from '@calumk/editorjs-nested-checklist'
 import editorjsCodeflask from '@calumk/editorjs-codeflask'
+import Embed from '@editorjs/embed'
 import { useEffect, useRef, useContext } from 'react'
-import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
+import {
+	uploadEditorImageFile,
+	updateEditorImageUrl,
+	getIframeHeight
+} from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
 import { validateFileSize, isFileImage } from '../../utils/helper'
 import EditorNestedChecklistBlockInfoTune from '../../utils/editorNestedChecklistBlockInfoTune'
@@ -32,8 +37,49 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 	const { serverErrorHandler } = useContext(AppContext)
 	const ejInstance = useRef()
 
+	async function resizeIframe(obj, source) {
+		const blockContentWidth =
+			document.querySelector('.ce-block__content')?.clientWidth
+		if (source === 'youtube') {
+			try {
+				const response = await getIframeHeight('', 'youtube', blockContentWidth)
+				obj.height = response.data.height
+			} catch (error) {
+				console.log('youtubeIframeHeight', error)
+			}
+		} else if (source === 'vimeo') {
+			try {
+				const response = await getIframeHeight('', 'vimeo', blockContentWidth)
+				obj.height = response.data.height
+			} catch (error) {
+				console.log('vimeoIframeHeight', error)
+			}
+		} else if (source === 'gist') {
+			const src = obj.src
+				.substring(
+					obj.src.indexOf('src='),
+					obj.src.indexOf('>', obj.src.indexOf('src='))
+				)
+				.trim()
+
+			console.log('src : ', src)
+			try {
+				const response = await getIframeHeight(
+					src.substring(4),
+					source,
+					blockContentWidth
+				)
+				obj.height = response.data.height
+				console.log(response)
+			} catch (error) {
+				console.log('gistIframeHeight', error)
+			}
+		}
+	}
+
 	// This will run only once
 	useEffect(() => {
+		document.resizeIframe = resizeIframe
 		if (!ejInstance.current) {
 			initEditor()
 		}
@@ -79,6 +125,80 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 			tools: {
 				editorNestedChecklistBlockInfoTune: EditorNestedChecklistBlockInfoTune,
 				code: editorjsCodeflask,
+				embed: {
+					class: Embed,
+					config: {
+						services: {
+							youtube: {
+								regex:
+									/(?:https?:\/\/)?(?:www\.)?(?:(?:youtu\.be\/)|(?:youtube\.com)\/(?:v\/|u\/\w\/|embed\/|watch))(?:(?:\?v=)?([^#&?=]*))?((?:[?&]\w*=\w*)*)/,
+								embedUrl: 'https://www.youtube.com/embed/<%= remote_id %>',
+								html: `<iframe style='width: 100%;' onload="resizeIframe(this, 'youtube')"  height="366" frameborder="0" allowfullscreen></iframe>`,
+								height: 320,
+								width: 580,
+								id: ([id, params]) => {
+									if (!params && id) {
+										return id
+									}
+
+									const paramsMap = {
+										start: 'start',
+										end: 'end',
+										t: 'start',
+										// eslint-disable-next-line camelcase
+										time_continue: 'start',
+										list: 'list'
+									}
+
+									params = params
+										.slice(1)
+										.split('&')
+										.map((param) => {
+											const [name, value] = param.split('=')
+
+											if (!id && name === 'v') {
+												id = value
+
+												return null
+											}
+
+											if (!paramsMap[name]) {
+												return null
+											}
+
+											return `${paramsMap[name]}=${value}`
+										})
+										.filter((param) => !!param)
+
+									return id + '?' + params.join('&')
+								}
+							},
+							vimeo: {
+								regex:
+									/(?:http[s]?:\/\/)?(?:www.)?(?:player.)?vimeo\.co(?:.+\/([^\/]\d+)(?:#t=[\d]+)?s?$)/,
+								embedUrl:
+									'https://player.vimeo.com/video/<%= remote_id %>?title=0&byline=0',
+								html: `<iframe style="width:100%;" onload="resizeIframe(this, 'vimeo')" height="366" frameborder="0"></iframe>`,
+								height: 320,
+								width: 580
+							},
+							facebook: true,
+							instagram: true,
+							twitter: true,
+							codepen: true,
+							pinterest: true,
+							gfycat: true,
+							github: {
+								regex: /https?:\/\/gist.github.com\/([^\/\?\&]*)\/([^\/\?\&]*)/,
+								embedUrl:
+									'data:text/html;charset=utf-8,<head><base target="_blank" /></head><body><script src=https://gist.github.com/<%= remote_id %> ></script></body>',
+								html: `<iframe style='width: 100%;' height:"600" onload="resizeIframe(this, 'gist')" allowfullscreen frameborder="0" scrolling="auto" src=""></iframe>`,
+								height: 1064,
+								id: (groups) => groups.join('/')
+							}
+						}
+					}
+				},
 				nestedchecklist: {
 					class: editorjsNestedChecklist,
 					tunes: ['editorNestedChecklistBlockInfoTune']

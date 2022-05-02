@@ -26,3 +26,9 @@ export const uploadEditorImageFile = (file: File) => {
 export const updateEditorImageUrl = (url: string) => {
 	return axiosInstance.post(`/blog/editor/imageUrl`, { url })
 }
+
+export const getIframeHeight = (url: string, source: string, width: number) => {
+	return axiosInstance.get(
+		`/blog/editor/iframeHeight?url=${url}&source=${source}&width=${width}`
+	)
+}
