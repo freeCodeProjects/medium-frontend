@@ -26,7 +26,7 @@ const AppRouter = () => {
 				<Navbar />
 				<Box
 					sx={{
-						overflow: 'scroll',
+						overflow: 'auto',
 						bgcolor: 'background.default',
 						display: 'flex',
 						flexDirection: 'column',

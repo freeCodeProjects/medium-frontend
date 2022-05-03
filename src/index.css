@@ -61,7 +61,7 @@ body {
 
 /* Start Override style of Editor code block */
 
-/* Alert Order is important for below 2 blocks. */
+/* Alert: Order is important for below 2 blocks. */
 .codeflask__flatten {
   width: unset !important;
 }

@@ -28,7 +28,11 @@ export const updateEditorImageUrl = (url: string) => {
 }
 
 export const getIframeHeight = (url: string, source: string, width: number) => {
-	return axiosInstance.get(
-		`/blog/editor/iframeHeight?url=${url}&source=${source}&width=${width}`
-	)
+	return axiosInstance.get(`/blog/editor/iframeHeight`, {
+		params: {
+			url,
+			source,
+			width
+		}
+	})
 }

@@ -8,14 +8,16 @@ import editorjsNestedChecklist from '@calumk/editorjs-nested-checklist'
 import editorjsCodeflask from '@calumk/editorjs-codeflask'
 import Embed from '@editorjs/embed'
 import { useEffect, useRef, useContext } from 'react'
-import {
-	uploadEditorImageFile,
-	updateEditorImageUrl,
-	getIframeHeight
-} from '../../api/blogAPI'
+import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
 import { validateFileSize, isFileImage } from '../../utils/helper'
 import EditorNestedChecklistBlockInfoTune from '../../utils/editorNestedChecklistBlockInfoTune'
+import {
+	youtubeIframeHeight,
+	vimeoIframeHeight,
+	gistIframeHeight,
+	gfycatIframeHeight
+} from '../../utils/iframeHeight'
 type IProps = {
 	data: object | null
 	setData: Function
@@ -33,47 +35,34 @@ const removeImageBlockAndNotificationOnError = () => {
 	}, 50)
 }
 
+let handler = undefined
+
+const reloadIframeOnResize = () => {
+	clearInterval(handler)
+	handler = setTimeout(() => {
+		const iframes = document.querySelectorAll('iframe')
+		iframes.forEach((iframe) => {
+			//force update src to re-render
+			iframe.src += ''
+		})
+	}, 1000)
+}
+
 const Editor = ({ data, setData, isFocus }: IProps) => {
 	const { serverErrorHandler } = useContext(AppContext)
 	const ejInstance = useRef()
 
 	async function resizeIframe(obj, source) {
 		const blockContentWidth =
-			document.querySelector('.ce-block__content')?.clientWidth
+			document.querySelector('.ce-block__content')?.clientWidth!
 		if (source === 'youtube') {
-			try {
-				const response = await getIframeHeight('', 'youtube', blockContentWidth)
-				obj.height = response.data.height
-			} catch (error) {
-				console.log('youtubeIframeHeight', error)
-			}
+			youtubeIframeHeight(obj, blockContentWidth)
 		} else if (source === 'vimeo') {
-			try {
-				const response = await getIframeHeight('', 'vimeo', blockContentWidth)
-				obj.height = response.data.height
-			} catch (error) {
-				console.log('vimeoIframeHeight', error)
-			}
+			vimeoIframeHeight(obj, blockContentWidth)
 		} else if (source === 'gist') {
-			const src = obj.src
-				.substring(
-					obj.src.indexOf('src='),
-					obj.src.indexOf('>', obj.src.indexOf('src='))
-				)
-				.trim()
-
-			console.log('src : ', src)
-			try {
-				const response = await getIframeHeight(
-					src.substring(4),
-					source,
-					blockContentWidth
-				)
-				obj.height = response.data.height
-				console.log(response)
-			} catch (error) {
-				console.log('gistIframeHeight', error)
-			}
+			gistIframeHeight(obj, blockContentWidth)
+		} else if (source === 'gfycat') {
+			gfycatIframeHeight(obj, blockContentWidth)
 		}
 	}
 
@@ -97,6 +86,14 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 				ejInstance.current.destroy()
 				ejInstance.current = null
 			}
+		}
+	}, [])
+
+	useEffect(() => {
+		window.addEventListener('resize', reloadIframeOnResize)
+
+		return () => {
+			window.removeEventListener('resize', reloadIframeOnResize)
 		}
 	}, [])
 
@@ -133,9 +130,9 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 								regex:
 									/(?:https?:\/\/)?(?:www\.)?(?:(?:youtu\.be\/)|(?:youtube\.com)\/(?:v\/|u\/\w\/|embed\/|watch))(?:(?:\?v=)?([^#&?=]*))?((?:[?&]\w*=\w*)*)/,
 								embedUrl: 'https://www.youtube.com/embed/<%= remote_id %>',
-								html: `<iframe style='width: 100%;' onload="resizeIframe(this, 'youtube')"  height="366" frameborder="0" allowfullscreen></iframe>`,
-								height: 320,
-								width: 580,
+								html: `<iframe style='width: 100%; max-width: 650px;' onload="resizeIframe(this, 'youtube')"  height="366" frameborder="0" allowfullscreen></iframe>`,
+								height: 366,
+								width: 650,
 								id: ([id, params]) => {
 									if (!params && id) {
 										return id
@@ -178,21 +175,27 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 									/(?:http[s]?:\/\/)?(?:www.)?(?:player.)?vimeo\.co(?:.+\/([^\/]\d+)(?:#t=[\d]+)?s?$)/,
 								embedUrl:
 									'https://player.vimeo.com/video/<%= remote_id %>?title=0&byline=0',
-								html: `<iframe style="width:100%;" onload="resizeIframe(this, 'vimeo')" height="366" frameborder="0"></iframe>`,
-								height: 320,
-								width: 580
+								html: `<iframe style="width:100%; max-width: 650px;" onload="resizeIframe(this, 'vimeo')" height="366" frameborder="0"></iframe>`,
+								height: 366,
+								width: 650
+							},
+							gfycat: {
+								regex: /https?:\/\/gfycat\.com(?:\/detail)?\/([a-zA-Z]+)/,
+								embedUrl: 'https://gfycat.com/ifr/<%= remote_id %>',
+								html: `<iframe frameborder='0' scrolling='no' style="width:100%; max-width: 650px;" onload="resizeIframe(this, 'gfycat')" height='436' allowfullscreen ></iframe>`,
+								height: 436,
+								width: 650
 							},
 							facebook: true,
 							instagram: true,
 							twitter: true,
 							codepen: true,
 							pinterest: true,
-							gfycat: true,
 							github: {
 								regex: /https?:\/\/gist.github.com\/([^\/\?\&]*)\/([^\/\?\&]*)/,
 								embedUrl:
 									'data:text/html;charset=utf-8,<head><base target="_blank" /></head><body><script src=https://gist.github.com/<%= remote_id %> ></script></body>',
-								html: `<iframe style='width: 100%;' height:"600" onload="resizeIframe(this, 'gist')" allowfullscreen frameborder="0" scrolling="auto" src=""></iframe>`,
+								html: `<iframe style='width: 100%;' height:"600" onload="resizeIframe(this, 'gist')" allowfullscreen frameborder="0" scrolling="auto"></iframe>`,
 								height: 1064,
 								id: (groups) => groups.join('/')
 							}
