@@ -12,6 +12,7 @@ import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
 import { validateFileSize, isFileImage } from '../../utils/helper'
 import EditorNestedChecklistBlockInfoTune from '../../utils/editorNestedChecklistBlockInfoTune'
+import { codepenIframeHeight } from '../../utils/iframeHeight'
 import {
 	youtubeIframeHeight,
 	vimeoIframeHeight,
@@ -61,10 +62,12 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 			youtubeIframeHeight(obj, blockContentWidth)
 		} else if (source === 'vimeo') {
 			vimeoIframeHeight(obj, blockContentWidth)
-		} else if (source === 'gist') {
-			gistIframeHeight(obj, blockContentWidth)
 		} else if (source === 'gfycat') {
 			gfycatIframeHeight(obj, blockContentWidth)
+		} else if (source === 'codepen') {
+			codepenIframeHeight(obj, blockContentWidth)
+		} else if (source === 'gist') {
+			gistIframeHeight(obj, blockContentWidth)
 		} else if (source === 'instagram') {
 			instagramIframeHeight(obj, blockContentWidth)
 		} else if (source === 'twitter') {
@@ -206,12 +209,21 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 								embedUrl:
 									'https://twitframe.com/show?url=https://twitter.com/<%= remote_id %>',
 								html: `<iframe style="width:100%; max-width: 650px;" onload="resizeIframe(this, 'twitter')" height="600" style="margin: 0 auto;" frameborder="0" scrolling="no" allowtransparency="true"></iframe>`,
-								height: 300,
-								width: 600,
+								height: 600,
+								width: 650,
 								id: (ids) => ids.join('/status/')
 							},
+							codepen: {
+								regex:
+									/https?:\/\/codepen\.io\/([^\/\?\&]*)\/pen\/([^\/\?\&]*)/,
+								embedUrl:
+									'https://codepen.io/<%= remote_id %>?height=300&theme-id=0&default-tab=css,result&embed-version=2',
+								html: `<iframe onload="resizeIframe(this, 'codepen')" height='600' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width:100%; max-width: 650px;''></iframe>`,
+								height: 600,
+								width: 650,
+								id: (ids) => ids.join('/embed/')
+							},
 							facebook: true,
-							codepen: true,
 							pinterest: true,
 							github: {
 								regex: /https?:\/\/gist.github.com\/([^\/\?\&]*)\/([^\/\?\&]*)/,

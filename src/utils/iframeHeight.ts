@@ -1,27 +1,49 @@
 import { getIframeHeight } from '../api/blogAPI'
 
-export const youtubeIframeHeight = async (
+export const youtubeIframeHeight = (
 	obj: HTMLIFrameElement,
 	blockContentWidth: number
 ) => {
-	try {
-		console.log(blockContentWidth)
-		const response = await getIframeHeight('', 'youtube', blockContentWidth)
-		obj.height = response.data.height
-	} catch (error) {
-		console.log('youtubeIframeHeight', error)
-	}
+	blockContentWidth = Math.min(blockContentWidth, 720)
+	blockContentWidth = Math.max(blockContentWidth, 360)
+	const [x1, y1, x2, y2] = [428, 240, 650, 366]
+	const m = (y2 - y1) / (x2 - x1)
+	const newHeight = m * (blockContentWidth - x1) + y1
+	obj.height = Math.round(newHeight).toString()
 }
 
-export const vimeoIframeHeight = async (obj: HTMLIFrameElement) => {
-	const blockContentWidth =
-		document.querySelector('.ce-block__content')?.clientWidth!
-	try {
-		const response = await getIframeHeight('', 'vimeo', blockContentWidth)
-		obj.height = response.data.height
-	} catch (error) {
-		console.log('vimeoIframeHeight', error)
-	}
+export const vimeoIframeHeight = (
+	obj: HTMLIFrameElement,
+	blockContentWidth: number
+) => {
+	blockContentWidth = Math.min(blockContentWidth, 720)
+	blockContentWidth = Math.max(blockContentWidth, 360)
+	const [x1, y1, x2, y2] = [384, 216, 650, 366]
+	const m = (y2 - y1) / (x2 - x1)
+	const newHeight = m * (blockContentWidth - x1) + y1
+	obj.height = Math.round(newHeight).toString()
+}
+
+export const gfycatIframeHeight = (
+	obj: HTMLIFrameElement,
+	blockContentWidth: number
+) => {
+	blockContentWidth = Math.min(blockContentWidth, 720)
+	blockContentWidth = Math.max(blockContentWidth, 360)
+	const [x1, y1, x2, y2] = [360, 326, 650, 436]
+	const m = (y2 - y1) / (x2 - x1)
+	const newHeight = m * (blockContentWidth - x1) + y1
+	obj.height = Math.round(newHeight).toString()
+}
+
+export const codepenIframeHeight = (
+	obj: HTMLIFrameElement,
+	blockContentWidth: number
+) => {
+	blockContentWidth = Math.min(blockContentWidth, 720)
+	blockContentWidth = Math.max(blockContentWidth, 360)
+
+	obj.height = blockContentWidth.toString()
 }
 
 export const gistIframeHeight = async (
@@ -45,18 +67,6 @@ export const gistIframeHeight = async (
 		console.log(response)
 	} catch (error) {
 		console.log('gistIframeHeight', error)
-	}
-}
-
-export const gfycatIframeHeight = async (
-	obj: HTMLIFrameElement,
-	blockContentWidth: number
-) => {
-	try {
-		const response = await getIframeHeight('', 'gfycat', blockContentWidth)
-		obj.height = response.data.height
-	} catch (error) {
-		console.log('gfycaIframeHeight', error)
 	}
 }
 
