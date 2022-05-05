@@ -76,3 +76,20 @@ export const instagramIframeHeight = async (
 		console.log('instagramIframeHeight', error)
 	}
 }
+
+export const twitterIframeHeight = async (
+	obj: HTMLIFrameElement,
+	blockContentWidth: number
+) => {
+	try {
+		const response = await getIframeHeight(
+			obj.src,
+			'twitter',
+			blockContentWidth
+		)
+		obj.height = response.data.height
+		console.log(response)
+	} catch (error) {
+		console.log('twitterIframeHeight', error)
+	}
+}

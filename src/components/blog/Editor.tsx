@@ -17,7 +17,8 @@ import {
 	vimeoIframeHeight,
 	gistIframeHeight,
 	gfycatIframeHeight,
-	instagramIframeHeight
+	instagramIframeHeight,
+	twitterIframeHeight
 } from '../../utils/iframeHeight'
 type IProps = {
 	data: object | null
@@ -66,6 +67,8 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 			gfycatIframeHeight(obj, blockContentWidth)
 		} else if (source === 'instagram') {
 			instagramIframeHeight(obj, blockContentWidth)
+		} else if (source === 'twitter') {
+			twitterIframeHeight(obj, blockContentWidth)
 		}
 	}
 
@@ -197,8 +200,17 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 								height: 505,
 								width: 400
 							},
+							twitter: {
+								regex:
+									/^https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+?.*)?$/,
+								embedUrl:
+									'https://twitframe.com/show?url=https://twitter.com/<%= remote_id %>',
+								html: `<iframe style="width:100%; max-width: 650px;" onload="resizeIframe(this, 'twitter')" height="600" style="margin: 0 auto;" frameborder="0" scrolling="no" allowtransparency="true"></iframe>`,
+								height: 300,
+								width: 600,
+								id: (ids) => ids.join('/status/')
+							},
 							facebook: true,
-							twitter: true,
 							codepen: true,
 							pinterest: true,
 							github: {
