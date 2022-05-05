@@ -59,3 +59,20 @@ export const gfycatIframeHeight = async (
 		console.log('gfycaIframeHeight', error)
 	}
 }
+
+export const instagramIframeHeight = async (
+	obj: HTMLIFrameElement,
+	blockContentWidth: number
+) => {
+	try {
+		const response = await getIframeHeight(
+			obj.src,
+			'instagram',
+			blockContentWidth
+		)
+		obj.height = response.data.height
+		console.log(response)
+	} catch (error) {
+		console.log('instagramIframeHeight', error)
+	}
+}

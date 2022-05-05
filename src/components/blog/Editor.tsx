@@ -16,7 +16,8 @@ import {
 	youtubeIframeHeight,
 	vimeoIframeHeight,
 	gistIframeHeight,
-	gfycatIframeHeight
+	gfycatIframeHeight,
+	instagramIframeHeight
 } from '../../utils/iframeHeight'
 type IProps = {
 	data: object | null
@@ -35,11 +36,11 @@ const removeImageBlockAndNotificationOnError = () => {
 	}, 50)
 }
 
-let handler = undefined
+let resizeWindowTimeout = undefined
 
 const reloadIframeOnResize = () => {
-	clearInterval(handler)
-	handler = setTimeout(() => {
+	clearInterval(resizeWindowTimeout)
+	resizeWindowTimeout = setTimeout(() => {
 		const iframes = document.querySelectorAll('iframe')
 		iframes.forEach((iframe) => {
 			//force update src to re-render
@@ -63,6 +64,8 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 			gistIframeHeight(obj, blockContentWidth)
 		} else if (source === 'gfycat') {
 			gfycatIframeHeight(obj, blockContentWidth)
+		} else if (source === 'instagram') {
+			instagramIframeHeight(obj, blockContentWidth)
 		}
 	}
 
@@ -77,7 +80,7 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 		setTimeout(() => {
 			const lottie = document.querySelector('#editorjs')!
 			if (lottie?.childNodes.length > 1) {
-				lottie.removeChild(lottie.childNodes[0])
+				lottie.removeChild(lottie.childNodes[1])
 			}
 		}, 100)
 
@@ -186,8 +189,15 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 								height: 436,
 								width: 650
 							},
+							instagram: {
+								regex:
+									/https?:\/\/www\.instagram\.com\/p\/([^\/\?\&]+)\/?(\?utm_source=ig_web_copy_link)?/,
+								embedUrl: 'https://www.instagram.com/p/<%= remote_id %>/embed',
+								html: `<iframe style="width:100%; max-width: 650px;" onload="resizeIframe(this, 'instagram')" height="600" frameborder="0" scrolling="no" allowtransparency="true"></iframe>`,
+								height: 505,
+								width: 400
+							},
 							facebook: true,
-							instagram: true,
 							twitter: true,
 							codepen: true,
 							pinterest: true,
@@ -195,7 +205,7 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 								regex: /https?:\/\/gist.github.com\/([^\/\?\&]*)\/([^\/\?\&]*)/,
 								embedUrl:
 									'data:text/html;charset=utf-8,<head><base target="_blank" /></head><body><script src=https://gist.github.com/<%= remote_id %> ></script></body>',
-								html: `<iframe style='width: 100%;' height:"600" onload="resizeIframe(this, 'gist')" allowfullscreen frameborder="0" scrolling="auto"></iframe>`,
+								html: `<iframe style='width: 100%;' height:"600" onload="resizeIframe(this, 'gist')" allowfullscreen frameborder="0" scrolling="no"></iframe>`,
 								height: 1064,
 								id: (groups) => groups.join('/')
 							}
