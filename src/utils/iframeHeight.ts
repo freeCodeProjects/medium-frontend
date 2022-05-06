@@ -103,3 +103,20 @@ export const twitterIframeHeight = async (
 		console.log('twitterIframeHeight', error)
 	}
 }
+
+export const pinterestIframeHeight = async (
+	obj: HTMLIFrameElement,
+	blockContentWidth: number
+) => {
+	try {
+		const response = await getIframeHeight(
+			obj.src,
+			'pinterest',
+			blockContentWidth
+		)
+		obj.height = response.data.height
+		console.log(response)
+	} catch (error) {
+		console.log('pinterestIframeHeight', error)
+	}
+}

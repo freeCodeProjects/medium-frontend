@@ -12,7 +12,10 @@ import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
 import { validateFileSize, isFileImage } from '../../utils/helper'
 import EditorNestedChecklistBlockInfoTune from '../../utils/editorNestedChecklistBlockInfoTune'
-import { codepenIframeHeight } from '../../utils/iframeHeight'
+import {
+	codepenIframeHeight,
+	pinterestIframeHeight
+} from '../../utils/iframeHeight'
 import {
 	youtubeIframeHeight,
 	vimeoIframeHeight,
@@ -72,6 +75,8 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 			instagramIframeHeight(obj, blockContentWidth)
 		} else if (source === 'twitter') {
 			twitterIframeHeight(obj, blockContentWidth)
+		} else if (source === 'pinterest') {
+			pinterestIframeHeight(obj, blockContentWidth)
 		}
 	}
 
@@ -223,8 +228,6 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 								width: 650,
 								id: (ids) => ids.join('/embed/')
 							},
-							facebook: true,
-							pinterest: true,
 							github: {
 								regex: /https?:\/\/gist.github.com\/([^\/\?\&]*)\/([^\/\?\&]*)/,
 								embedUrl:
@@ -232,6 +235,16 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 								html: `<iframe style='width: 100%;' height:"600" onload="resizeIframe(this, 'gist')" allowfullscreen frameborder="0" scrolling="no"></iframe>`,
 								height: 1064,
 								id: (groups) => groups.join('/')
+							},
+							pinterest: {
+								regex:
+									/https?:\/\/([^\/\?\&]*).pinterest.com\/pin\/([^\/\?\&]*)\/?$/,
+								embedUrl:
+									'https://assets.pinterest.com/ext/embed.html?id=<%= remote_id %>',
+								html: `<iframe style='width: 100%;' height:"600" onload="resizeIframe(this, 'pinterest')" scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen></iframe>`,
+								id: (ids) => {
+									return ids[1]
+								}
 							}
 						}
 					}
