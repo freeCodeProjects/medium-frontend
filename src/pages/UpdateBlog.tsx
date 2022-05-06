@@ -29,7 +29,7 @@ const UpdateBlog = () => {
 	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 
 	const debouncedTitleValue = useDebounce(title, 2000)
-	const debouncedEditorValue = useDebounce(editorData, 5000)
+	const debouncedEditorValue = useDebounce(editorData, 2000)
 
 	const { refetch: fetchBlogDataHandler } = useQuery(
 		['blog', params.id],
