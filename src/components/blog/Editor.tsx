@@ -31,7 +31,6 @@ import {
 	instagramIframeHeight,
 	twitterIframeHeight
 } from '../../utils/iframeHeight'
-import Cookies from 'js-cookie'
 
 type IProps = {
 	data: object | null
@@ -91,8 +90,6 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 
 	// This will run only once
 	useEffect(() => {
-		Cookies.set('foo', 'bar')
-		console.log(Cookies.get('authToken'))
 		document.resizeIframe = resizeIframe
 		if (!ejInstance.current) {
 			initEditor()
@@ -171,10 +168,7 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 				link: {
 					class: LinkTool,
 					config: {
-						endpoint: 'http://localhost:3001/api/blog/editor/fetchUrl',
-						headers: {
-							authorization: `Bearer ${Cookies.get('authToken')}`
-						}
+						endpoint: 'http://localhost:3001/api/blog/editor/fetchUrl'
 					}
 				},
 				embed: {
