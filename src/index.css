@@ -35,7 +35,8 @@ body {
 .ce-toolbox__button,
 .ce-inline-toolbar__dropdown,
 .ce-conversion-tool,
-.ce-conversion-tool__icon {
+.ce-conversion-tool__icon,
+.ce-toolbar {
   color: gray;
 }
 
@@ -57,31 +58,12 @@ body {
   border-radius   : 6px;
 }
 
-/* End */
-
-/* Start Override style of Editor code block */
-
-/* Alert: Order is important for below 2 blocks. */
-.codeflask__flatten {
-  width: unset !important;
+.link-tool__input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-3 w-3' fill='none' height='16' viewBox='0 0 24 24' stroke='gray' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1' /%3E%3C/svg%3E") !important;
 }
 
-.codeflask__textarea {
+.ce-code__textarea {
   tab-size: 2;
-  width   : calc(100% - 40px) !important;
-}
-
-.codeflask__pre {
-  tab-size: 2;
-}
-
-.codeflask__lines {
-  z-index         : 3 !important;
-  background-color: #fff;
-}
-
-.nice-select {
-  color: #000;
 }
 
 /* End */

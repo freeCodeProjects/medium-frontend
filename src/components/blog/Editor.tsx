@@ -4,14 +4,21 @@ import Header from '@editorjs/header'
 import Undo from 'editorjs-undo'
 import ImageTool from '@editorjs/image'
 import InlineImage from 'editorjs-inline-image'
-import editorjsNestedChecklist from '@calumk/editorjs-nested-checklist'
-import editorjsCodeflask from '@calumk/editorjs-codeflask'
 import Embed from '@editorjs/embed'
+import LinkTool from '@editorjs/link'
+import Quote from '@editorjs/quote'
+import Delimiter from '@editorjs/delimiter'
+import List from '@editorjs/list'
+import Checklist from '@editorjs/checklist'
+import Code from '@editorjs/code'
+import Marker from '@editorjs/marker'
+import InlineCode from '@editorjs/inline-code'
+import Underline from '@editorjs/underline'
+import Hyperlink from 'editorjs-hyperlink'
 import { useEffect, useRef, useContext } from 'react'
 import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
-import { validateFileSize, isFileImage } from '../../utils/helper'
-import EditorNestedChecklistBlockInfoTune from '../../utils/editorNestedChecklistBlockInfoTune'
+import { validateFileSize, isFileImage, getCookie } from '../../utils/helper'
 import {
 	codepenIframeHeight,
 	pinterestIframeHeight
@@ -24,6 +31,8 @@ import {
 	instagramIframeHeight,
 	twitterIframeHeight
 } from '../../utils/iframeHeight'
+import Cookies from 'js-cookie'
+
 type IProps = {
 	data: object | null
 	setData: Function
@@ -82,6 +91,8 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 
 	// This will run only once
 	useEffect(() => {
+		Cookies.set('foo', 'bar')
+		console.log(Cookies.get('authToken'))
 		document.resizeIframe = resizeIframe
 		if (!ejInstance.current) {
 			initEditor()
@@ -134,8 +145,38 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 				}
 			},
 			tools: {
-				editorNestedChecklistBlockInfoTune: EditorNestedChecklistBlockInfoTune,
-				code: editorjsCodeflask,
+				list: List,
+				checklist: Checklist,
+				code: Code,
+				quote: Quote,
+				delimiter: Delimiter,
+				Marker: {
+					class: Marker,
+					shortcut: 'CMD+SHIFT+M'
+				},
+				inlineCode: {
+					class: InlineCode,
+					shortcut: 'CMD+SHIFT+M'
+				},
+				underline: Underline,
+				hyperlink: {
+					class: Hyperlink,
+					config: {
+						shortcut: 'CMD+L',
+						target: '_blank',
+						rel: 'nofollow',
+						validate: false
+					}
+				},
+				link: {
+					class: LinkTool,
+					config: {
+						endpoint: 'http://localhost:3001/api/blog/editor/fetchUrl',
+						headers: {
+							authorization: `Bearer ${Cookies.get('authToken')}`
+						}
+					}
+				},
 				embed: {
 					class: Embed,
 					config: {
@@ -248,10 +289,6 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 							}
 						}
 					}
-				},
-				nestedchecklist: {
-					class: editorjsNestedChecklist,
-					tunes: ['editorNestedChecklistBlockInfoTune']
 				},
 				header: {
 					class: Header,
