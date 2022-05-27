@@ -36,7 +36,8 @@ body {
 .ce-inline-toolbar__dropdown,
 .ce-conversion-tool,
 .ce-conversion-tool__icon,
-.ce-toolbar {
+.ce-toolbar,
+.inline-image__tab:hover {
   color: gray;
 }
 

@@ -18,7 +18,7 @@ import Hyperlink from 'editorjs-hyperlink'
 import { useEffect, useRef, useContext } from 'react'
 import { uploadEditorImageFile, updateEditorImageUrl } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
-import { validateFileSize, isFileImage, getCookie } from '../../utils/helper'
+import { validateFileSize, isFileImage } from '../../utils/helper'
 import {
 	codepenIframeHeight,
 	pinterestIframeHeight
