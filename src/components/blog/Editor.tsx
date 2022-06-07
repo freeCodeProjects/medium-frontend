@@ -142,6 +142,71 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 				}
 			},
 			tools: {
+				header: {
+					class: Header,
+					config: {
+						levels: [2, 3, 4],
+						defaultLevel: 3
+					}
+				},
+				image: {
+					class: ImageTool,
+					config: {
+						uploader: {
+							async uploadByFile(file) {
+								try {
+									const isValidFileSize = validateFileSize(file, 3)
+									if (!isValidFileSize) {
+										throw Error('File size is more than 3 MB.')
+									}
+
+									const res = await uploadEditorImageFile(file)
+									return res.data
+								} catch (error) {
+									serverErrorHandler(error)
+									removeImageBlockAndNotificationOnError()
+								}
+							},
+							async uploadByUrl(url) {
+								try {
+									const fileImg = await fetch(url)
+										.then((r) => r.blob())
+										.catch((error) => {
+											throw Error('Incorrect file provided.')
+										})
+
+									const isImage = isFileImage(fileImg)
+									if (!isImage) {
+										throw Error('File is not image.')
+									}
+
+									const isValidFileSize = validateFileSize(fileImg, 3)
+									if (!isValidFileSize) {
+										throw Error('File size is more than 3 MB.')
+									}
+
+									const res = await updateEditorImageUrl(url)
+									return res.data
+								} catch (error) {
+									serverErrorHandler(error)
+									removeImageBlockAndNotificationOnError()
+								}
+							}
+						}
+					}
+				},
+				inlineImage: {
+					class: InlineImage,
+					config: {
+						embed: {
+							display: true
+						},
+						unsplash: {
+							appName: 'Pixabay Clone',
+							clientId: import.meta.env.VITE_UNSPLASH_SECRET
+						}
+					}
+				},
 				list: List,
 				checklist: Checklist,
 				code: Code,
@@ -281,71 +346,6 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 									return ids[1]
 								}
 							}
-						}
-					}
-				},
-				header: {
-					class: Header,
-					config: {
-						levels: [2, 3, 4],
-						defaultLevel: 3
-					}
-				},
-				image: {
-					class: ImageTool,
-					config: {
-						uploader: {
-							async uploadByFile(file) {
-								try {
-									const isValidFileSize = validateFileSize(file, 3)
-									if (!isValidFileSize) {
-										throw Error('File size is more than 3 MB.')
-									}
-
-									const res = await uploadEditorImageFile(file)
-									return res.data
-								} catch (error) {
-									serverErrorHandler(error)
-									removeImageBlockAndNotificationOnError()
-								}
-							},
-							async uploadByUrl(url) {
-								try {
-									const fileImg = await fetch(url)
-										.then((r) => r.blob())
-										.catch((error) => {
-											throw Error('Incorrect file provided.')
-										})
-
-									const isImage = isFileImage(fileImg)
-									if (!isImage) {
-										throw Error('File is not image.')
-									}
-
-									const isValidFileSize = validateFileSize(fileImg, 3)
-									if (!isValidFileSize) {
-										throw Error('File size is more than 3 MB.')
-									}
-
-									const res = await updateEditorImageUrl(url)
-									return res.data
-								} catch (error) {
-									serverErrorHandler(error)
-									removeImageBlockAndNotificationOnError()
-								}
-							}
-						}
-					}
-				},
-				inlineImage: {
-					class: InlineImage,
-					config: {
-						embed: {
-							display: true
-						},
-						unsplash: {
-							appName: 'Pixabay Clone',
-							clientId: import.meta.env.VITE_UNSPLASH_SECRET
 						}
 					}
 				}
