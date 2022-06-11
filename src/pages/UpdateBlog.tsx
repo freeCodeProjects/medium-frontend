@@ -10,6 +10,7 @@ import useDebounce from '../hooks/useDebounce'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import NotFound from '../components/ui/NotFound'
 import BlogTitle from '../components/blog/BlogTitle'
+import PublishBlogModal from '../components/blog/PublishBlogModal'
 
 type LocationStateData = {
 	title: string
@@ -26,6 +27,7 @@ const UpdateBlog = () => {
 	const [title, setTitle] = useState('')
 	const [blogData, setBlogData] = useState<Partial<Blog>>({})
 	const [error, setError] = useState(false)
+	const [openPublishBlogModal, setOpenPublishBlogModal] = useState(false)
 	const { serverErrorHandler, checkIsOnlineWrapper } = useContext(AppContext)
 
 	const debouncedTitleValue = useDebounce(title, 2000)
@@ -81,6 +83,14 @@ const UpdateBlog = () => {
 		}
 	}, [debouncedEditorValue, debouncedTitleValue])
 
+	const handleOpenPublishBlogModal = () => {
+		setOpenPublishBlogModal(true)
+	}
+
+	const handleClosePublishBlogModal = () => {
+		setOpenPublishBlogModal(false)
+	}
+
 	return !error ? (
 		editorData && (
 			<Box
@@ -91,14 +101,33 @@ const UpdateBlog = () => {
 					<Fab
 						color="secondary"
 						size="small"
-						sx={{ position: 'sticky', top: 12, float: 'right' }}>
-						<PublishOutlinedIcon />
+						sx={{
+							position: 'fixed',
+							bottom: '2rem',
+							right: {
+								xs: '1rem',
+								md: '2rem'
+							}
+						}}>
+						<PublishOutlinedIcon onClick={handleOpenPublishBlogModal} />
 					</Fab>
 				</Tooltip>
-				<Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+				<Box
+					sx={{
+						width: '100%',
+						display: 'flex',
+						flexDirection: 'column',
+						mt: '1rem'
+					}}>
 					<BlogTitle title={title} setTitle={setTitle} />
 					<Editor data={editorData} setData={setEditorData} isFocus />
 				</Box>
+				<PublishBlogModal
+					openPublishBlogModal={openPublishBlogModal}
+					handleClosePublishBlogModal={handleClosePublishBlogModal}
+					title={title}
+					editorData={editorData}
+				/>
 			</Box>
 		)
 	) : (

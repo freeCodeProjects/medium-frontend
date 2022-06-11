@@ -305,10 +305,10 @@
   resolved "https://registry.yarnpkg.com/@editorjs/delimiter/-/delimiter-1.2.0.tgz#5075f1a3e68765cfb6aec8694b316d81e2b41607"
   integrity sha512-GKsCFPk85vH5FuCuVQ48NTLc9hk0T3DsBH9zABaicTYIJayFcUa8N4/Y+L3i4tduzDqqyvoxkv+5n43GmC5gEA==
 
-"@editorjs/editorjs@^2.24.2":
-  version "2.24.2"
-  resolved "https://registry.yarnpkg.com/@editorjs/editorjs/-/editorjs-2.24.2.tgz#2abd0ff62e4191bf00c71eac3e6cd299d57addbe"
-  integrity sha512-vlIBkZjJt1Bosl+45aFF5FLGouCBfJ46bOj3DhdPMdF5NH39bPs9muvWRRpgtLNrXM7S4AH+a8VqPc1mOGNkjg==
+"@editorjs/editorjs@^2.24.3":
+  version "2.24.3"
+  resolved "https://registry.yarnpkg.com/@editorjs/editorjs/-/editorjs-2.24.3.tgz#60ee6dd37d57b870ef29754355d77f9c61f30e79"
+  integrity sha512-VzrWaQ7mggNUAPTDGcqXJNIlBZH3S2IqsIUGA43UM2Q9VFaeS5KuVFVOTrFJvAzF7G+vZTO52ocm+hrDhTwvyw==
   dependencies:
     codex-notifier "^1.1.2"
     codex-tooltip "^1.0.5"
@@ -1325,9 +1325,9 @@ nano-time@1.0.0:
     big-integer "^1.6.16"
 
 nanoid@^3.1.22:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.3.tgz#fd8e8b7aa761fe807dba2d1b98fb7241bb724a25"
-  integrity sha512-p1sjXuopFs0xg+fPASzQ28agW1oHD7xDsd9Xkf3T15H3c/cifrFHVwrh74PdoklAPi+i7MdRsE47vm2r6JoB+w==
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
+  integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
 
 nanoid@^3.3.1:
   version "3.3.2"

@@ -16,7 +16,12 @@ const BlogTitle = ({ title, setTitle }: IProps) => {
 			fullWidth
 			InputProps={{
 				disableUnderline: true,
-				sx: { fontSize: '2rem' }
+				sx: {
+					fontSize: {
+						xs: '1.5rem',
+						md: '2rem'
+					}
+				}
 			}}
 			name={id}
 			variant="standard"

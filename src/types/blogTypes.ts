@@ -24,5 +24,13 @@ export type BlogEditorData = {
 export type EditorData = {
 	time: string
 	blocks: Array<any>
-	version: string
+	version: string[]
+}
+
+export type PublishBlogData = {
+	title?: string
+	content: EditorData | null
+	subTitle?: string
+	tags?: string[]
+	previewImage?: string
 }

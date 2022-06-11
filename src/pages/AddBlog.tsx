@@ -1,7 +1,6 @@
 import Editor from '../components/blog/Editor'
 import { useState, useContext, useEffect } from 'react'
-import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined'
-import { Box, Fab, Tooltip } from '@mui/material'
+import { Box } from '@mui/material'
 import { useMutation } from 'react-query'
 import { AppContext } from '../context/AppContext'
 import { addBlog } from '../api/blogAPI'
@@ -46,20 +45,13 @@ const AddBlog = () => {
 	return (
 		<Box
 			sx={{
-				position: 'relative'
+				width: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+				mt: '1rem'
 			}}>
-			<Tooltip title="Publish">
-				<Fab
-					color="secondary"
-					size="small"
-					sx={{ position: 'sticky', top: 12, float: 'right' }}>
-					<PublishOutlinedIcon />
-				</Fab>
-			</Tooltip>
-			<Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-				<BlogTitle title={title} setTitle={setTitle} />
-				<Editor data={editorData} setData={setEditorData} />
-			</Box>
+			<BlogTitle title={title} setTitle={setTitle} />
+			<Editor data={editorData} setData={setEditorData} />
 		</Box>
 	)
 }

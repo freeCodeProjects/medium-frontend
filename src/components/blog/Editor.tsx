@@ -97,9 +97,9 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 
 		//below code will remove multipe editor created in development mode
 		setTimeout(() => {
-			const lottie = document.querySelector('#editorjs')!
-			if (lottie?.childNodes.length > 1) {
-				lottie.removeChild(lottie.childNodes[1])
+			const editor = document.querySelector('#editorjs')!
+			if (editor?.childNodes.length > 1) {
+				editor.removeChild(editor.childNodes[1])
 			}
 		}, 100)
 
