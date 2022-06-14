@@ -64,7 +64,6 @@ export const gistIframeHeight = async (
 			blockContentWidth
 		)
 		obj.height = response.data.height
-		console.log(response)
 	} catch (error) {
 		console.log('gistIframeHeight', error)
 	}
@@ -81,7 +80,6 @@ export const instagramIframeHeight = async (
 			blockContentWidth
 		)
 		obj.height = response.data.height
-		console.log(response)
 	} catch (error) {
 		console.log('instagramIframeHeight', error)
 	}
@@ -98,7 +96,6 @@ export const twitterIframeHeight = async (
 			blockContentWidth
 		)
 		obj.height = response.data.height
-		console.log(response)
 	} catch (error) {
 		console.log('twitterIframeHeight', error)
 	}
@@ -115,7 +112,6 @@ export const pinterestIframeHeight = async (
 			blockContentWidth
 		)
 		obj.height = response.data.height
-		console.log(response)
 	} catch (error) {
 		console.log('pinterestIframeHeight', error)
 	}
