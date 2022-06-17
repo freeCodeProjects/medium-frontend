@@ -35,7 +35,6 @@ import {
 type IProps = {
 	data: object | null
 	setData: Function
-	isFocus?: boolean
 }
 
 const EDITTOR_HOLDER_ID = 'editorjs'
@@ -62,7 +61,8 @@ const reloadIframeOnResize = () => {
 	}, 1000)
 }
 
-const Editor = ({ data, setData, isFocus }: IProps) => {
+const Editor = ({ data, setData }: IProps) => {
+	// console.log('Editor : ', data)
 	const { serverErrorHandler } = useContext(AppContext)
 	const ejInstance = useRef()
 
@@ -99,7 +99,7 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 		setTimeout(() => {
 			const editor = document.querySelector('#editorjs')!
 			if (editor?.childNodes.length > 1) {
-				editor.removeChild(editor.childNodes[1])
+				editor.removeChild(editor.childNodes[0])
 			}
 		}, 100)
 
@@ -128,10 +128,6 @@ const Editor = ({ data, setData, isFocus }: IProps) => {
 			onReady: () => {
 				ejInstance.current = editor
 				new Undo({ editor })
-				//focus to end of the cursor
-				if (isFocus) {
-					editor.focus(true)
-				}
 			},
 			onChange: async (api) => {
 				let content = await api.saver.save()

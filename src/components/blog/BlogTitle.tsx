@@ -14,6 +14,8 @@ const BlogTitle = ({ title, setTitle }: IProps) => {
 			value={title}
 			onChange={(e) => setTitle(e.target.value)}
 			fullWidth
+			multiline
+			maxRows={3}
 			InputProps={{
 				disableUnderline: true,
 				sx: {

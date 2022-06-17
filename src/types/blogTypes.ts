@@ -1,19 +1,21 @@
-export interface Blog {
+export type Blog = {
 	_id: string
 	title: string
 	slug: string
 	publishedTitle: string
 	subTitle: string
-	content: object
-	publishedContent: object
+	content: EditorData
+	publishedContent: EditorData
 	status: 'draft' | 'published'
 	tags: string[]
 	userId: string
 	previewImage: string
 	clapsCount: number
 	responsesCount: number
+	createdAt: Date
 	publishedAt: Date
 	readTime: number
+	isPublished: boolean
 }
 
 export type BlogEditorData = {
@@ -22,9 +24,9 @@ export type BlogEditorData = {
 }
 
 export type EditorData = {
-	time: string
+	time: number
 	blocks: Array<any>
-	version: string[]
+	version: string
 }
 
 export type PublishBlogData = {

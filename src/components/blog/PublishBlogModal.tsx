@@ -33,6 +33,7 @@ type IProps = {
 	handleClosePublishBlogModal: () => void
 	editorData: EditorData | null
 	title: string
+	tags: string[]
 }
 
 const Transition = forwardRef(function Transition(
@@ -51,7 +52,8 @@ const PublishBlogModal = ({
 	openPublishBlogModal,
 	handleClosePublishBlogModal,
 	editorData,
-	title: blogTitle
+	title: blogTitle,
+	tags: blogTags
 }: IProps) => {
 	const { serverErrorHandler } = useContext(AppContext)
 	const { setAlertData } = useAppStore()
@@ -104,6 +106,10 @@ const PublishBlogModal = ({
 	}, [blogTitle])
 
 	useEffect(() => {
+		setTags(blogTags)
+	}, [blogTags])
+
+	useEffect(() => {
 		setSubTitle('')
 		setPreviewImage('')
 		if (editorData) {
@@ -121,6 +127,7 @@ const PublishBlogModal = ({
 					break
 				} else if (block.type === 'inlineImage') {
 					setPreviewImage(block.data.url)
+					break
 				}
 			}
 		}
@@ -134,15 +141,6 @@ const PublishBlogModal = ({
 			}
 			setCurrTag('')
 		}
-	}
-
-	const submitForm = () => {
-		console.log({
-			previewImage,
-			title,
-			subTitle,
-			tags
-		})
 	}
 
 	return (
