@@ -1,6 +1,10 @@
+import { Box } from '@mui/material'
+import Hero from '../components/home/Hero'
+
 const Home = () => {
 	return (
-		<div>
+		<Box>
+			<Hero />
 			<p>
 				Cupiditate, animi repudiandae ipsum tenetur impedit maiores
 				reprehenderit cumque cum dolor possimus porro, iste repellendus iure
@@ -54,7 +58,7 @@ const Home = () => {
 				Officia optio animi, repudiandae ea commodi rem fuga architecto illo ad
 				impedit eum accusantium voluptates, aperiam vitae obcaecati? Ad.
 			</p>
-		</div>
+		</Box>
 	)
 }
 export default Home
