@@ -24,7 +24,7 @@ const UserMenu = () => {
 	const { user, setUser, deleteUser } = useAppStore()
 	const { serverErrorHandler } = useContext(AppContext)
 
-	useQuery('user', getLoggedInUser, {
+	useQuery(['user'], getLoggedInUser, {
 		onError: (error: any) => {
 			serverErrorHandler(error)
 		},
@@ -34,7 +34,7 @@ const UserMenu = () => {
 		refetchOnReconnect: 'always'
 	})
 
-	const { refetch: logoutUserTrigger } = useQuery('logout', logoutUser, {
+	const { refetch: logoutUserTrigger } = useQuery(['logout'], logoutUser, {
 		enabled: false,
 		onError: (error: any) => {
 			serverErrorHandler(error)

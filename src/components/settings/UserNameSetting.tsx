@@ -32,7 +32,7 @@ const UserNameSetting = () => {
 	)
 
 	const { refetch: isUserNameUniqueTrigger } = useQuery(
-		'isUserNameUnique',
+		['isUserNameUnique'],
 		() => isUserNameUnique(debouncedValue),
 		{
 			enabled: false,

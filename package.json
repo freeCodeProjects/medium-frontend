@@ -35,7 +35,7 @@
 		"react": "^18.1.0",
 		"react-dom": "^18.1.0",
 		"react-hook-form": "^7.29.0",
-		"react-query": "^3.34.19",
+		"react-query": "^4.0.0-beta.23",
 		"react-router-dom": "^6.3.0",
 		"zod": "^3.14.4",
 		"zustand": "^3.7.1"

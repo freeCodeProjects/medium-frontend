@@ -33,16 +33,20 @@ const DeleteAccountSetting = () => {
 	const { serverErrorHandler } = useContext(AppContext)
 	const { deleteUser, setAlertData } = useAppStore()
 
-	const { refetch: deleteUserTrigger } = useQuery('deleteUser', deleteUserAPI, {
-		enabled: false,
-		onError: (error: any) => {
-			serverErrorHandler(error)
-		},
-		onSuccess: (data: any) => {
-			deleteUser()
-			setAlertData('Account deleted.')
+	const { refetch: deleteUserTrigger } = useQuery(
+		['deleteUser'],
+		deleteUserAPI,
+		{
+			enabled: false,
+			onError: (error: any) => {
+				serverErrorHandler(error)
+			},
+			onSuccess: (data: any) => {
+				deleteUser()
+				setAlertData('Account deleted.')
+			}
 		}
-	})
+	)
 
 	const handleClickOpen = () => {
 		setOpen(true)

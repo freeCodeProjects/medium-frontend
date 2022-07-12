@@ -13,7 +13,7 @@ const VerifyUser = () => {
 	const [searchParams] = useSearchParams()
 	const [token, setToken] = useState('')
 
-	const { refetch } = useQuery('verifyUser', () => verifyUser(token), {
+	const { refetch } = useQuery(['verifyUser'], () => verifyUser(token), {
 		enabled: false,
 		onError: (error: any) => {
 			serverErrorHandler(error)
