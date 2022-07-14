@@ -120,7 +120,7 @@ export type Name = TypeOf<typeof NameSchema>
 export type Bio = TypeOf<typeof BioSchema>
 export type UserPhoto = TypeOf<typeof UserPhotoSchema>
 
-export interface User {
+export type User = {
 	_id: string
 	name: string
 	userName: string
@@ -130,3 +130,5 @@ export interface User {
 	followingCount: number
 	bookmarks: string[]
 }
+
+export type UserPreview = Omit<User, 'bookmarks'>

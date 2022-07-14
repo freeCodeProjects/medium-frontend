@@ -1,10 +1,13 @@
 import { Box } from '@mui/material'
 import Hero from '../components/home/Hero'
+import TrendingBlog from '../components/home/TrendingBlog'
 
 const Home = () => {
 	return (
 		<Box>
 			<Hero />
+			<TrendingBlog />
+			<hr />
 			<p>
 				Cupiditate, animi repudiandae ipsum tenetur impedit maiores
 				reprehenderit cumque cum dolor possimus porro, iste repellendus iure

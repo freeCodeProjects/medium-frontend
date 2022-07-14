@@ -1,3 +1,4 @@
+import { UserPreview } from './userTypes'
 export type Blog = {
 	_id: string
 	title: string
@@ -13,6 +14,7 @@ export type Blog = {
 	clapsCount: number
 	responsesCount: number
 	createdAt: Date
+	updatedAt: Date
 	publishedAt: Date
 	readTime: number
 	isPublished: boolean
@@ -36,3 +38,12 @@ export type PublishBlogData = {
 	tags?: string[]
 	previewImage?: string
 }
+
+export type BlogPreview = Omit<
+	Blog,
+	'title' | 'content' | 'createdAt' | 'updatedAt'
+>
+
+export type BlogWithUserData = {
+	user: UserPreview
+} & BlogPreview

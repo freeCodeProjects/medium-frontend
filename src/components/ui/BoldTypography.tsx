@@ -19,14 +19,19 @@ type variant =
 
 const BoldTypography = ({
 	variant,
-	children
+	children,
+	className
 }: {
-	variant: variant
 	children: React.ReactChild
+	variant?: variant
+	className?: string
 }) => {
 	return (
 		<div>
-			<Typography variant={variant} sx={{ fontWeight: '600' }}>
+			<Typography
+				className={className}
+				variant={variant}
+				sx={{ fontWeight: '600' }}>
 				{children}
 			</Typography>
 		</div>

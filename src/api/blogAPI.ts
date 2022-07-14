@@ -1,4 +1,8 @@
-import { BlogEditorData, PublishBlogData } from '../types/blogTypes'
+import {
+	BlogEditorData,
+	BlogWithUserData,
+	PublishBlogData
+} from '../types/blogTypes'
 import axiosInstance from '../utils/axios'
 
 export const addBlog = (data: BlogEditorData) => {
@@ -38,5 +42,9 @@ export const getIframeHeight = (url: string, source: string, width: number) => {
 }
 
 export const publishBlog = (id: string, data: PublishBlogData) => {
-	return axiosInstance.post(`/blog/publishBlog/${id}`, { ...data })
+	return axiosInstance.post(`/blog/publish/${id}`, { ...data })
+}
+
+export const getTrendingBlog = (): Promise<{ data: BlogWithUserData[] }> => {
+	return axiosInstance.get(`/blog/trending`)
 }
