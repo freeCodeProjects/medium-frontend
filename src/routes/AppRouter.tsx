@@ -14,6 +14,7 @@ const AddorUpdateBlog = React.lazy(() => import('../pages/AddorUpdateBlog'))
 const Home = React.lazy(() => import('../pages/Home'))
 const Setting = React.lazy(() => import('../pages/Setting'))
 const VerifyUser = React.lazy(() => import('../pages/VerifyUser'))
+const Blog = React.lazy(() => import('../pages/Blog'))
 
 const AppRouter = () => {
 	return (
@@ -61,6 +62,7 @@ const AppRouter = () => {
 									path="/update/:id"
 									element={<ProtectedRoute Component={<AddorUpdateBlog />} />}
 								/>
+								<Route path="/blog/:slug" element={<Blog />} />
 								<Route path="*" element={<Navigate to="/" replace />} />
 							</Routes>
 						</Box>

@@ -10,7 +10,7 @@ export const addBlog = (data: BlogEditorData) => {
 }
 
 export const getBlog = (id: string) => {
-	return axiosInstance.get(`/blog/${id}`)
+	return axiosInstance.get(`/blog/getById/${id}`)
 }
 
 export const updateBlog = (id: string, data: BlogEditorData) => {
@@ -47,4 +47,10 @@ export const publishBlog = (id: string, data: PublishBlogData) => {
 
 export const getTrendingBlog = (): Promise<{ data: BlogWithUserData[] }> => {
 	return axiosInstance.get(`/blog/trending`)
+}
+
+export const getBlogBySlug = (
+	slug: string
+): Promise<{ data: BlogWithUserData }> => {
+	return axiosInstance.get(`/blog/slug/${slug}`)
 }

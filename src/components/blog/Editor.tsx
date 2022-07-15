@@ -34,7 +34,8 @@ import {
 
 type IProps = {
 	data: object | null
-	setData: Function
+	setData?: Function
+	readOnly?: boolean
 }
 
 const EDITTOR_HOLDER_ID = 'editorjs'
@@ -61,7 +62,7 @@ const reloadIframeOnResize = () => {
 	}, 1000)
 }
 
-const Editor = ({ data, setData }: IProps) => {
+const Editor = ({ data, setData, readOnly }: IProps) => {
 	// console.log('Editor : ', data)
 	const { serverErrorHandler } = useContext(AppContext)
 	const ejInstance = useRef()
@@ -124,6 +125,7 @@ const Editor = ({ data, setData }: IProps) => {
 			holder: EDITTOR_HOLDER_ID,
 			logLevel: 'ERROR',
 			placeholder: 'Tell your story...',
+			readOnly,
 			data,
 			onReady: () => {
 				ejInstance.current = editor
@@ -352,9 +354,11 @@ const Editor = ({ data, setData }: IProps) => {
 	return (
 		<>
 			<div id={EDITTOR_HOLDER_ID}></div>
-			<pre style={{ width: '100%', whiteSpace: 'pre-wrap' }}>
-				{JSON.stringify(data, null, 4)}
-			</pre>
+			{!readOnly && (
+				<pre style={{ width: '100%', whiteSpace: 'pre-wrap' }}>
+					{JSON.stringify(data, null, 4)}
+				</pre>
+			)}
 		</>
 	)
 }

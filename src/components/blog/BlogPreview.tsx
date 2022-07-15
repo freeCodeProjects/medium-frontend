@@ -4,20 +4,25 @@ import BoldTypography from '../ui/BoldTypography'
 import dayjs from 'dayjs'
 import SmallChip from '../ui/SmallChip'
 import Bookmark from '../ui/Bookmark'
+import { useNavigate } from 'react-router-dom'
 
 type IProps = {
 	blogPreview: BlogWithUserData
 }
 
 const BlogPreview = ({ blogPreview }: IProps) => {
+	const navigate = useNavigate()
+
 	return (
 		<Box
+			onClick={() => navigate(`/blog/${blogPreview.slug}`)}
 			sx={{
 				bgcolor: 'secondary.main',
 				padding: '1rem',
 				display: 'flex',
 				justifyContent: 'space-between',
-				gap: '0.5rem'
+				gap: '0.5rem',
+				cursor: 'pointer'
 			}}>
 			<Box
 				sx={{
