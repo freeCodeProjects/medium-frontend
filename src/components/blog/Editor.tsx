@@ -31,9 +31,10 @@ import {
 	instagramIframeHeight,
 	twitterIframeHeight
 } from '../../utils/iframeHeight'
+import { EditorData } from '../../types/blogTypes'
 
 type IProps = {
-	data: object | null
+	data: EditorData | null | undefined
 	setData?: Function
 	readOnly?: boolean
 }
