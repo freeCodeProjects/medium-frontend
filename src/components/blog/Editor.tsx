@@ -354,7 +354,9 @@ const Editor = ({ data, setData, readOnly }: IProps) => {
 
 	return (
 		<>
-			<div id={EDITTOR_HOLDER_ID}></div>
+			<div
+				id={EDITTOR_HOLDER_ID}
+				className={`${readOnly && 'readerMode'}`}></div>
 			{!readOnly && (
 				<pre style={{ width: '100%', whiteSpace: 'pre-wrap' }}>
 					{JSON.stringify(data, null, 4)}

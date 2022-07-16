@@ -28,6 +28,10 @@ body {
   -webkit-box-orient: vertical;
 }
 
+.roundedBtn {
+  border-radius: 1rem !important;
+}
+
 /* Start Override style of Editor for dark mode and other */
 .codex-editor .codex-editor__redactor {
   padding-bottom: 100px !important;
@@ -76,3 +80,52 @@ body {
 }
 
 /* End */
+
+
+/* Editor read only mode style override */
+
+.readerMode {
+  word-break: break-word;
+}
+
+.readerMode .cdx-input:empty {
+  display: none;
+}
+
+.readerMode .cdx-quote__text {
+  font-style   : italic;
+  min-height   : unset;
+  box-shadow   : unset;
+  margin-bottom: unset;
+  border       : none;
+  border-left  : 3px solid gray;
+  border-radius: unset;
+  font-size    : 1.25rem;
+  font-weight  : 500;
+  padding-left : 20px;
+}
+
+.readerMode .cdx-quote__caption {
+  border      : none;
+  box-shadow  : unset;
+  font-style  : italic;
+  padding-left: 1.25rem;
+  font-size   : 0.9rem;
+}
+
+.readerMode .cdx-quote__caption:before {
+  content: '- ';
+  display: unset;
+}
+
+.readerMode .codex-editor__redactor {
+  padding-bottom: unset !important;
+}
+
+@media (min-width: 651px) {
+  .codex-editor--narrow .codex-editor__redactor {
+    margin-right: 0;
+  }
+}
+
+/* end */
