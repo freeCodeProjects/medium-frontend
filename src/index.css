@@ -79,6 +79,14 @@ body {
   tab-size: 2;
 }
 
+.ce-block {
+  padding: 0.5rem 0;
+}
+
+.ce-toolbar__actions {
+  padding-top: 0.5rem;
+}
+
 /* End */
 
 
@@ -116,6 +124,18 @@ body {
 .readerMode .cdx-quote__caption:before {
   content: '- ';
   display: unset;
+}
+
+.readerMode .image-tool__caption,
+.readerMode .inline-image__caption,
+.readerMode .embed-tool__caption {
+  border    : none;
+  box-shadow: unset;
+  font-style: italic;
+  font-size : 0.9rem;
+  text-align: center;
+  margin-top: 0;
+  padding   : 0;
 }
 
 .readerMode .codex-editor__redactor {

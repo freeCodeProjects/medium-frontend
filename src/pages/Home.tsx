@@ -7,7 +7,7 @@ const Home = () => {
 		<Box>
 			<Hero />
 			<TrendingBlog />
-			<hr />
+			<Box component="hr" sx={{ width: '100%', opacity: '20%' }} />
 			<p>
 				Cupiditate, animi repudiandae ipsum tenetur impedit maiores
 				reprehenderit cumque cum dolor possimus porro, iste repellendus iure
