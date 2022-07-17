@@ -49,6 +49,12 @@ export const getTrendingBlog = (): Promise<{ data: BlogWithUserData[] }> => {
 	return axiosInstance.get(`/blog/trending`)
 }
 
+export const getLatestBlog = (
+	beforeTime: string
+): Promise<{ data: BlogWithUserData[] }> => {
+	return axiosInstance.get(`/blog/latest`, { params: { beforeTime } })
+}
+
 export const getBlogBySlug = (
 	slug: string
 ): Promise<{ data: BlogWithUserData }> => {

@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from '@mui/material'
+import { Avatar, Box, Chip, Typography } from '@mui/material'
 import { useContext } from 'react'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
@@ -145,6 +145,11 @@ const Blog = () => {
 							</Box>
 							<Typography variant="h4">{blog?.publishedTitle}</Typography>
 							<Editor data={blog?.publishedContent} readOnly={true} />
+							<Box sx={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+								{blog?.tags.map((tag, index) => (
+									<Chip label={tag} key={index} />
+								))}
+							</Box>
 							<Box
 								component="hr"
 								sx={{
