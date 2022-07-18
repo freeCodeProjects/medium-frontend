@@ -1,6 +1,6 @@
 import BoldTypography from '../ui/BoldTypography'
 import { Box } from '@mui/material'
-import { Fragment, useContext, useRef, useEffect } from 'react'
+import { Fragment, useContext, useRef, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
 import { useInfiniteQuery } from 'react-query'
 import { getLatestBlog } from '../../api/blogAPI'
@@ -14,8 +14,17 @@ const LatestBlog = () => {
 	const tempRef = useRef<HTMLDivElement>(null)
 	const loadMore = useIntersectionObserver(tempRef)
 
+	//help stop fetching nextpage on component load
+	const [showIntersectionDiv, setShowIntersectionDiv] = useState(false)
+
 	useEffect(() => {
-		if (loadMore && !isFetching && hasNextPage) {
+		setTimeout(() => {
+			setShowIntersectionDiv(true)
+		}, 100)
+	}, [])
+
+	useEffect(() => {
+		if (loadMore && !isFetching && !isFetchingNextPage && hasNextPage) {
 			fetchNextPage()
 		}
 	}, [loadMore])
@@ -39,7 +48,7 @@ const LatestBlog = () => {
 			getNextPageParam: (lastPage, pages) =>
 				lastPage.data.length > 0 &&
 				lastPage.data[lastPage.data.length - 1].publishedAt,
-			staleTime: 0
+			staleTime: 10 * 60 * 1000
 		}
 	)
 
@@ -69,7 +78,7 @@ const LatestBlog = () => {
 							))}
 						</Fragment>
 					))}
-					<div ref={tempRef}></div>
+					{showIntersectionDiv && <div ref={tempRef}></div>}
 				</Box>
 			)}
 			<div>{isFetchingNextPage && <Loader />}</div>

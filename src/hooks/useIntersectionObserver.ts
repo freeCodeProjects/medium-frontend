@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 const useIntersectionObserver = (
 	currRef: any,
+	defaultValue = false,
 	options = {
 		root: null,
 		rootMargin: '0px',
 		threshold: 0.1
 	}
 ) => {
-	const [intersecting, setIntersecting] = useState(true)
+	const [intersecting, setIntersecting] = useState(defaultValue)
 
 	useEffect(() => {
 		const target = currRef.current

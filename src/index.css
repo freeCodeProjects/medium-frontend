@@ -28,6 +28,11 @@ body {
   -webkit-box-orient: vertical;
 }
 
+.link {
+  text-decoration: none;
+  color          : unset;
+}
+
 .roundedBtn {
   border-radius: 1rem !important;
 }

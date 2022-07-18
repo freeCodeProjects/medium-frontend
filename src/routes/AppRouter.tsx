@@ -10,6 +10,7 @@ import CustomAlert from '../components/ui/CustomAlert'
 import Auth from '../components/auth/Auth'
 import ResetPassword from '../pages/ResetPassword'
 import CheckNetworkStatus from '../components/utils/CheckNetworkStatus'
+import ScrollToTop from '../components/utils/ScrollToTop'
 const AddorUpdateBlog = React.lazy(() => import('../pages/AddorUpdateBlog'))
 const Home = React.lazy(() => import('../pages/Home'))
 const Setting = React.lazy(() => import('../pages/Setting'))
@@ -21,10 +22,12 @@ const AppRouter = () => {
 		<Suspense fallback={<SuspenseLoader />}>
 			<BrowserRouter>
 				<CustomAlert />
+				<ScrollToTop />
 				<CheckNetworkStatus />
 				<Auth />
 				<Navbar />
 				<Box
+					id="content"
 					sx={{
 						overflow: 'auto',
 						bgcolor: 'background.default',

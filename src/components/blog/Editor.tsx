@@ -86,7 +86,7 @@ const Editor = ({ data, setData, readOnly }: IProps) => {
 		} else if (source === 'twitter') {
 			twitterIframeHeight(obj, blockContentWidth)
 		} else if (source === 'pinterest') {
-			pinterestIframeHeight(obj, blockContentWidth)
+			pinterestIframeHeight(obj, Math.min(blockContentWidth, 400))
 		}
 	}
 
@@ -340,7 +340,7 @@ const Editor = ({ data, setData, readOnly }: IProps) => {
 									/https?:\/\/([^\/\?\&]*).pinterest.com\/pin\/([^\/\?\&]*)\/?$/,
 								embedUrl:
 									'https://assets.pinterest.com/ext/embed.html?id=<%= remote_id %>',
-								html: `<iframe style='width: 100%;' height="600" onload="resizeIframe(this, 'pinterest')" scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen></iframe>`,
+								html: `<iframe style='width: 100%; max-width: 400px' height="600" onload="resizeIframe(this, 'pinterest')" scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen></iframe>`,
 								id: (ids) => {
 									return ids[1]
 								}
