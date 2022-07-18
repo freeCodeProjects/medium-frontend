@@ -48,7 +48,7 @@ const LatestBlog = () => {
 			getNextPageParam: (lastPage, pages) =>
 				lastPage.data.length > 0 &&
 				lastPage.data[lastPage.data.length - 1].publishedAt,
-			staleTime: 10 * 60 * 1000
+			staleTime: 0
 		}
 	)
 
