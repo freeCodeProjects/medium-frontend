@@ -1,33 +1,15 @@
 import BoldTypography from '../ui/BoldTypography'
-import { Box } from '@mui/material'
-import { Fragment, useContext, useRef, useEffect, useState } from 'react'
+import { Box, Button } from '@mui/material'
+import { Fragment, useContext } from 'react'
 import { AppContext } from '../../context/AppContext'
 import { useInfiniteQuery } from 'react-query'
 import { getLatestBlog } from '../../api/blogAPI'
 import Loader from '../ui/Loader'
 import ErrorMessage from '../ui/ErrorMessage'
 import BlogPreview from '../blog/BlogPreview'
-import useIntersectionObserver from '../../hooks/useIntersectionObserver'
 
 const LatestBlog = () => {
 	const { serverErrorHandler } = useContext(AppContext)
-	const tempRef = useRef<HTMLDivElement>(null)
-	const loadMore = useIntersectionObserver(tempRef)
-
-	//help stop fetching nextpage on component load
-	const [showIntersectionDiv, setShowIntersectionDiv] = useState(false)
-
-	useEffect(() => {
-		setTimeout(() => {
-			setShowIntersectionDiv(true)
-		}, 100)
-	}, [])
-
-	useEffect(() => {
-		if (loadMore && !isFetching && !isFetchingNextPage && hasNextPage) {
-			fetchNextPage()
-		}
-	}, [loadMore])
 
 	const {
 		isLoading,
@@ -35,8 +17,7 @@ const LatestBlog = () => {
 		data,
 		fetchNextPage,
 		hasNextPage,
-		isFetchingNextPage,
-		isFetching
+		isFetchingNextPage
 	} = useInfiniteQuery(
 		['latest-stories'],
 		({ pageParam = '' }) => getLatestBlog(pageParam),
@@ -46,7 +27,8 @@ const LatestBlog = () => {
 				serverErrorHandler(error)
 			},
 			getNextPageParam: (lastPage, pages) =>
-				lastPage.data.length > 0 &&
+				lastPage.data.length ===
+					parseInt(import.meta.env.VITE_NUMBER_OF_DOCUMENT_PER_REQUEST) &&
 				lastPage.data[lastPage.data.length - 1].publishedAt,
 			staleTime: 0
 		}
@@ -78,10 +60,21 @@ const LatestBlog = () => {
 							))}
 						</Fragment>
 					))}
-					{showIntersectionDiv && <div ref={tempRef}></div>}
 				</Box>
 			)}
-			<div>{isFetchingNextPage && <Loader />}</div>
+			<div>
+				{isFetchingNextPage ? (
+					<Loader />
+				) : (
+					hasNextPage && (
+						<Button
+							sx={{ width: '100%', mt: '1rem' }}
+							onClick={() => fetchNextPage()}>
+							Load More
+						</Button>
+					)
+				)}
+			</div>
 		</Box>
 	)
 }
