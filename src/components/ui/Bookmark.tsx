@@ -1,4 +1,9 @@
 import { IconButton, SvgIcon, Tooltip } from '@mui/material'
+import { useAppStore } from '../../store/appStore'
+import { useMutation } from 'react-query'
+import { addToBookmark, removeFromBookmark } from '../../api/userAPI'
+import { MouseEvent, useContext } from 'react'
+import { AppContext } from '../../context/AppContext'
 
 const BookmarkIcon = () => (
 	<SvgIcon>
@@ -12,20 +17,80 @@ const BookmarkedIcon = () => (
 	</SvgIcon>
 )
 
-const Bookmark = () => {
-	const addToBookmark = (e: React.MouseEvent) => {
-		e.preventDefault()
-		e.stopPropagation()
-		console.log('add to bookmark')
+type IProps = {
+	blogId: string
+}
+
+const Bookmark = ({ blogId }: IProps) => {
+	const { user, setUser } = useAppStore()
+	const { serverErrorHandler } = useContext(AppContext)
+
+	const { mutate: addBookmark } = useMutation(addToBookmark, {
+		onMutate: async (newTodo) => {
+			const previousUserData = user
+
+			setUser({ ...user!, bookmarks: [...user?.bookmarks!, blogId] })
+
+			return { previousUserData }
+		},
+		onError: (err, newTodo, context) => {
+			serverErrorHandler(err)
+			setUser(context?.previousUserData!)
+		}
+	})
+
+	const { mutate: removeBookmark } = useMutation(removeFromBookmark, {
+		onMutate: async (newTodo) => {
+			const previousUserData = user
+
+			const newBookmarks = user?.bookmarks.filter(
+				(bookmark) => bookmark !== blogId
+			)
+			setUser({ ...user!, bookmarks: newBookmarks! })
+
+			return { previousUserData }
+		},
+		onError: (err, newTodo, context) => {
+			serverErrorHandler(err)
+			setUser(context?.previousUserData!)
+		}
+	})
+
+	const isBookMarked = () => {
+		if (user) {
+			for (let id of user.bookmarks) {
+				if (id === blogId) {
+					return true
+				}
+			}
+		}
+		return false
+	}
+
+	const performAction = (event: MouseEvent, fn: Function) => {
+		event.stopPropagation()
+		fn(blogId)
 	}
 
 	return (
 		<div>
-			<Tooltip title="Add to bookmark">
-				<IconButton aria-label="delete" onClick={addToBookmark}>
-					<BookmarkIcon />
-				</IconButton>
-			</Tooltip>
+			{!isBookMarked() ? (
+				<Tooltip title="Add to bookmark">
+					<IconButton
+						aria-label="add to bookmark"
+						onClick={(e) => performAction(e, addBookmark)}>
+						<BookmarkIcon />
+					</IconButton>
+				</Tooltip>
+			) : (
+				<Tooltip title="Remove bookmark">
+					<IconButton
+						aria-label="remove bookmark"
+						onClick={(e) => performAction(e, removeBookmark)}>
+						<BookmarkedIcon />
+					</IconButton>
+				</Tooltip>
+			)}
 		</div>
 	)
 }

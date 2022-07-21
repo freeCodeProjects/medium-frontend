@@ -3,7 +3,8 @@ import {
 	UserLoginData,
 	Name,
 	Bio,
-	UserName
+	UserName,
+	User
 } from '../types/userTypes'
 import axiosInstance from '../utils/axios'
 import { ResetPasswordMailData, ResetPasswordData } from '../types/userTypes'
@@ -64,4 +65,12 @@ export const sendResetPasswordMail = (data: ResetPasswordMailData) => {
 
 export const resetPassword = (data: ResetPasswordData & { token: string }) => {
 	return axiosInstance.patch('/user/password', data)
+}
+
+export const addToBookmark = (blogId: string): Promise<{ data: User }> => {
+	return axiosInstance.patch(`/user/bookmarkBlog/${blogId}`)
+}
+
+export const removeFromBookmark = (blogId: string): Promise<{ data: User }> => {
+	return axiosInstance.delete(`/user/bookmarkBlog/${blogId}`)
 }
