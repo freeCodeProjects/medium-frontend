@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { onlineManager } from 'react-query'
+import { onlineManager } from '@tanstack/react-query'
 import { useAppStore } from '../../store/appStore'
 
 const CheckNetworkStatus = () => {

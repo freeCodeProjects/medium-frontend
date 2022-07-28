@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import TrendingUpSharpIcon from '@mui/icons-material/TrendingUpSharp'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getTrendingBlog } from '../../api/blogAPI'
 import { useContext } from 'react'
 import { AppContext } from '../../context/AppContext'

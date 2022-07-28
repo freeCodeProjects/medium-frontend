@@ -22,7 +22,7 @@ import {
 import { LoadingButton } from '@mui/lab'
 import { Input } from '@mui/material'
 import { EditorData } from '../../types/blogTypes'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { AppContext } from '../../context/AppContext'
 import { publishBlog } from '../../api/blogAPI'
 import { useParams, useNavigate } from 'react-router-dom'

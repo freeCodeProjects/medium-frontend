@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { verifyUser } from '../api/userAPI'
 import { useAppStore } from '../store/appStore'
 import { AppContext } from '../context/AppContext'

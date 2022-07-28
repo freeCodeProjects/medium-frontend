@@ -1,6 +1,6 @@
 import { Avatar, Box, Chip, Typography } from '@mui/material'
 import { useContext } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getBlogBySlug } from '../api/blogAPI'
 import Loader from '../components/ui/Loader'

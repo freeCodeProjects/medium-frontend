@@ -1,7 +1,7 @@
 import { Box, Typography, TextField } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { useAppStore } from '../../store/appStore'
 import { useContext } from 'react'
 import { AppContext } from '../../context/AppContext'

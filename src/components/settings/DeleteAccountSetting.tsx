@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions'
 import { forwardRef, useState, useContext } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import BoldTypography from '../ui/BoldTypography'
 import { deleteUser as deleteUserAPI } from '../../api/userAPI'
 import { AppContext } from '../../context/AppContext'

@@ -1,6 +1,6 @@
 import { IconButton, SvgIcon, Tooltip } from '@mui/material'
 import { useAppStore } from '../../store/appStore'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { addToBookmark, removeFromBookmark } from '../../api/userAPI'
 import { MouseEvent, useContext } from 'react'
 import { AppContext } from '../../context/AppContext'

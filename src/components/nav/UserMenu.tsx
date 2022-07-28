@@ -13,7 +13,7 @@ import {
 	Divider
 } from '@mui/material'
 import { useContext, useState } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useAppStore } from '../../store/appStore'
 import { getLoggedInUser, logoutUser } from '../../api/userAPI'
 import { AppContext } from '../../context/AppContext'

@@ -6,7 +6,7 @@ import { BioSchema, Bio } from '../../types/userTypes'
 import { useContext, useRef, useState, useEffect } from 'react'
 import { AppContext } from '../../context/AppContext'
 import { useAppStore } from '../../store/appStore'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { LoadingButton } from '@mui/lab'
 import { updateBio } from '../../api/userAPI'
 

@@ -8,7 +8,7 @@ import { useAppStore } from '../../store/appStore'
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined'
 import { LoadingButton } from '@mui/lab'
 import { AppContext } from '../../context/AppContext'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { updatePhoto } from '../../api/userAPI'
 
 const PhotoSetting = () => {
