@@ -27,7 +27,7 @@ const Blog = () => {
 				console.log(error)
 				serverErrorHandler(error)
 			},
-			staleTime: 0
+			refetchOnMount: 'always'
 		}
 	)
 
@@ -111,10 +111,12 @@ const Blog = () => {
 									width: '100%',
 									justifyContent: { xs: 'space-between', md: 'space-evenly' }
 								}}>
-								<Box sx={{ display: 'flex', alignItems: 'center' }}>
-									<ClapButton />
-									{blog?.clapsCount}
-								</Box>
+								<ClapButton
+									postId={blog._id}
+									claps={blog?.clapsCount}
+									relatedTo="blog"
+								/>
+
 								<Box sx={{ display: 'flex', alignItems: 'center' }}>
 									<CommentButton />
 									{blog?.responsesCount}
