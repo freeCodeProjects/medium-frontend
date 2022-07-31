@@ -22,9 +22,6 @@ const FollowButton = ({ userId }: IProps) => {
 
 	const { mutate: follow } = useMutation(
 		() => {
-			if (!isLoggedIn) {
-				handleOpenAuthModal()
-			}
 			return addFollower(userId)
 		},
 		{
@@ -74,9 +71,6 @@ const FollowButton = ({ userId }: IProps) => {
 
 	const { mutate: unfollow } = useMutation(
 		() => {
-			if (!isLoggedIn) {
-				handleOpenAuthModal()
-			}
 			return deleteFollower(userId)
 		},
 		{
@@ -130,6 +124,14 @@ const FollowButton = ({ userId }: IProps) => {
 		}
 	)
 
+	const completeAction = (fn: Function) => {
+		if (!isLoggedIn) {
+			handleOpenAuthModal()
+			return
+		}
+		fn()
+	}
+
 	const isFollowing = data?.data.isFollowing
 	return (
 		<Box>
@@ -139,7 +141,7 @@ const FollowButton = ({ userId }: IProps) => {
 					className="roundedBtn"
 					variant="contained"
 					color="success"
-					onClick={() => follow()}>
+					onClick={() => completeAction(follow)}>
 					Follow
 				</Button>
 			) : (
@@ -147,7 +149,7 @@ const FollowButton = ({ userId }: IProps) => {
 					size="small"
 					className="roundedBtn"
 					color="success"
-					onClick={() => unfollow()}>
+					onClick={() => completeAction(unfollow)}>
 					Following
 				</Button>
 			)}
