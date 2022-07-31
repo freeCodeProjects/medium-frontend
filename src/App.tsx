@@ -14,7 +14,11 @@ const queryClient = new QueryClient({
 		queries: {
 			staleTime: Infinity,
 			cacheTime: Infinity,
-			retry: 1
+			retry: 1,
+			networkMode: 'always'
+		},
+		mutations: {
+			networkMode: 'always'
 		}
 	}
 })

@@ -52,6 +52,8 @@ const FollowButton = ({ userId }: IProps) => {
 			},
 			onSettled: () => {
 				queryClient.invalidateQueries(['following', userId])
+			},
+			onSuccess: () => {
 				// increase the followerCount locally
 				queryClient.setQueryData(
 					['userById', userId],
@@ -106,9 +108,10 @@ const FollowButton = ({ userId }: IProps) => {
 					context?.previousFollowerData
 				)
 			},
-			// Always refetch after error or success:
 			onSettled: () => {
 				queryClient.invalidateQueries(['following', userId])
+			},
+			onSuccess: () => {
 				// decrease the followerCount locally
 				queryClient.setQueryData(
 					['userById', userId],
