@@ -7,7 +7,11 @@ import {
 	User
 } from '../types/userTypes'
 import axiosInstance from '../utils/axios'
-import { ResetPasswordMailData, ResetPasswordData } from '../types/userTypes'
+import {
+	ResetPasswordMailData,
+	ResetPasswordData,
+	UserPreview
+} from '../types/userTypes'
 
 export const signupUser = (data: UserSignupData) => {
 	return axiosInstance.post('/user/signup', data)
@@ -73,4 +77,8 @@ export const addToBookmark = (blogId: string): Promise<{ data: User }> => {
 
 export const removeFromBookmark = (blogId: string): Promise<{ data: User }> => {
 	return axiosInstance.delete(`/user/bookmarkBlog/${blogId}`)
+}
+
+export const getUserById = (id: string): Promise<{ data: UserPreview }> => {
+	return axiosInstance.get(`/user/id/${id}`)
 }

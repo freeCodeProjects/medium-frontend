@@ -13,25 +13,47 @@ import FollowButton from '../components/ui/FollowButton'
 import ClapButton from '../components/ui/ClapButton'
 import CommentButton from '../components/ui/CommentButton'
 import Bookmark from '../components/ui/Bookmark'
+import { useAppStore } from '../store/appStore'
+import { getUserById } from '../api/userAPI'
 
 const Blog = () => {
 	const params = useParams()
+	const { user, isLoggedIn } = useAppStore()
 
 	const { serverErrorHandler } = useContext(AppContext)
 
-	const { isLoading, isError, data } = useQuery(
-		['blogBySlug', params.slug],
-		() => getBlogBySlug(params.slug!),
-		{
-			onError: (error: any) => {
-				console.log(error)
-				serverErrorHandler(error)
-			},
-			refetchOnMount: 'always'
-		}
-	)
+	const {
+		isLoading,
+		isError,
+		data: blog
+	} = useQuery(['blogBySlug', params.slug], () => getBlogBySlug(params.slug!), {
+		onError: (error: any) => {
+			console.log(error)
+			serverErrorHandler(error)
+		},
+		refetchOnMount: 'always'
+	})
 
-	const blog = data ? data.data : null
+	const userId = blog?.data.userId
+	// Then get the user's projects
+	const {
+		status,
+		fetchStatus,
+		data: author
+	} = useQuery(['userById', userId], () => getUserById(userId!), {
+		// The query will not execute until the userId exists
+		enabled: !!userId
+	})
+
+	const FollowBtnComponent = () => {
+		if (!isLoggedIn && blog && author) {
+			return <FollowButton userId={author.data._id} />
+		} else if (isLoggedIn && author && blog && user?._id !== author.data._id) {
+			return <FollowButton userId={author.data._id} />
+		} else {
+			return <></>
+		}
+	}
 
 	return (
 		<Box sx={{ height: '100%' }}>
@@ -69,8 +91,8 @@ const Blog = () => {
 									alignItems: 'center'
 								}}>
 								<Avatar
-									alt={blog?.user.name}
-									src={blog?.user.photo}
+									alt={author?.data.name}
+									src={author?.data.photo}
 									sx={{
 										width: { xs: 64, sm: 120 },
 										height: { xs: 64, sm: 120 },
@@ -84,11 +106,11 @@ const Blog = () => {
 										flexDirection: 'column',
 										alignItems: { md: 'center' }
 									}}>
-									<BoldTypography>{blog?.user.name!}</BoldTypography>
+									<BoldTypography>{author?.data.name!}</BoldTypography>
 									<Typography
 										variant="subtitle2"
 										sx={{ textAlign: { md: 'center' } }}>
-										{blog?.user.bio}
+										{author?.data.bio}
 									</Typography>
 									<Box
 										sx={{
@@ -99,8 +121,8 @@ const Blog = () => {
 											gap: '0.5rem',
 											alignItems: 'center'
 										}}>
-										<BoldTypography>{`${blog?.user.followerCount} followers`}</BoldTypography>
-										<FollowButton />
+										<BoldTypography>{`${author?.data.followerCount} followers`}</BoldTypography>
+										<FollowBtnComponent />
 									</Box>
 								</Box>
 							</Box>
@@ -112,16 +134,16 @@ const Blog = () => {
 									justifyContent: { xs: 'space-between', md: 'space-evenly' }
 								}}>
 								<ClapButton
-									postId={blog._id}
-									claps={blog?.clapsCount}
+									postId={blog.data._id}
+									claps={blog.data.clapsCount}
 									relatedTo="blog"
 								/>
 
 								<Box sx={{ display: 'flex', alignItems: 'center' }}>
 									<CommentButton />
-									{blog?.responsesCount}
+									{blog?.data.responsesCount}
 								</Box>
-								<Bookmark blogId={blog._id!} />
+								<Bookmark blogId={blog.data._id!} />
 							</Box>
 						</Box>
 						<Box
@@ -140,16 +162,18 @@ const Blog = () => {
 								}}>
 								<Box sx={{ display: 'flex', gap: '1rem' }}>
 									<Typography variant="subtitle2" sx={{ whiteSpace: 'nowrap' }}>
-										{dayjs(blog?.publishedAt).format('DD MMM, YYYY')}
+										{dayjs(blog?.data.publishedAt).format('DD MMM, YYYY')}
 									</Typography>
 									<Typography variant="subtitle2" sx={{ whiteSpace: 'nowrap' }}>
-										{blog?.readTime} read
+										{blog?.data.readTime} read
 									</Typography>
 								</Box>
-								<Typography variant="h4">{blog?.publishedTitle}</Typography>
-								<Editor data={blog?.publishedContent} readOnly={true} />
+								<Typography variant="h4">
+									{blog?.data.publishedTitle}
+								</Typography>
+								<Editor data={blog?.data.publishedContent} readOnly={true} />
 								<Box sx={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-									{blog?.tags.map((tag, index) => (
+									{blog?.data.tags.map((tag, index) => (
 										<Chip label={tag} key={index} />
 									))}
 								</Box>
