@@ -43,7 +43,3 @@ export type BlogPreview = Omit<
 	Blog,
 	'title' | 'content' | 'createdAt' | 'updatedAt'
 >
-
-export type BlogWithUserData = {
-	user: UserPreview
-} & BlogPreview

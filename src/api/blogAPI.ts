@@ -1,6 +1,6 @@
 import {
 	BlogEditorData,
-	BlogWithUserData,
+	BlogPreview,
 	PublishBlogData
 } from '../types/blogTypes'
 import axiosInstance from '../utils/axios'
@@ -45,18 +45,16 @@ export const publishBlog = (id: string, data: PublishBlogData) => {
 	return axiosInstance.post(`/blog/publish/${id}`, { ...data })
 }
 
-export const getTrendingBlog = (): Promise<{ data: BlogWithUserData[] }> => {
+export const getTrendingBlog = (): Promise<{ data: BlogPreview[] }> => {
 	return axiosInstance.get(`/blog/trending`)
 }
 
 export const getLatestBlog = (
 	beforeTime: string
-): Promise<{ data: BlogWithUserData[] }> => {
+): Promise<{ data: BlogPreview[] }> => {
 	return axiosInstance.get(`/blog/latest`, { params: { beforeTime } })
 }
 
-export const getBlogBySlug = (
-	slug: string
-): Promise<{ data: BlogWithUserData }> => {
+export const getBlogBySlug = (slug: string): Promise<{ data: BlogPreview }> => {
 	return axiosInstance.get(`/blog/slug/${slug}`)
 }

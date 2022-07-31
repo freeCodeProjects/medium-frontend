@@ -1,17 +1,23 @@
 import { Avatar, Box, Typography } from '@mui/material'
-import { BlogWithUserData } from '../../types/blogTypes'
+import { BlogPreview as BlogPreviewType } from '../../types/blogTypes'
 import BoldTypography from '../ui/BoldTypography'
 import dayjs from 'dayjs'
 import SmallChip from '../ui/SmallChip'
 import Bookmark from '../ui/Bookmark'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { getUserById } from '../../api/userAPI'
 
 type IProps = {
-	blogPreview: BlogWithUserData
+	blogPreview: BlogPreviewType
 }
 
 const BlogPreview = ({ blogPreview }: IProps) => {
 	const navigate = useNavigate()
+
+	const { data: author } = useQuery(['userById', blogPreview.userId], () =>
+		getUserById(blogPreview.userId)
+	)
 
 	const navigateToDetailPage = () => {
 		navigate(`/blog/${blogPreview.slug}`)
@@ -37,21 +43,23 @@ const BlogPreview = ({ blogPreview }: IProps) => {
 					overflow: 'hidden',
 					width: '100%'
 				}}>
-				<Box
-					sx={{
-						display: 'flex',
-						alignItems: 'center',
-						gap: '0.5rem'
-					}}>
-					<Avatar
-						sx={{ width: 24, height: 24 }}
-						alt={blogPreview.user.name}
-						src={blogPreview.user.photo}
-					/>
-					<BoldTypography className="truncate-2" variant="subtitle2">
-						{blogPreview.user.name}
-					</BoldTypography>
-				</Box>
+				{author && (
+					<Box
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							gap: '0.5rem'
+						}}>
+						<Avatar
+							sx={{ width: 24, height: 24 }}
+							alt={author.data.name}
+							src={author.data.photo}
+						/>
+						<BoldTypography className="truncate-2" variant="subtitle2">
+							{author.data.name}
+						</BoldTypography>
+					</Box>
+				)}
 				<BoldTypography className="truncate-2">
 					{blogPreview.publishedTitle}
 				</BoldTypography>

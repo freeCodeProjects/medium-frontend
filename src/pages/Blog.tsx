@@ -36,14 +36,14 @@ const Blog = () => {
 
 	const userId = blog?.data.userId
 	// Then get the user's projects
-	const {
-		status,
-		fetchStatus,
-		data: author
-	} = useQuery(['userById', userId], () => getUserById(userId!), {
-		// The query will not execute until the userId exists
-		enabled: !!userId
-	})
+	const { data: author } = useQuery(
+		['userById', userId],
+		() => getUserById(userId!),
+		{
+			// The query will not execute until the userId exists
+			enabled: !!userId
+		}
+	)
 
 	const FollowBtnComponent = () => {
 		if (!isLoggedIn && blog && author) {
