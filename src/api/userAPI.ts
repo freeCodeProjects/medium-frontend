@@ -82,3 +82,9 @@ export const removeFromBookmark = (blogId: string): Promise<{ data: User }> => {
 export const getUserById = (id: string): Promise<{ data: UserPreview }> => {
 	return axiosInstance.get(`/user/id/${id}`)
 }
+
+export const addBlogToPreviouslyRead = (
+	blogId: string
+): Promise<{ data: UserPreview }> => {
+	return axiosInstance.patch(`/user/previouslyReadBlog/${blogId}`)
+}

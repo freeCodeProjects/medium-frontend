@@ -14,7 +14,7 @@ import ClapButton from '../components/ui/ClapButton'
 import CommentButton from '../components/ui/CommentButton'
 import Bookmark from '../components/ui/Bookmark'
 import { useAppStore } from '../store/appStore'
-import { getUserById } from '../api/userAPI'
+import { getUserById, addBlogToPreviouslyRead } from '../api/userAPI'
 
 const Blog = () => {
 	const params = useParams()
@@ -33,6 +33,21 @@ const Blog = () => {
 		},
 		refetchOnMount: 'always'
 	})
+
+	// update the previoulsy read
+	useQuery(
+		['previouslyRead', blog?.data._id],
+		() => {
+			if (isLoggedIn && blog?.data._id) {
+				return addBlogToPreviouslyRead(blog?.data._id)
+			}
+		},
+		{
+			enabled: !!blog?.data._id,
+			cacheTime: 0,
+			staleTime: 0
+		}
+	)
 
 	const userId = blog?.data.userId
 	// Then get the user's projects
