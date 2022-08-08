@@ -15,13 +15,14 @@ type IProps = {
 	postId: string
 	claps: number
 	relatedTo: 'blog' | 'comment'
+	authorId: string
 }
 
 // need to be outside of component because everytime the component rerenders there is a new instance of timeout and that's why when you clearTimeout it doesn't work, because it clears a wrong timer
 let checkedTimeOut: ReturnType<typeof setTimeout>
 
-const ClapButton = ({ postId, claps, relatedTo }: IProps) => {
-	const { isLoggedIn, handleOpenAuthModal } = useAppStore()
+const ClapButton = ({ postId, claps, relatedTo, authorId }: IProps) => {
+	const { isLoggedIn, user, handleOpenAuthModal } = useAppStore()
 	const [newClaps, setNewClaps] = useState(0)
 	const [totalClaps, setTotalClaps] = useState(claps)
 	const [currClaps, setCurrClaps] = useState(0)
@@ -38,7 +39,8 @@ const ClapButton = ({ postId, claps, relatedTo }: IProps) => {
 		{
 			onSuccess: (data) => {
 				setCurrClaps(data?.data?.claps || 0)
-			}
+			},
+			refetchOnMount: 'always'
 		}
 	)
 
@@ -115,7 +117,10 @@ const ClapButton = ({ postId, claps, relatedTo }: IProps) => {
 					</Box>
 				</Slide>
 			</Box>
-			<IconButton aria-label="clap" onClick={addClapFn}>
+			<IconButton
+				aria-label="clap"
+				onClick={addClapFn}
+				disabled={user?._id === authorId}>
 				<ClapIcon />
 			</IconButton>
 			{totalClaps}

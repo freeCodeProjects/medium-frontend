@@ -44,8 +44,7 @@ const Blog = () => {
 		},
 		{
 			enabled: !!blog?.data._id,
-			cacheTime: 0,
-			staleTime: 0
+			refetchOnMount: 'always'
 		}
 	)
 
@@ -151,6 +150,7 @@ const Blog = () => {
 								<ClapButton
 									postId={blog.data._id}
 									claps={blog.data.clapsCount}
+									authorId={author?.data._id || ''}
 									relatedTo="blog"
 								/>
 
