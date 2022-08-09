@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Divider } from '@mui/material'
 import Hero from '../components/home/Hero'
 import TrendingBlog from '../components/home/TrendingBlog'
 import LatestStories from '../components/home/LatestBlog'
@@ -8,7 +8,7 @@ const Home = () => {
 		<Box>
 			<Hero />
 			<TrendingBlog />
-			<Box component="hr" sx={{ width: '100%', opacity: '20%' }} />
+			<Divider />
 			<LatestStories />
 		</Box>
 	)

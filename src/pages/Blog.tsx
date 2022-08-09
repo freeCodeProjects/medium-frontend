@@ -18,7 +18,7 @@ import { getUserById, addBlogToPreviouslyRead } from '../api/userAPI'
 
 const Blog = () => {
 	const params = useParams()
-	const { user, isLoggedIn } = useAppStore()
+	const { isLoggedIn } = useAppStore()
 
 	const { serverErrorHandler } = useContext(AppContext)
 
@@ -58,16 +58,6 @@ const Blog = () => {
 			enabled: !!userId
 		}
 	)
-
-	const FollowBtnComponent = () => {
-		if (!isLoggedIn && blog && author) {
-			return <FollowButton userId={author.data._id} />
-		} else if (isLoggedIn && author && blog && user?._id !== author.data._id) {
-			return <FollowButton userId={author.data._id} />
-		} else {
-			return <></>
-		}
-	}
 
 	return (
 		<Box sx={{ height: '100%' }}>
@@ -136,7 +126,7 @@ const Blog = () => {
 											alignItems: 'center'
 										}}>
 										<BoldTypography>{`${author?.data.followerCount} followers`}</BoldTypography>
-										<FollowBtnComponent />
+										<FollowButton userId={author?.data._id!} />
 									</Box>
 								</Box>
 							</Box>

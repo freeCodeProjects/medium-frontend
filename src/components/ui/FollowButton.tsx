@@ -9,7 +9,7 @@ type IProps = {
 }
 
 const FollowButton = ({ userId }: IProps) => {
-	const { isLoggedIn, handleOpenAuthModal } = useAppStore()
+	const { isLoggedIn, handleOpenAuthModal, user } = useAppStore()
 
 	const queryClient = useQueryClient()
 
@@ -133,7 +133,9 @@ const FollowButton = ({ userId }: IProps) => {
 	}
 
 	const isFollowing = data?.data.isFollowing
-	return (
+	return isLoggedIn && user?._id === userId ? (
+		<></>
+	) : (
 		<Box>
 			{!isFollowing ? (
 				<Button

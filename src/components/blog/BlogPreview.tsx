@@ -7,6 +7,7 @@ import Bookmark from '../ui/Bookmark'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getUserById } from '../../api/userAPI'
+import UserInfoPopup from '../ui/UserInfoPopup'
 
 type IProps = {
 	blogPreview: BlogPreviewType
@@ -44,21 +45,24 @@ const BlogPreview = ({ blogPreview }: IProps) => {
 					width: '100%'
 				}}>
 				{author && (
-					<Box
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-							gap: '0.5rem'
-						}}>
-						<Avatar
-							sx={{ width: 24, height: 24 }}
-							alt={author.data.name}
-							src={author.data.photo}
-						/>
-						<BoldTypography className="truncate-2" variant="subtitle2">
-							{author.data.name}
-						</BoldTypography>
-					</Box>
+					<UserInfoPopup author={author.data}>
+						<Box
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+								gap: '0.5rem',
+								width: 'min-content'
+							}}>
+							<Avatar
+								sx={{ width: 24, height: 24 }}
+								alt={author.data.name}
+								src={author.data.photo}
+							/>
+							<BoldTypography className="truncate" variant="subtitle2">
+								{author.data.name}
+							</BoldTypography>
+						</Box>
+					</UserInfoPopup>
 				)}
 				<BoldTypography className="truncate-2">
 					{blogPreview.publishedTitle}
