@@ -15,6 +15,7 @@ import CommentButton from '../components/ui/CommentButton'
 import Bookmark from '../components/ui/Bookmark'
 import { useAppStore } from '../store/appStore'
 import { getUserById, addBlogToPreviouslyRead } from '../api/userAPI'
+import LinerLoader from '../components/ui/LinerLoader'
 
 const Blog = () => {
 	const params = useParams()
@@ -25,6 +26,7 @@ const Blog = () => {
 	const {
 		isLoading,
 		isError,
+		isFetching,
 		data: blog
 	} = useQuery(['blogBySlug', params.slug], () => getBlogBySlug(params.slug!), {
 		onError: (error: any) => {
@@ -137,13 +139,21 @@ const Blog = () => {
 									width: '100%',
 									justifyContent: { xs: 'space-between', md: 'space-evenly' }
 								}}>
-								<ClapButton
-									postId={blog.data._id}
-									claps={blog.data.clapsCount}
-									authorId={author?.data._id || ''}
-									relatedTo="blog"
-								/>
-
+								{!isFetching ? (
+									<ClapButton
+										postId={blog.data._id}
+										claps={blog.data.clapsCount}
+										authorId={author?.data._id || ''}
+										relatedTo="blog"
+									/>
+								) : (
+									<Box
+										sx={{
+											width: '36px'
+										}}>
+										<LinerLoader />
+									</Box>
+								)}
 								<Box sx={{ display: 'flex', alignItems: 'center' }}>
 									<CommentButton />
 									{blog?.data.responsesCount}

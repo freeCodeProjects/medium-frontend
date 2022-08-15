@@ -10,13 +10,13 @@ type IProps = {
 
 const FollowButton = ({ userId }: IProps) => {
 	const { isLoggedIn, handleOpenAuthModal, user } = useAppStore()
-
 	const queryClient = useQueryClient()
 
 	const { data } = useQuery(['following', userId], () => {
-		if (!isLoggedIn) {
+		if (!isLoggedIn || !userId) {
 			return
 		}
+		console.log('userId : ', userId)
 		return getFollower(userId)
 	})
 

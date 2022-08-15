@@ -28,7 +28,7 @@ const ClapButton = ({ postId, claps, relatedTo, authorId }: IProps) => {
 	const [currClaps, setCurrClaps] = useState(0)
 	const [checked, setChecked] = useState(false)
 	const containerRef = useRef(null)
-	const debouncedClaps = useDebounce(newClaps, 1500)
+	const debouncedClaps = useDebounce(newClaps, 500)
 
 	useQuery(
 		['claps', postId],
