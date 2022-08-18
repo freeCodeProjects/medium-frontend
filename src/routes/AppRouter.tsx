@@ -11,6 +11,7 @@ import Auth from '../components/auth/Auth'
 import ResetPassword from '../pages/ResetPassword'
 import CheckNetworkStatus from '../components/utils/CheckNetworkStatus'
 import ScrollToTop from '../components/utils/ScrollToTop'
+const Stories = React.lazy(() => import('../pages/Stories'))
 const AddorUpdateBlog = React.lazy(() => import('../pages/AddorUpdateBlog'))
 const Home = React.lazy(() => import('../pages/Home'))
 const Setting = React.lazy(() => import('../pages/Setting'))
@@ -47,25 +48,29 @@ const AppRouter = () => {
 								<Route path="/" element={<Home />} />
 								<Route
 									path="/settings"
-									element={<ProtectedRoute Component={<Setting />} />}
+									element={<ProtectedRoute component={<Setting />} />}
 								/>
 								<Route
 									path="/verifyUser"
-									element={<NotProtectedRoute Component={<VerifyUser />} />}
+									element={<NotProtectedRoute component={<VerifyUser />} />}
 								/>
 								<Route
 									path="/resetpassword"
-									element={<NotProtectedRoute Component={<ResetPassword />} />}
+									element={<NotProtectedRoute component={<ResetPassword />} />}
 								/>
 								<Route
 									path="/add"
-									element={<ProtectedRoute Component={<AddorUpdateBlog />} />}
+									element={<ProtectedRoute component={<AddorUpdateBlog />} />}
 								/>
 								<Route
 									path="/update/:id"
-									element={<ProtectedRoute Component={<AddorUpdateBlog />} />}
+									element={<ProtectedRoute component={<AddorUpdateBlog />} />}
 								/>
 								<Route path="/blog/:slug" element={<Blog />} />
+								<Route
+									path="/stories"
+									element={<ProtectedRoute component={<Stories />} />}
+								/>
 								<Route path="*" element={<Navigate to="/" replace />} />
 							</Routes>
 						</Box>

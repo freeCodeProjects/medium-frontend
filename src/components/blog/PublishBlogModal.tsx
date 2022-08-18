@@ -96,7 +96,7 @@ const PublishBlogModal = ({
 			},
 			onSuccess: (data: any) => {
 				setAlertData('Blog Published!')
-				navigate('/')
+				navigate(-1)
 			}
 		}
 	)

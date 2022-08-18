@@ -1,4 +1,5 @@
 import {
+	Blog,
 	BlogEditorData,
 	BlogPreview,
 	PublishBlogData
@@ -57,4 +58,14 @@ export const getLatestBlog = (
 
 export const getBlogBySlug = (slug: string): Promise<{ data: BlogPreview }> => {
 	return axiosInstance.get(`/blog/slug/${slug}`)
+}
+
+export const getDraftBlog = (beforeTime: string): Promise<{ data: Blog[] }> => {
+	return axiosInstance.get(`/blog/draft`, { params: { beforeTime } })
+}
+
+export const getPublishedBlog = (
+	beforeTime: string
+): Promise<{ data: Blog[] }> => {
+	return axiosInstance.get(`/blog/published`, { params: { beforeTime } })
 }

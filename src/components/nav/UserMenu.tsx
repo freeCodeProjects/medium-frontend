@@ -130,7 +130,7 @@ const UserMenu = () => {
 								</ListItemIcon>
 								Write a story
 							</MenuItem>
-							<MenuItem onClick={handleClose}>
+							<MenuItem onClick={() => navigateTo('/stories')}>
 								<ListItemIcon>
 									<MenuBookOutlined fontSize="small" />
 								</ListItemIcon>
