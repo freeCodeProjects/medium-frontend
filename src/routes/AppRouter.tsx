@@ -11,6 +11,7 @@ import Auth from '../components/auth/Auth'
 import ResetPassword from '../pages/ResetPassword'
 import CheckNetworkStatus from '../components/utils/CheckNetworkStatus'
 import ScrollToTop from '../components/utils/ScrollToTop'
+import GetStories from '../components/stories/GetStories'
 const Stories = React.lazy(() => import('../pages/Stories'))
 const AddorUpdateBlog = React.lazy(() => import('../pages/AddorUpdateBlog'))
 const Home = React.lazy(() => import('../pages/Home'))
@@ -68,9 +69,17 @@ const AppRouter = () => {
 								/>
 								<Route path="/blog/:slug" element={<Blog />} />
 								<Route
-									path="/stories"
-									element={<ProtectedRoute component={<Stories />} />}
-								/>
+									path="stories"
+									element={<ProtectedRoute component={<Stories />} />}>
+									<Route
+										path="draft"
+										element={<GetStories isPublished={false} />}
+									/>
+									<Route
+										path="published"
+										element={<GetStories isPublished={true} />}
+									/>
+								</Route>
 								<Route path="*" element={<Navigate to="/" replace />} />
 							</Routes>
 						</Box>

@@ -1,20 +1,20 @@
 import { Box } from '@mui/material'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Fragment, useContext, useEffect, useRef, useState } from 'react'
-import { getDraftBlog } from '../../api/blogAPI'
+import { Fragment, useContext, useEffect, useRef } from 'react'
+import { getUserBlogs } from '../../api/blogAPI'
 import { AppContext } from '../../context/AppContext'
 import useIntersectionObserver from '../../hooks/useIntersectionObserver'
 import ErrorMessage from '../ui/ErrorMessage'
 import Loader from '../ui/Loader'
 import BlogCard from './BlogCard'
 
-const DraftStories = () => {
+const GetStories = ({ isPublished }: { isPublished: boolean }) => {
 	const { serverErrorHandler } = useContext(AppContext)
 	const tempRef = useRef<HTMLDivElement>(null)
 	const loadMore = useIntersectionObserver(tempRef)
 
 	useEffect(() => {
-		if (loadMore && !isFetching && !isFetchingNextPage && hasNextPage) {
+		if (loadMore) {
 			fetchNextPage()
 		}
 	}, [loadMore])
@@ -28,8 +28,8 @@ const DraftStories = () => {
 		hasNextPage,
 		isFetchingNextPage
 	} = useInfiniteQuery(
-		['draft-stories'],
-		({ pageParam = '' }) => getDraftBlog(pageParam),
+		[`${isPublished ? 'draft' : 'published'}-stories`],
+		({ pageParam = '' }) => getUserBlogs(pageParam, isPublished),
 		{
 			onError: (error: any) => {
 				console.log(error)
@@ -42,14 +42,14 @@ const DraftStories = () => {
 			staleTime: 0
 		}
 	)
-	console.log(data)
+
 	return (
 		<Box>
 			{isLoading ? (
 				<Loader />
 			) : isError ? (
 				<ErrorMessage message="Failed to fetch Blogs." />
-			) : (
+			) : data.pages[0].data.length > 1 ? (
 				data.pages.map((group, i) => (
 					<Fragment key={i}>
 						{group.data.map((blog) => (
@@ -57,15 +57,12 @@ const DraftStories = () => {
 						))}
 					</Fragment>
 				))
+			) : (
+				'No blog found.'
 			)}
-			<div>
-				{isFetchingNextPage ? (
-					<Loader />
-				) : (
-					hasNextPage && <div ref={tempRef}></div>
-				)}
-			</div>
+			{isFetchingNextPage && <Loader />}
+			{!isFetching && hasNextPage && <div ref={tempRef}></div>}
 		</Box>
 	)
 }
-export default DraftStories
+export default GetStories

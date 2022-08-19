@@ -1,16 +1,34 @@
-import { TabContext, TabList, TabPanel } from '@mui/lab'
+import { TabContext, TabList } from '@mui/lab'
 import { Box, Stack, Tab } from '@mui/material'
 import BoldTypography from '../components/ui/BoldTypography'
-import { useState } from 'react'
-import DraftStories from '../components/stories/DraftStories'
-import PublishedStories from '../components/stories/PublishedStories'
+import { useEffect, useState } from 'react'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 
 const Stories = () => {
+	const navigate = useNavigate()
+	const location = useLocation()
 	const [value, setValue] = useState('1')
 
 	const handleChange = (event: React.SyntheticEvent, newValue: '1' | '2') => {
 		setValue(newValue)
+		if (newValue === '1') {
+			navigate('/stories/draft')
+		} else {
+			navigate('/stories/published')
+		}
 	}
+
+	useEffect(() => {
+		if (location.pathname === '/stories') {
+			navigate('/stories/draft', { replace: true })
+		} else {
+			if (location.pathname.includes('draft')) {
+				setValue('1')
+			} else {
+				setValue('2')
+			}
+		}
+	}, [location.pathname])
 
 	return (
 		<Stack rowGap={0.5} sx={{ my: '1rem' }}>
@@ -22,12 +40,9 @@ const Stories = () => {
 						<Tab label="Published" value="2" />
 					</TabList>
 				</Box>
-				<TabPanel value="1">
-					<DraftStories />
-				</TabPanel>
-				<TabPanel value="2">
-					<PublishedStories />
-				</TabPanel>
+				<Box sx={{ p: '1rem' }}>
+					<Outlet />
+				</Box>
 			</TabContext>
 		</Stack>
 	)

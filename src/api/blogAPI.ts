@@ -60,12 +60,11 @@ export const getBlogBySlug = (slug: string): Promise<{ data: BlogPreview }> => {
 	return axiosInstance.get(`/blog/slug/${slug}`)
 }
 
-export const getDraftBlog = (beforeTime: string): Promise<{ data: Blog[] }> => {
-	return axiosInstance.get(`/blog/draft`, { params: { beforeTime } })
-}
-
-export const getPublishedBlog = (
-	beforeTime: string
+export const getUserBlogs = (
+	beforeTime: string,
+	isPublished: boolean
 ): Promise<{ data: Blog[] }> => {
-	return axiosInstance.get(`/blog/published`, { params: { beforeTime } })
+	return axiosInstance.get(`/user/blogs`, {
+		params: { beforeTime, isPublished }
+	})
 }
