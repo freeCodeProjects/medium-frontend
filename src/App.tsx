@@ -8,6 +8,16 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import AppContextProvider from './context/AppContext'
 import AppRouter from './routes/AppRouter'
+import { grey } from '@mui/material/colors'
+
+declare module '@mui/material/styles' {
+	interface Palette {
+		neutral: Palette['primary']
+	}
+	interface PaletteOptions {
+		neutral: PaletteOptions['primary']
+	}
+}
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -28,7 +38,10 @@ function App() {
 
 	let MUITheme = createTheme({
 		palette: {
-			mode: theme
+			mode: theme,
+			neutral: {
+				main: grey['400']
+			}
 		},
 		components: {
 			// Name of the component

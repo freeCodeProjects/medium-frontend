@@ -68,3 +68,7 @@ export const getUserBlogs = (
 		params: { beforeTime, isPublished }
 	})
 }
+
+export const deleteBlog = (id: string) => {
+	return axiosInstance.delete(`/blog/${id}`)
+}
