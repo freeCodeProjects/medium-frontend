@@ -1,5 +1,5 @@
 import { TabContext, TabList } from '@mui/lab'
-import { Box, Stack, Tab } from '@mui/material'
+import { Box, Button, Stack, Tab } from '@mui/material'
 import BoldTypography from '../components/ui/BoldTypography'
 import { useEffect, useState } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
@@ -31,8 +31,13 @@ const Stories = () => {
 	}, [location.pathname])
 
 	return (
-		<Stack rowGap={0.5} sx={{ my: '1rem' }}>
-			<BoldTypography variant="h5">Your Story</BoldTypography>
+		<Stack rowGap={2} sx={{ mt: '2rem', mb: '1rem' }}>
+			<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+				<BoldTypography variant="h5">Your Story</BoldTypography>
+				<Button variant="outlined" onClick={() => navigate('/add')}>
+					New Story
+				</Button>
+			</Box>
 			<TabContext value={value}>
 				<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 					<TabList onChange={handleChange} aria-label="Blog tabs">

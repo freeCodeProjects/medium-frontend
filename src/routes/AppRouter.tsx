@@ -73,11 +73,18 @@ const AppRouter = () => {
 									element={<ProtectedRoute component={<Stories />} />}>
 									<Route
 										path="draft"
-										element={<GetStories isPublished={false} />}
+										element={
+											<GetStories key={'draft-stories'} isPublished={false} />
+										}
 									/>
 									<Route
 										path="published"
-										element={<GetStories isPublished={true} />}
+										element={
+											<GetStories
+												key={'published-stories'}
+												isPublished={true}
+											/>
+										}
 									/>
 								</Route>
 								<Route path="*" element={<Navigate to="/" replace />} />

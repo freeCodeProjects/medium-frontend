@@ -28,7 +28,7 @@ const GetStories = ({ isPublished }: { isPublished: boolean }) => {
 		hasNextPage,
 		isFetchingNextPage
 	} = useInfiniteQuery(
-		[`${isPublished ? 'draft' : 'published'}-stories`],
+		[`${isPublished ? 'published' : 'draft'}-stories`],
 		({ pageParam = '' }) => getUserBlogs(pageParam, isPublished),
 		{
 			onError: (error: any) => {
@@ -39,7 +39,7 @@ const GetStories = ({ isPublished }: { isPublished: boolean }) => {
 				lastPage.data.length ===
 					parseInt(import.meta.env.VITE_NUMBER_OF_DOCUMENT_PER_REQUEST) &&
 				lastPage.data[lastPage.data.length - 1].updatedAt,
-			staleTime: 0
+			refetchOnMount: 'always'
 		}
 	)
 
@@ -49,7 +49,7 @@ const GetStories = ({ isPublished }: { isPublished: boolean }) => {
 				<Loader />
 			) : isError ? (
 				<ErrorMessage message="Failed to fetch Blogs." />
-			) : data.pages[0].data.length > 1 ? (
+			) : data.pages[0].data.length > 0 ? (
 				data.pages.map((group, i) => (
 					<Fragment key={i}>
 						{group.data.map((blog) => (
