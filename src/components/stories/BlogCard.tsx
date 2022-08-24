@@ -73,7 +73,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
 			<Typography
 				onClick={() => navigate(`/update/${blog._id}`)}
 				sx={{ cursor: 'pointer', fontWeight: 600 }}>
-				{blog.title}
+				{blog.isPublished ? blog.publishedTitle : blog.title}
 			</Typography>
 			<Typography className="truncate" variant="subtitle1">
 				{blog.subTitle}
