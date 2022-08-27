@@ -1,6 +1,6 @@
 import { Avatar, Box, Chip, Typography } from '@mui/material'
-import { useContext } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useContext, useEffect } from 'react'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getBlogBySlug } from '../api/blogAPI'
 import Loader from '../components/ui/Loader'
@@ -36,18 +36,8 @@ const Blog = () => {
 		refetchOnMount: 'always'
 	})
 
-	// update the previoulsy read
-	useQuery(
-		['previouslyRead', blog?.data._id],
-		() => {
-			if (isLoggedIn && blog?.data._id) {
-				return addBlogToPreviouslyRead(blog?.data._id)
-			}
-		},
-		{
-			enabled: !!blog?.data._id,
-			refetchOnMount: 'always'
-		}
+	const { mutate: addToPreviouslyRead } = useMutation(() =>
+		addBlogToPreviouslyRead(blog!.data._id)
 	)
 
 	const userId = blog?.data.userId
@@ -60,6 +50,13 @@ const Blog = () => {
 			enabled: !!userId
 		}
 	)
+
+	useEffect(() => {
+		// update the previoulsy read
+		if (isLoggedIn) {
+			addToPreviouslyRead()
+		}
+	}, [blog])
 
 	return (
 		<Box sx={{ height: '100%' }}>
@@ -173,7 +170,8 @@ const Blog = () => {
 									maxWidth: '650px',
 									display: 'flex',
 									gap: '0.5rem',
-									flexDirection: 'column'
+									flexDirection: 'column',
+									alignItems: 'start'
 								}}>
 								<Box sx={{ display: 'flex', gap: '1rem' }}>
 									<Typography variant="subtitle2" sx={{ whiteSpace: 'nowrap' }}>

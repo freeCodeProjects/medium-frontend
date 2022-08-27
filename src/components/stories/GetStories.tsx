@@ -37,8 +37,9 @@ const GetStories = ({ isPublished }: { isPublished: boolean }) => {
 			},
 			getNextPageParam: (lastPage, pages) =>
 				lastPage.data.length ===
-					parseInt(import.meta.env.VITE_NUMBER_OF_DOCUMENT_PER_REQUEST) &&
-				lastPage.data[lastPage.data.length - 1].updatedAt,
+				parseInt(import.meta.env.VITE_NUMBER_OF_DOCUMENT_PER_REQUEST)
+					? lastPage.data[lastPage.data.length - 1].updatedAt
+					: undefined,
 			refetchOnMount: 'always'
 		}
 	)

@@ -28,9 +28,10 @@ const LatestBlog = () => {
 			},
 			getNextPageParam: (lastPage, pages) =>
 				lastPage.data.length ===
-					parseInt(import.meta.env.VITE_NUMBER_OF_DOCUMENT_PER_REQUEST) &&
-				lastPage.data[lastPage.data.length - 1].publishedAt,
-			staleTime: 0
+				parseInt(import.meta.env.VITE_NUMBER_OF_DOCUMENT_PER_REQUEST)
+					? lastPage.data[lastPage.data.length - 1].publishedAt
+					: undefined,
+			refetchOnMount: 'always'
 		}
 	)
 
