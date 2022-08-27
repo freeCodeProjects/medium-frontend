@@ -1,6 +1,6 @@
 import { IconButton, SvgIcon, Tooltip } from '@mui/material'
 import { useAppStore } from '../../store/appStore'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addToBookmark, removeFromBookmark } from '../../api/userAPI'
 import { MouseEvent, useContext } from 'react'
 import { AppContext } from '../../context/AppContext'
@@ -24,6 +24,7 @@ type IProps = {
 const Bookmark = ({ blogId }: IProps) => {
 	const { user, setUser } = useAppStore()
 	const { serverErrorHandler } = useContext(AppContext)
+	const queryClient = useQueryClient()
 
 	const { mutate: addBookmark } = useMutation(addToBookmark, {
 		onMutate: async (newTodo) => {
@@ -53,6 +54,10 @@ const Bookmark = ({ blogId }: IProps) => {
 		onError: (err, newTodo, context) => {
 			serverErrorHandler(err)
 			setUser(context?.previousUserData!)
+		},
+		onSuccess: () => {
+			//refetch when remove bookmark on bookmarks page
+			queryClient.invalidateQueries(['bookmarks-list'])
 		}
 	})
 

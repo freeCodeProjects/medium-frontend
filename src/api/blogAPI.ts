@@ -69,6 +69,15 @@ export const getUserBlogs = (
 	})
 }
 
+export const getUserList = (
+	beforeId: string,
+	type: 'bookmarks' | 'previouslyRead'
+): Promise<{ data: BlogPreview[] }> => {
+	return axiosInstance.get(`/user/list`, {
+		params: { beforeId, type }
+	})
+}
+
 export const deleteBlog = (id: string) => {
 	return axiosInstance.delete(`/blog/${id}`)
 }

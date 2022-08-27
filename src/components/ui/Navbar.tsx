@@ -1,11 +1,13 @@
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import { Button, Container } from '@mui/material'
+import { Button, Container, IconButton, Stack } from '@mui/material'
 import ThemeButton from '../nav/ThemeButton'
 import { useAppStore } from '../../store/appStore'
 import Logo from './Logo'
 import UserMenu from '../nav/UserMenu'
+import BookmarksOutlinedIcon from '@mui/icons-material/BookmarksOutlined'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
 	const { handleOpenAuthModal, isLoggedIn } = useAppStore()
@@ -21,7 +23,14 @@ const Navbar = () => {
 						</Box>
 						<Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
 							{isLoggedIn ? (
-								<UserMenu />
+								<Stack direction="row" spacing={2}>
+									<IconButton aria-label="bookmarks">
+										<Link className="link" to="/list">
+											<BookmarksOutlinedIcon />
+										</Link>
+									</IconButton>
+									<UserMenu />
+								</Stack>
 							) : (
 								<Button
 									variant="outlined"

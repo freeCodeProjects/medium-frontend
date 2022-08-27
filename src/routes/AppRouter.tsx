@@ -12,6 +12,8 @@ import ResetPassword from '../pages/ResetPassword'
 import CheckNetworkStatus from '../components/utils/CheckNetworkStatus'
 import ScrollToTop from '../components/utils/ScrollToTop'
 import GetStories from '../components/stories/GetStories'
+import GetList from '../components/list/GetList'
+import List from '../pages/List'
 const Stories = React.lazy(() => import('../pages/Stories'))
 const AddorUpdateBlog = React.lazy(() => import('../pages/AddorUpdateBlog'))
 const Home = React.lazy(() => import('../pages/Home'))
@@ -83,6 +85,25 @@ const AppRouter = () => {
 											<GetStories
 												key={'published-stories'}
 												isPublished={true}
+											/>
+										}
+									/>
+								</Route>
+								<Route
+									path="list"
+									element={<ProtectedRoute component={<List />} />}>
+									<Route
+										path="bookmarks"
+										element={
+											<GetList key="bookmarks-stories" type="bookmarks" />
+										}
+									/>
+									<Route
+										path="previouslyRead"
+										element={
+											<GetList
+												key="previouslyRead-stories"
+												type="previouslyRead"
 											/>
 										}
 									/>
