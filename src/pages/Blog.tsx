@@ -53,7 +53,7 @@ const Blog = () => {
 
 	useEffect(() => {
 		// update the previoulsy read
-		if (isLoggedIn) {
+		if (!isFetching && isLoggedIn && blog?.data?._id) {
 			addToPreviouslyRead()
 		}
 	}, [blog])

@@ -42,7 +42,6 @@ const UserInfoPopup = ({
 						e.stopPropagation()
 					}}
 					sx={{
-						p: '0.5rem',
 						width: {
 							xs: 300,
 							lg: 360
@@ -63,7 +62,10 @@ const UserInfoPopup = ({
 							{author.name}
 						</BoldTypography>
 					</Box>
-					<Typography variant="subtitle2" sx={{ py: '0.5rem' }}>
+					<Typography
+						variant="subtitle2"
+						className="truncate-2"
+						sx={{ pt: '0.5rem' }}>
 						{author.bio}
 					</Typography>
 					<Divider />
@@ -71,7 +73,7 @@ const UserInfoPopup = ({
 						sx={{
 							display: 'flex',
 							justifyContent: 'space-between',
-							p: '0.5rem',
+							p: '0.25rem',
 							alignItems: 'center'
 						}}>
 						<BoldTypography variant="subtitle2">
