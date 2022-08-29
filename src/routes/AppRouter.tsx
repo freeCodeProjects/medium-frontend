@@ -20,6 +20,7 @@ const Home = React.lazy(() => import('../pages/Home'))
 const Setting = React.lazy(() => import('../pages/Setting'))
 const VerifyUser = React.lazy(() => import('../pages/VerifyUser'))
 const Blog = React.lazy(() => import('../pages/Blog'))
+const UserProfile = React.lazy(() => import('../pages/UserProfile'))
 
 const AppRouter = () => {
 	return (
@@ -49,6 +50,7 @@ const AppRouter = () => {
 							}}>
 							<Routes>
 								<Route path="/" element={<Home />} />
+								<Route path="/profile/:userName" element={<UserProfile />} />
 								<Route
 									path="/settings"
 									element={<ProtectedRoute component={<Setting />} />}

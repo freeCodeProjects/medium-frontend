@@ -8,9 +8,11 @@ import {
 	TooltipProps,
 	Typography
 } from '@mui/material'
+import { Link } from 'react-router-dom'
 import { UserPreview } from '../../types/userTypes'
 import BoldTypography from './BoldTypography'
 import FollowButton from './FollowButton'
+import UserName from './UserName'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 	<Tooltip
@@ -58,9 +60,7 @@ const UserInfoPopup = ({
 							alt={author.name}
 							src={author.photo}
 						/>
-						<BoldTypography className="truncate-2" variant="subtitle2">
-							{author.name}
-						</BoldTypography>
+						<UserName name={author.name} userName={author.userName} />
 					</Box>
 					<Typography
 						variant="subtitle2"

@@ -24,11 +24,11 @@ const Navbar = () => {
 						<Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
 							{isLoggedIn ? (
 								<Stack direction="row" spacing={2}>
-									<IconButton aria-label="bookmarks">
-										<Link className="link" to="/list">
+									<Link className="link" to="/list">
+										<IconButton aria-label="bookmarks">
 											<BookmarksOutlinedIcon />
-										</Link>
-									</IconButton>
+										</IconButton>
+									</Link>
 									<UserMenu />
 								</Stack>
 							) : (

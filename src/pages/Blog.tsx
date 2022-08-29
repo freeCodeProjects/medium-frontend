@@ -16,6 +16,7 @@ import Bookmark from '../components/ui/Bookmark'
 import { useAppStore } from '../store/appStore'
 import { getUserById, addBlogToPreviouslyRead } from '../api/userAPI'
 import LinerLoader from '../components/ui/LinerLoader'
+import UserName from '../components/ui/UserName'
 
 const Blog = () => {
 	const params = useParams()
@@ -109,7 +110,10 @@ const Blog = () => {
 										flexDirection: 'column',
 										alignItems: { md: 'center' }
 									}}>
-									<BoldTypography>{author?.data.name!}</BoldTypography>
+									<UserName
+										name={author?.data.name!}
+										userName={author?.data.userName!}
+									/>
 									<Typography
 										variant="subtitle2"
 										sx={{ textAlign: { md: 'center' } }}>

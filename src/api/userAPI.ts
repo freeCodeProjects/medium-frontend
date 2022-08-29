@@ -83,6 +83,12 @@ export const getUserById = (id: string): Promise<{ data: UserPreview }> => {
 	return axiosInstance.get(`/user/id/${id}`)
 }
 
+export const getUserByUserName = (
+	userName: string
+): Promise<{ data: UserPreview }> => {
+	return axiosInstance.get(`/user/userName/${userName}`)
+}
+
 export const addBlogToPreviouslyRead = (blogId: string) => {
 	return axiosInstance.patch(`/user/previouslyReadBlog/${blogId}`)
 }

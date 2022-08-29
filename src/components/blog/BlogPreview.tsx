@@ -9,16 +9,42 @@ import { useQuery } from '@tanstack/react-query'
 import { getUserById } from '../../api/userAPI'
 import UserInfoPopup from '../ui/UserInfoPopup'
 
-type IProps = {
-	blogPreview: BlogPreviewType
+const Author = ({ userId }: { userId: string }) => {
+	const { data: author } = useQuery(['userById', userId], () =>
+		getUserById(userId)
+	)
+
+	return author ? (
+		<UserInfoPopup author={author.data}>
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					gap: '0.5rem',
+					width: 'min-content'
+				}}>
+				<Avatar
+					sx={{ width: 24, height: 24 }}
+					alt={author.data.name}
+					src={author.data.photo}
+				/>
+				<BoldTypography className="truncate" variant="subtitle2">
+					{author.data.name}
+				</BoldTypography>
+			</Box>
+		</UserInfoPopup>
+	) : (
+		<div></div>
+	)
 }
 
-const BlogPreview = ({ blogPreview }: IProps) => {
-	const navigate = useNavigate()
+type IProps = {
+	blogPreview: BlogPreviewType
+	showAuthor?: boolean
+}
 
-	const { data: author } = useQuery(['userById', blogPreview.userId], () =>
-		getUserById(blogPreview.userId)
-	)
+const BlogPreview = ({ blogPreview, showAuthor = true }: IProps) => {
+	const navigate = useNavigate()
 
 	const navigateToDetailPage = () => {
 		navigate(`/blog/${blogPreview.slug}`)
@@ -44,26 +70,7 @@ const BlogPreview = ({ blogPreview }: IProps) => {
 					overflow: 'hidden',
 					width: '100%'
 				}}>
-				{author && (
-					<UserInfoPopup author={author.data}>
-						<Box
-							sx={{
-								display: 'flex',
-								alignItems: 'center',
-								gap: '0.5rem',
-								width: 'min-content'
-							}}>
-							<Avatar
-								sx={{ width: 24, height: 24 }}
-								alt={author.data.name}
-								src={author.data.photo}
-							/>
-							<BoldTypography className="truncate" variant="subtitle2">
-								{author.data.name}
-							</BoldTypography>
-						</Box>
-					</UserInfoPopup>
-				)}
+				{showAuthor ? <Author userId={blogPreview.userId} /> : <div></div>}
 				<BoldTypography className="truncate-2">
 					{blogPreview.publishedTitle}
 				</BoldTypography>
@@ -108,7 +115,7 @@ const BlogPreview = ({ blogPreview }: IProps) => {
 						display: { xs: 'none', sm: 'block' }
 					}}
 					src={blogPreview.previewImage}
-					alt={blogPreview.publishedTitle}
+					alt={`${blogPreview.publishedTitle} image`}
 					loading="lazy"
 				/>
 			)}
