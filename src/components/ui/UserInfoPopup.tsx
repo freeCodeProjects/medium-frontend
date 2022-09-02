@@ -8,7 +8,6 @@ import {
 	TooltipProps,
 	Typography
 } from '@mui/material'
-import { Link } from 'react-router-dom'
 import { UserPreview } from '../../types/userTypes'
 import BoldTypography from './BoldTypography'
 import FollowButton from './FollowButton'
@@ -47,7 +46,8 @@ const UserInfoPopup = ({
 						width: {
 							xs: 300,
 							lg: 360
-						}
+						},
+						p: '0.25rem'
 					}}>
 					<Box
 						sx={{
@@ -68,12 +68,12 @@ const UserInfoPopup = ({
 						sx={{ pt: '0.5rem' }}>
 						{author.bio}
 					</Typography>
-					<Divider />
+					<Divider sx={{ pt: '0.5rem' }} />
 					<Box
 						sx={{
 							display: 'flex',
 							justifyContent: 'space-between',
-							p: '0.25rem',
+							pt: '0.5rem',
 							alignItems: 'center'
 						}}>
 						<BoldTypography variant="subtitle2">

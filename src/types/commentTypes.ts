@@ -3,7 +3,10 @@ export type Comment = {
 	userId: string
 	postId: string
 	claps: number
+	comment: string
 	relatedTo: 'blog' | 'comment'
+	createdAt: string
+	updatedAt: string
 }
 
 export type AddCommentInput = {

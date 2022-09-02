@@ -1,15 +1,45 @@
-import { Box, Drawer, IconButton, Stack } from '@mui/material'
+import {
+	Box,
+	Divider,
+	Drawer,
+	FormControl,
+	IconButton,
+	MenuItem,
+	Select,
+	SelectChangeEvent,
+	Stack
+} from '@mui/material'
 import BoldTypography from '../ui/BoldTypography'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import CommentForm from './CommentForm'
+import { Fragment, useState, useEffect } from 'react'
+import CommentList from './CommentList'
+import { useQueryClient } from '@tanstack/react-query'
 
 type IProps = {
 	drawerToggle: boolean
 	closeDrawer: React.MouseEventHandler<HTMLElement>
 	postId: string
+	responsesCount: number
 }
 
-const Comment = ({ drawerToggle, closeDrawer, postId }: IProps) => {
+const Comment = ({
+	drawerToggle,
+	closeDrawer,
+	postId,
+	responsesCount
+}: IProps) => {
+	const [sortBy, setSortBy] = useState<'top' | 'latest'>('top')
+	const queryClient = useQueryClient()
+
+	const handleChange = (event: SelectChangeEvent) => {
+		setSortBy(event.target.value as 'top' | 'latest')
+	}
+
+	useEffect(() => {
+		queryClient.resetQueries(['comments', postId, sortBy])
+	}, [sortBy])
+
 	return (
 		<Drawer
 			anchor={'right'}
@@ -23,7 +53,7 @@ const Comment = ({ drawerToggle, closeDrawer, postId }: IProps) => {
 					}
 				}
 			}}>
-			<Box sx={{ p: { xs: '0.5rem', sm: '1rem' } }}>
+			<Box sx={{ p: { xs: '0.5rem', sm: '1rem' }, position: 'relative' }}>
 				<Stack
 					direction="row"
 					justifyContent="space-between"
@@ -37,6 +67,18 @@ const Comment = ({ drawerToggle, closeDrawer, postId }: IProps) => {
 				<Box sx={{ py: '0.5rem' }}>
 					<CommentForm postId={postId} relatedTo="blog" />
 				</Box>
+				{responsesCount > 0 && (
+					<Fragment>
+						<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+							<Select variant="standard" value={sortBy} onChange={handleChange}>
+								<MenuItem value={'top'}>Relevent</MenuItem>
+								<MenuItem value={'recent'}>Recent</MenuItem>
+							</Select>
+						</FormControl>
+						<Divider sx={{ position: 'absolute', left: 0, right: 0 }} />
+					</Fragment>
+				)}
+				<CommentList postId={postId} sortBy={sortBy} />
 			</Box>
 		</Drawer>
 	)

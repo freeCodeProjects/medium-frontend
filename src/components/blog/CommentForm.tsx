@@ -8,7 +8,7 @@ import {
 	TextField
 } from '@mui/material'
 import { useState, useContext } from 'react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addComment } from '../../api/commentAPI'
 import { AppContext } from '../../context/AppContext'
 import { useAppStore } from '../../store/appStore'
@@ -23,6 +23,7 @@ const CommentForm = ({ postId, relatedTo }: IProps) => {
 	const { setAlertData, isLoggedIn, handleOpenAuthModal, user } = useAppStore()
 	const [comment, setComment] = useState('')
 	const { serverErrorHandler } = useContext(AppContext)
+	const queryClient = useQueryClient()
 
 	const { mutate, isLoading } = useMutation(
 		() => addComment({ postId, comment, relatedTo }),
@@ -33,6 +34,14 @@ const CommentForm = ({ postId, relatedTo }: IProps) => {
 			onSuccess: (data: any) => {
 				setAlertData(data.data)
 				setComment('')
+				queryClient.invalidateQueries(['comments', postId])
+				// const previousBlogData = queryClient.getQueryData([relatedTo, postId])
+
+				// queryClient.setQueryData([relatedTo, postId], () => ({
+				// 	data: {
+				// 		isFollowing: true
+				// 	}
+				// }))
 			}
 		}
 	)

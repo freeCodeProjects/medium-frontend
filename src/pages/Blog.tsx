@@ -210,6 +210,7 @@ const Blog = () => {
 							drawerToggle={drawerToggle}
 							closeDrawer={() => setDrawerToggle(false)}
 							postId={blog.data._id}
+							responsesCount={blog.data.responsesCount}
 						/>
 					</Box>
 				)

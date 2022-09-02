@@ -13,9 +13,9 @@ export type Blog = {
 	previewImage: string
 	clapsCount: number
 	responsesCount: number
-	createdAt: Date
-	updatedAt: Date
-	publishedAt: Date
+	createdAt: string
+	updatedAt: string
+	publishedAt: string
 	readTime: number
 	isPublished: boolean
 }
