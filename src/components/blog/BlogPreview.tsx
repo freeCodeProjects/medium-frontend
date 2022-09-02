@@ -1,42 +1,11 @@
-import { Avatar, Box, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { BlogPreview as BlogPreviewType } from '../../types/blogTypes'
 import BoldTypography from '../ui/BoldTypography'
 import dayjs from 'dayjs'
 import SmallChip from '../ui/SmallChip'
 import Bookmark from '../ui/Bookmark'
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { getUserById } from '../../api/userAPI'
-import UserInfoPopup from '../ui/UserInfoPopup'
-
-const Author = ({ userId }: { userId: string }) => {
-	const { data: author } = useQuery(['userById', userId], () =>
-		getUserById(userId)
-	)
-
-	return author ? (
-		<UserInfoPopup author={author.data}>
-			<Box
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					gap: '0.5rem',
-					width: 'min-content'
-				}}>
-				<Avatar
-					sx={{ width: 24, height: 24 }}
-					alt={author.data.name}
-					src={author.data.photo}
-				/>
-				<BoldTypography className="truncate" variant="subtitle2">
-					{author.data.name}
-				</BoldTypography>
-			</Box>
-		</UserInfoPopup>
-	) : (
-		<div></div>
-	)
-}
+import Author from '../ui/Author'
 
 type IProps = {
 	blogPreview: BlogPreviewType
