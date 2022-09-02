@@ -13,20 +13,20 @@ const Author = ({ userId, date }: { userId: string; date?: string }) => {
 	)
 
 	return author ? (
-		<UserInfoPopup author={author.data}>
-			<Box
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					gap: '0.5rem',
-					width: 'min-content'
-				}}>
-				<Avatar
-					sx={{ width: 36, height: 36 }}
-					alt={author.data.name}
-					src={author.data.photo}
-				/>
-				<Stack>
+		<Box
+			sx={{
+				display: 'flex',
+				alignItems: 'center',
+				gap: '0.5rem',
+				width: 'min-content'
+			}}>
+			<Avatar
+				sx={{ width: 36, height: 36 }}
+				alt={author.data.name}
+				src={author.data.photo}
+			/>
+			<UserInfoPopup author={author.data}>
+				<Stack sx={{ cursor: 'pointer' }}>
 					<BoldTypography className="truncate" variant="subtitle2">
 						{author.data.name}
 					</BoldTypography>
@@ -34,8 +34,8 @@ const Author = ({ userId, date }: { userId: string; date?: string }) => {
 						<Typography variant="caption">{dayjs(date).fromNow()}</Typography>
 					)}
 				</Stack>
-			</Box>
-		</UserInfoPopup>
+			</UserInfoPopup>
+		</Box>
 	) : (
 		<div></div>
 	)
