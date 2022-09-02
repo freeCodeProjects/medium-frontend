@@ -1,5 +1,5 @@
 import { Avatar, Box, Chip, Typography } from '@mui/material'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getBlogBySlug } from '../api/blogAPI'
@@ -17,10 +17,12 @@ import { useAppStore } from '../store/appStore'
 import { getUserById, addBlogToPreviouslyRead } from '../api/userAPI'
 import LinerLoader from '../components/ui/LinerLoader'
 import UserName from '../components/ui/UserName'
+import Comment from '../components/blog/Comment'
 
 const Blog = () => {
 	const params = useParams()
 	const { isLoggedIn } = useAppStore()
+	const [drawerToggle, setDrawerToggle] = useState(false)
 
 	const { serverErrorHandler } = useContext(AppContext)
 
@@ -156,7 +158,7 @@ const Blog = () => {
 									</Box>
 								)}
 								<Box sx={{ display: 'flex', alignItems: 'center' }}>
-									<CommentButton />
+									<CommentButton onClick={() => setDrawerToggle(true)} />
 									{blog?.data.responsesCount}
 								</Box>
 								<Bookmark blogId={blog.data._id!} />
@@ -204,6 +206,11 @@ const Blog = () => {
 								/>
 							</Box>
 						</Box>
+						<Comment
+							drawerToggle={drawerToggle}
+							closeDrawer={() => setDrawerToggle(false)}
+							postId={blog.data._id}
+						/>
 					</Box>
 				)
 			)}
