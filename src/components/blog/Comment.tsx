@@ -71,7 +71,7 @@ const Comment = ({
 					<Fragment>
 						<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
 							<Select variant="standard" value={sortBy} onChange={handleChange}>
-								<MenuItem value={'top'}>Relevent</MenuItem>
+								<MenuItem value={'top'}>Top</MenuItem>
 								<MenuItem value={'recent'}>Recent</MenuItem>
 							</Select>
 						</FormControl>

@@ -2,7 +2,7 @@ export type Comment = {
 	_id: string
 	userId: string
 	postId: string
-	claps: number
+	clapsCount: number
 	comment: string
 	relatedTo: 'blog' | 'comment'
 	createdAt: string

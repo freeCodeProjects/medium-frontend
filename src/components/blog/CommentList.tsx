@@ -24,7 +24,8 @@ const CommentList = ({ postId, sortBy }: IProps) => {
 		isFetchingNextPage
 	} = useInfiniteQuery(
 		['comments', postId, sortBy],
-		({ pageParam = '' }) => getComments(postId, pageParam, sortBy),
+		({ pageParam = { beforeTime: '', lastClapsCount: '' } }) =>
+			getComments(postId, sortBy, pageParam),
 		{
 			onError: (error: any) => {
 				console.log(error)
@@ -33,13 +34,16 @@ const CommentList = ({ postId, sortBy }: IProps) => {
 			getNextPageParam: (lastPage, pages) =>
 				lastPage.data.length ===
 				parseInt(import.meta.env.VITE_NUMBER_OF_DOCUMENT_PER_REQUEST)
-					? lastPage.data[lastPage.data.length - 1].createdAt
+					? {
+							beforeTime: lastPage.data[lastPage.data.length - 1].createdAt,
+							lastClapsCount: lastPage.data[lastPage.data.length - 1].clapsCount
+					  }
 					: undefined,
 			refetchOnMount: 'always'
 		}
 	)
 	return (
-		<Box>
+		<Box sx={{ width: '100%' }}>
 			{isLoading ? (
 				<Loader />
 			) : isError ? (
@@ -47,18 +51,17 @@ const CommentList = ({ postId, sortBy }: IProps) => {
 			) : (
 				<Box
 					sx={{
-						display: 'flex',
-						gap: '0.5rem',
-						py: '1rem',
-						width: '100%'
+						width: '100%',
+						pt: '1rem'
 					}}>
 					{data.pages.map((group, i) => (
 						<Box
 							sx={{
 								display: 'flex',
 								flexDirection: 'column',
-								gap: '1.5rem',
-								width: '100%'
+								gap: '1rem',
+								width: '100%',
+								py: '0.5rem'
 							}}
 							key={i}>
 							{group.data.map((comment) => (
@@ -71,7 +74,7 @@ const CommentList = ({ postId, sortBy }: IProps) => {
 					))}
 				</Box>
 			)}
-			<div>
+			<Fragment>
 				{isFetchingNextPage ? (
 					<Loader />
 				) : (
@@ -83,7 +86,7 @@ const CommentList = ({ postId, sortBy }: IProps) => {
 						</Button>
 					)
 				)}
-			</div>
+			</Fragment>
 		</Box>
 	)
 }

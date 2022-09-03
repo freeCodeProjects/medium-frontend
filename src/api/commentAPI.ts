@@ -9,10 +9,18 @@ export const addComment = (
 
 export const getComments = (
 	postId: string,
-	beforeTime: string,
-	sortBy: 'top' | 'latest'
+	sortBy: 'top' | 'latest',
+	pageParams: {
+		beforeTime: string
+		lastClapsCount: string
+	}
 ): Promise<{ data: Comment[] }> => {
 	return axiosInstance.get('comments', {
-		params: { postId, beforeTime, sortBy }
+		params: {
+			postId,
+			sortBy,
+			beforeTime: pageParams.beforeTime,
+			lastClapsCount: pageParams.lastClapsCount
+		}
 	})
 }
