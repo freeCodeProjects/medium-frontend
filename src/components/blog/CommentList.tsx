@@ -1,24 +1,29 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Fragment, useContext } from 'react'
+import { Fragment, useContext, useEffect, useRef } from 'react'
 import { AppContext } from '../../context/AppContext'
 import { getComments } from '../../api/commentAPI'
 import { Box, Button, Divider } from '@mui/material'
 import Loader from '../ui/Loader'
 import ErrorMessage from '../ui/ErrorMessage'
 import CommentView from './CommentView'
+import useIntersectionObserver from '../../hooks/useIntersectionObserver'
 
 type IProps = {
 	postId: string
 	sortBy: 'top' | 'latest'
+	relatedTo: 'blog' | 'comment'
 }
 
-const CommentList = ({ postId, sortBy }: IProps) => {
+const CommentList = ({ postId, sortBy, relatedTo }: IProps) => {
 	const { serverErrorHandler } = useContext(AppContext)
+	const tempRef = useRef<HTMLDivElement>(null)
+	const loadMore = useIntersectionObserver(tempRef)
 
 	const {
 		isLoading,
 		isError,
 		data,
+		isFetching,
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage
@@ -42,6 +47,13 @@ const CommentList = ({ postId, sortBy }: IProps) => {
 			refetchOnMount: 'always'
 		}
 	)
+
+	useEffect(() => {
+		if (loadMore) {
+			fetchNextPage()
+		}
+	}, [loadMore])
+
 	return (
 		<Box sx={{ width: '100%' }}>
 			{isLoading ? (
@@ -64,29 +76,31 @@ const CommentList = ({ postId, sortBy }: IProps) => {
 								py: '0.5rem'
 							}}
 							key={i}>
-							{group.data.map((comment) => (
-								<Fragment>
+							{group.data.map((comment, idx) => (
+								<Fragment key={comment._id}>
 									<CommentView comment={comment} />
-									<Divider />
+									{/* hide divider for last child */}
+									{!(
+										i === data.pages.length - 1 && idx === group.data.length - 1
+									) && <Divider />}
 								</Fragment>
 							))}
 						</Box>
 					))}
 				</Box>
 			)}
-			<Fragment>
-				{isFetchingNextPage ? (
-					<Loader />
+			{isFetchingNextPage && <Loader />}
+			{!isFetching &&
+				hasNextPage &&
+				(relatedTo === 'blog' ? (
+					<div ref={tempRef}></div>
 				) : (
-					hasNextPage && (
-						<Button
-							sx={{ width: '100%', mt: '1rem' }}
-							onClick={() => fetchNextPage()}>
-							Load More
-						</Button>
-					)
-				)}
-			</Fragment>
+					<Button
+						sx={{ width: '100%', mt: '1rem' }}
+						onClick={() => fetchNextPage()}>
+						Load More
+					</Button>
+				))}
 		</Box>
 	)
 }

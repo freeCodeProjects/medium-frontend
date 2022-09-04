@@ -11,7 +11,7 @@ const LinerLoader = () => {
 			x="0px"
 			y="0px"
 			viewBox="0 0 100 100"
-			enable-background="new 0 0 0 0"
+			enableBackground="new 0 0 0 0"
 			xmlSpace="preserve">
 			<circle
 				stroke={theme.palette.text.primary}

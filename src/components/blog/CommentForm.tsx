@@ -14,12 +14,21 @@ import { AppContext } from '../../context/AppContext'
 import { useAppStore } from '../../store/appStore'
 import { LoadingButton } from '@mui/lab'
 import BoldTypography from '../ui/BoldTypography'
+import { useParams } from 'react-router-dom'
 
 type IProps = {
 	postId: string
 	relatedTo: 'blog' | 'comment'
+	closeForm: Function
+	openResponses?: Function
 }
-const CommentForm = ({ postId, relatedTo }: IProps) => {
+const CommentForm = ({
+	postId,
+	relatedTo,
+	closeForm,
+	openResponses
+}: IProps) => {
+	const params = useParams()
 	const { setAlertData, isLoggedIn, handleOpenAuthModal, user } = useAppStore()
 	const [comment, setComment] = useState('')
 	const { serverErrorHandler } = useContext(AppContext)
@@ -33,15 +42,30 @@ const CommentForm = ({ postId, relatedTo }: IProps) => {
 			},
 			onSuccess: (data: any) => {
 				setAlertData(data.data)
-				setComment('')
+				closeForm()
+				openResponses && openResponses()
 				queryClient.invalidateQueries(['comments', postId])
-				// const previousBlogData = queryClient.getQueryData([relatedTo, postId])
 
-				// queryClient.setQueryData([relatedTo, postId], () => ({
-				// 	data: {
-				// 		isFollowing: true
-				// 	}
-				// }))
+				//Optimistically update the responsesCount in post on client side
+				if (relatedTo === 'blog') {
+					queryClient.setQueryData(['blogBySlug', params.slug], (old: any) => {
+						old.data.responsesCount = old.data.responsesCount + 1
+					})
+				} else {
+					queryClient.setQueriesData(
+						{ exact: false, queryKey: ['comments'] },
+						(old: any) => {
+							// console.log('old : ', old)
+							old.pages.forEach((page: any) => {
+								page.data.forEach((data: any) => {
+									if (data._id === postId) {
+										data.responsesCount = data.responsesCount + 1
+									}
+								})
+							})
+						}
+					)
+				}
 			}
 		}
 	)
@@ -57,7 +81,7 @@ const CommentForm = ({ postId, relatedTo }: IProps) => {
 	return (
 		<Card>
 			<CardContent>
-				{user && (
+				{user && relatedTo == 'blog' && (
 					<Box
 						sx={{
 							display: 'flex',
@@ -90,7 +114,7 @@ const CommentForm = ({ postId, relatedTo }: IProps) => {
 			</CardContent>
 			<CardActions
 				sx={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-				<Button color="neutral" size="small" onClick={() => setComment('')}>
+				<Button color="neutral" size="small" onClick={closeForm}>
 					Cancel
 				</Button>
 				<LoadingButton

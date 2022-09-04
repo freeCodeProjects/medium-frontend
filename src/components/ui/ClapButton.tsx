@@ -24,7 +24,7 @@ let checkedTimeOut: ReturnType<typeof setTimeout>
 const ClapButton = ({ postId, claps, relatedTo, authorId }: IProps) => {
 	const { isLoggedIn, user, handleOpenAuthModal } = useAppStore()
 	const [newClaps, setNewClaps] = useState(0)
-	const [totalClaps, setTotalClaps] = useState(claps)
+	const [totalClaps, setTotalClaps] = useState(0)
 	const [currClaps, setCurrClaps] = useState(0)
 	const [checked, setChecked] = useState(false)
 	const containerRef = useRef(null)
@@ -43,6 +43,10 @@ const ClapButton = ({ postId, claps, relatedTo, authorId }: IProps) => {
 			refetchOnMount: 'always'
 		}
 	)
+
+	useEffect(() => {
+		setTotalClaps(claps)
+	}, [claps])
 
 	const { mutate: addClap } = useMutation(
 		() => addClaps(newClaps, relatedTo, postId),

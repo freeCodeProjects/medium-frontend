@@ -5,6 +5,7 @@ import {
 	FormControl,
 	IconButton,
 	MenuItem,
+	Paper,
 	Select,
 	SelectChangeEvent,
 	Stack
@@ -30,6 +31,7 @@ const Comment = ({
 	responsesCount
 }: IProps) => {
 	const [sortBy, setSortBy] = useState<'top' | 'latest'>('top')
+	const [formToggle, setFormToggle] = useState(true)
 	const queryClient = useQueryClient()
 
 	const handleChange = (event: SelectChangeEvent) => {
@@ -64,13 +66,29 @@ const Comment = ({
 						<CloseOutlinedIcon />
 					</IconButton>
 				</Stack>
-				<Box sx={{ py: '0.5rem' }}>
-					<CommentForm postId={postId} relatedTo="blog" />
+				<Box sx={{ py: '0.5rem', mb: '1rem' }}>
+					{formToggle ? (
+						<CommentForm
+							postId={postId}
+							relatedTo="blog"
+							closeForm={() => setFormToggle(false)}
+						/>
+					) : (
+						<Paper
+							onClick={() => setFormToggle(true)}
+							sx={{ p: '1rem', cursor: 'pointer' }}>
+							What are your thoughts?
+						</Paper>
+					)}
 				</Box>
 				{responsesCount > 0 && (
 					<Fragment>
 						<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-							<Select variant="standard" value={sortBy} onChange={handleChange}>
+							<Select
+								variant="standard"
+								value={sortBy}
+								onChange={handleChange}
+								disableUnderline>
 								<MenuItem value={'top'}>Relevent</MenuItem>
 								<MenuItem value={'recent'}>Recent</MenuItem>
 							</Select>
@@ -78,7 +96,7 @@ const Comment = ({
 						<Divider sx={{ position: 'absolute', left: 0, right: 0 }} />
 					</Fragment>
 				)}
-				<CommentList postId={postId} sortBy={sortBy} />
+				<CommentList postId={postId} sortBy={sortBy} relatedTo="blog" />
 			</Box>
 		</Drawer>
 	)

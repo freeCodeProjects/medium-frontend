@@ -3,6 +3,7 @@ export type Comment = {
 	userId: string
 	postId: string
 	clapsCount: number
+	responsesCount: number
 	comment: string
 	relatedTo: 'blog' | 'comment'
 	createdAt: string
