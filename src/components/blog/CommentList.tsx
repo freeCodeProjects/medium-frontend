@@ -17,7 +17,11 @@ type IProps = {
 const CommentList = ({ postId, sortBy, relatedTo }: IProps) => {
 	const { serverErrorHandler } = useContext(AppContext)
 	const tempRef = useRef<HTMLDivElement>(null)
-	const loadMore = useIntersectionObserver(tempRef)
+	const loadMore = useIntersectionObserver(tempRef, false, {
+		root: null,
+		rootMargin: '0px 0px 200px 0px',
+		threshold: 0.1
+	})
 
 	const {
 		isLoading,

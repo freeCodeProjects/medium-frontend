@@ -5,7 +5,11 @@ export const addClaps = (
 	claps: number,
 	relatedTo: 'blog' | 'comment',
 	postId: string
-): Promise<{ data: Clap }> => {
+): Promise<any> => {
+	//handle the base case when trying to add 0 claps
+	if (claps === 0) {
+		return Promise.resolve('No clap to add')
+	}
 	return axiosInstance.post('/clap', { claps, relatedTo, postId })
 }
 

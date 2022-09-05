@@ -61,7 +61,7 @@ const Comment = ({
 					justifyContent="space-between"
 					alignItems="center"
 					spacing={2}>
-					<BoldTypography variant="h6">Responses(0)</BoldTypography>
+					<BoldTypography variant="h6">{`Responses (${responsesCount})`}</BoldTypography>
 					<IconButton aria-label="close" onClick={closeDrawer}>
 						<CloseOutlinedIcon />
 					</IconButton>
