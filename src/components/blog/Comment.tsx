@@ -51,7 +51,7 @@ const Comment = ({
 				sx: {
 					width: {
 						xs: '100%',
-						sm: '420px'
+						sm: '480px'
 					}
 				}
 			}}>
@@ -94,9 +94,9 @@ const Comment = ({
 							</Select>
 						</FormControl>
 						<Divider sx={{ position: 'absolute', left: 0, right: 0 }} />
+						<CommentList postId={postId} sortBy={sortBy} relatedTo="blog" />
 					</Fragment>
 				)}
-				<CommentList postId={postId} sortBy={sortBy} relatedTo="blog" />
 			</Box>
 		</Drawer>
 	)

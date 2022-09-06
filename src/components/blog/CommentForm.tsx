@@ -56,13 +56,14 @@ const CommentForm = ({
 						{ exact: false, queryKey: ['comments'] },
 						(old: any) => {
 							// console.log('old : ', old)
-							old.pages.forEach((page: any) => {
-								page.data.forEach((data: any) => {
-									if (data._id === postId) {
-										data.responsesCount = data.responsesCount + 1
-									}
+							old &&
+								old.pages.forEach((page: any) => {
+									page.data.forEach((data: any) => {
+										if (data._id === postId) {
+											data.responsesCount = data.responsesCount + 1
+										}
+									})
 								})
-							})
 						}
 					)
 				}
