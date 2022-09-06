@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { useState, useContext } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { addComment } from '../../api/commentAPI'
+import { addComment, updateComment } from '../../api/commentAPI'
 import { AppContext } from '../../context/AppContext'
 import { useAppStore } from '../../store/appStore'
 import { LoadingButton } from '@mui/lab'
@@ -18,24 +18,30 @@ import { useParams } from 'react-router-dom'
 
 type IProps = {
 	postId: string
-	relatedTo: 'blog' | 'comment'
 	closeForm: Function
+	relatedTo?: 'blog' | 'comment'
 	openResponses?: Function
+	isUpdating?: boolean
+	cancelEditing?: boolean
+	content?: string
 }
 const CommentForm = ({
 	postId,
 	relatedTo,
 	closeForm,
-	openResponses
+	openResponses,
+	content,
+	isUpdating = false
 }: IProps) => {
 	const params = useParams()
 	const { setAlertData, isLoggedIn, handleOpenAuthModal, user } = useAppStore()
-	const [comment, setComment] = useState('')
+	const [comment, setComment] = useState(content || '')
 	const { serverErrorHandler } = useContext(AppContext)
 	const queryClient = useQueryClient()
 
-	const { mutate, isLoading } = useMutation(
-		() => addComment({ postId, comment, relatedTo }),
+	const { mutate: add, isLoading: addLoading } = useMutation(
+		() =>
+			addComment({ postId, comment: comment.trim(), relatedTo: relatedTo! }),
 		{
 			onError: (error: any) => {
 				serverErrorHandler(error)
@@ -71,11 +77,48 @@ const CommentForm = ({
 		}
 	)
 
-	const addResponse = () => {
+	const { mutate: update, isLoading: updateLoading } = useMutation(
+		() => updateComment(postId, comment),
+		{
+			onError: (error: any) => {
+				serverErrorHandler(error)
+			},
+			onSuccess: (data: any) => {
+				setAlertData(data.data)
+				closeForm()
+
+				queryClient.setQueriesData(
+					{ exact: false, queryKey: ['comments'] },
+					(old: any) => {
+						// console.log('old : ', old)
+						old &&
+							old.pages.forEach((page: any) => {
+								page.data.forEach((data: any) => {
+									if (data._id === postId) {
+										data.comment = comment.trim()
+									}
+								})
+							})
+					}
+				)
+			}
+		}
+	)
+
+	const addOrUpdateResponse = () => {
 		if (!isLoggedIn) {
 			handleOpenAuthModal()
 		} else {
-			mutate()
+			if (isUpdating) {
+				//stop update if there is no change.
+				if (comment.trim() !== content) {
+					update()
+				} else {
+					closeForm()
+				}
+			} else {
+				add()
+			}
 		}
 	}
 
@@ -102,6 +145,7 @@ const CommentForm = ({
 					</Box>
 				)}
 				<TextField
+					autoFocus
 					fullWidth
 					id="standard-multiline-static"
 					placeholder="What are your thoughts?"
@@ -119,13 +163,13 @@ const CommentForm = ({
 					Cancel
 				</Button>
 				<LoadingButton
-					loading={isLoading}
-					disabled={!comment}
-					onClick={() => addResponse()}
+					loading={addLoading || updateLoading}
+					disabled={!comment.trim()}
+					onClick={addOrUpdateResponse}
 					color="success"
 					variant="contained"
 					size="small">
-					Respond
+					{!isUpdating ? 'Respond' : 'Update'}
 				</LoadingButton>
 			</CardActions>
 		</Card>

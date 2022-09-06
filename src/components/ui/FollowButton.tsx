@@ -16,7 +16,6 @@ const FollowButton = ({ userId }: IProps) => {
 		if (!isLoggedIn || !userId) {
 			return
 		}
-		console.log('userId : ', userId)
 		return getFollower(userId)
 	})
 

@@ -10,7 +10,7 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver'
 
 type IProps = {
 	postId: string
-	sortBy: 'top' | 'latest'
+	sortBy: 'top' | 'recent'
 	relatedTo: 'blog' | 'comment'
 }
 
