@@ -1,12 +1,13 @@
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import { Button, Container, IconButton, Stack } from '@mui/material'
+import { Badge, Button, Container, IconButton, Stack } from '@mui/material'
 import ThemeButton from '../nav/ThemeButton'
 import { useAppStore } from '../../store/appStore'
 import Logo from './Logo'
 import UserMenu from '../nav/UserMenu'
 import BookmarksOutlinedIcon from '@mui/icons-material/BookmarksOutlined'
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
@@ -27,6 +28,13 @@ const Navbar = () => {
 									<Link className="link" to="/list">
 										<IconButton aria-label="bookmarks">
 											<BookmarksOutlinedIcon />
+										</IconButton>
+									</Link>
+									<Link className="link" to="/notifications">
+										<IconButton aria-label="notification">
+											<Badge badgeContent={4} color="success">
+												<NotificationsOutlinedIcon />
+											</Badge>
 										</IconButton>
 									</Link>
 									<UserMenu />

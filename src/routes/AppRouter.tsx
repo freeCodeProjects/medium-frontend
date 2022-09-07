@@ -14,6 +14,7 @@ import ScrollToTop from '../components/utils/ScrollToTop'
 import GetStories from '../components/stories/GetStories'
 import GetList from '../components/list/GetList'
 import List from '../pages/List'
+const Notifications = React.lazy(() => import('../pages/Notifications'))
 const Stories = React.lazy(() => import('../pages/Stories'))
 const AddorUpdateBlog = React.lazy(() => import('../pages/AddorUpdateBlog'))
 const Home = React.lazy(() => import('../pages/Home'))
@@ -110,6 +111,10 @@ const AppRouter = () => {
 										}
 									/>
 								</Route>
+								<Route
+									path="/notifications"
+									element={<ProtectedRoute component={<Notifications />} />}
+								/>
 								<Route path="*" element={<Navigate to="/" replace />} />
 							</Routes>
 						</Box>
