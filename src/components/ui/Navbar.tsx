@@ -9,9 +9,20 @@ import UserMenu from '../nav/UserMenu'
 import BookmarksOutlinedIcon from '@mui/icons-material/BookmarksOutlined'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import { Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { getNotificationCount } from '../../api/notificationAPI'
 
 const Navbar = () => {
-	const { handleOpenAuthModal, isLoggedIn } = useAppStore()
+	const { isLoggedIn, handleOpenAuthModal } = useAppStore()
+
+	const { data } = useQuery(['notificationCount'], getNotificationCount, {
+		enabled: isLoggedIn,
+		staleTime: 0,
+		refetchInterval: 2 * 60 * 1000
+	})
+
+	const newNotificationCount = data?.data ? data?.data.newNotificationCount : 0
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="fixed" color="inherit" sx={{ boxShadow: 1 }}>
@@ -32,7 +43,9 @@ const Navbar = () => {
 									</Link>
 									<Link className="link" to="/notifications">
 										<IconButton aria-label="notification">
-											<Badge badgeContent={4} color="success">
+											<Badge
+												badgeContent={newNotificationCount}
+												color="success">
 												<NotificationsOutlinedIcon />
 											</Badge>
 										</IconButton>
