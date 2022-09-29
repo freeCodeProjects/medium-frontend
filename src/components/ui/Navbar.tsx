@@ -11,6 +11,7 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getNotificationCount } from '../../api/notificationAPI'
+import SearchBar from '../nav/SearchBar'
 
 const Navbar = () => {
 	const { isLoggedIn, handleOpenAuthModal } = useAppStore()
@@ -33,9 +34,15 @@ const Navbar = () => {
 						<Box sx={{ flexGrow: 1 }}>
 							<Logo />
 						</Box>
-						<Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+						<Box
+							sx={{
+								display: 'flex',
+								gap: { xs: 1, md: 2 },
+								alignItems: 'center'
+							}}>
 							{isLoggedIn ? (
-								<Stack direction="row" spacing={2}>
+								<Stack direction="row" spacing={1}>
+									<SearchBar />
 									<Link className="link" to="/list">
 										<IconButton aria-label="bookmarks">
 											<BookmarksOutlinedIcon />

@@ -25,7 +25,7 @@ const Logo = () => {
 						noWrap
 						component="div"
 						sx={{
-							display: { xs: 'none', sm: 'block' }
+							display: { xs: 'none', md: 'block' }
 						}}>
 						Medium
 					</Typography>

@@ -42,3 +42,9 @@ export type BlogPreview = Omit<
 	Blog,
 	'title' | 'content' | 'createdAt' | 'updatedAt'
 >
+
+export type BlogAutoComplete = {
+	_id: string
+	publishedTitle: string
+	slug: string
+}

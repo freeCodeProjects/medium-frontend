@@ -5,6 +5,7 @@ import {
 	PublishBlogData
 } from '../types/blogTypes'
 import axiosInstance from '../utils/axios'
+import { BlogAutoComplete } from '../types/blogTypes'
 
 export const addBlog = (data: BlogEditorData) => {
 	return axiosInstance.post('/blog', data)
@@ -89,4 +90,10 @@ export const getUserPublicBlogs = (
 
 export const deleteBlog = (id: string) => {
 	return axiosInstance.delete(`/blog/${id}`)
+}
+
+export const autocompleteBlog = (
+	text: string
+): Promise<{ data: BlogAutoComplete[] }> => {
+	return axiosInstance.get(`/blog/autocomplete?q=${text}`)
 }
