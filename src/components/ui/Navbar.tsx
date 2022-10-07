@@ -40,9 +40,9 @@ const Navbar = () => {
 								gap: { xs: 1, md: 2 },
 								alignItems: 'center'
 							}}>
+							<SearchBar />
 							{isLoggedIn ? (
 								<Stack direction="row" spacing={1}>
-									<SearchBar />
 									<Link className="link" to="/list">
 										<IconButton aria-label="bookmarks">
 											<BookmarksOutlinedIcon />

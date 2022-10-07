@@ -7,10 +7,11 @@ import {
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import useDebounce from '../../hooks/useDebounce'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { autocompleteBlog } from '../../api/blogAPI'
 import { useNavigate } from 'react-router'
+import { useSearchParams } from 'react-router-dom'
 
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
@@ -39,7 +40,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 		padding: theme.spacing(1, 1, 1, 0),
 		// vertical padding + font size from searchIcon
 		paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-		minWidth: '12rem !important'
+		minWidth: '14rem !important'
 	}
 }))
 
@@ -47,6 +48,9 @@ const SearchBar = () => {
 	const navigate = useNavigate()
 	const [text, setText] = useState('')
 	const searchText = useDebounce(text, 200)
+	const [showOptions, setShowOptions] = useState(false)
+	const myRef = useRef<HTMLInputElement | null>(null)
+	const [searchParams] = useSearchParams()
 
 	const { refetch, data, isLoading } = useQuery(
 		['autocomplete', searchText],
@@ -59,6 +63,22 @@ const SearchBar = () => {
 			staleTime: 10 * 60 * 1000
 		}
 	)
+
+	const handleClickOutside = (e: any) => {
+		if (myRef.current && !myRef.current.contains(e.target!)) {
+			setShowOptions(false)
+		}
+	}
+
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside)
+		return () => document.removeEventListener('mousedown', handleClickOutside)
+	})
+
+	useEffect(() => {
+		setText(searchParams.get('q') || '')
+	}, [searchParams])
+
 	useEffect(() => {
 		if (searchText.length >= 3) {
 			refetch()
@@ -69,9 +89,11 @@ const SearchBar = () => {
 
 	return (
 		<Autocomplete
+			inputValue={text}
+			open={showOptions}
+			ref={myRef}
 			size="small"
 			filterOptions={(x) => x}
-			openOnFocus
 			freeSolo
 			disableClearable
 			blurOnSelect
@@ -87,7 +109,8 @@ const SearchBar = () => {
 			}}
 			onSubmit={(e) => console.log(e.target)}
 			options={autocompleteResult}
-			getOptionLabel={(option) => option?.publishedTitle || option}
+			getOptionLabel={(option) => option?.publishedTitle || text}
+			isOptionEqualToValue={() => false}
 			renderOption={(props, option) => (
 				<Typography
 					{...props}
@@ -111,9 +134,15 @@ const SearchBar = () => {
 							<SearchIcon />
 						</SearchIconWrapper>
 						<StyledInputBase
-							onKeyDown={() => {
-								console.log(text)
+							onKeyDown={(event) => {
+								if (text && event.key === 'Enter') {
+									navigate(`/search?q=${text}`)
+									setShowOptions(false)
+								} else {
+									setShowOptions(true)
+								}
 							}}
+							onMouseDownCapture={(e) => e.stopPropagation()}
 							{...rest}
 							{...params.InputProps}
 							style={{ fontSize: 14 }}

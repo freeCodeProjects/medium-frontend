@@ -5,11 +5,11 @@ const Logo = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
 	return (
-		<Link className="link" to="/">
-			<Box
-				sx={{
-					display: 'flex'
-				}}>
+		<Box
+			sx={{
+				display: 'flex'
+			}}>
+			<Link className="link" to="/">
 				<Box
 					sx={{
 						display: 'flex',
@@ -30,8 +30,8 @@ const Logo = () => {
 						Medium
 					</Typography>
 				</Box>
-			</Box>
-		</Link>
+			</Link>
+		</Box>
 	)
 }
 export default Logo
