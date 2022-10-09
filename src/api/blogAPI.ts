@@ -97,3 +97,7 @@ export const autocompleteBlog = (
 ): Promise<{ data: BlogAutoComplete[] }> => {
 	return axiosInstance.get(`/blog/autocomplete?q=${text}`)
 }
+
+export const searchBlog = (text: string): Promise<{ data: BlogPreview[] }> => {
+	return axiosInstance.get(`/blog/search?q=${text}`)
+}
