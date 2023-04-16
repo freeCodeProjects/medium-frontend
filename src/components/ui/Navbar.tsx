@@ -29,7 +29,8 @@ const Navbar = () => {
 			<AppBar position="fixed" color="inherit" sx={{ boxShadow: 1 }}>
 				<Container
 					maxWidth="xl"
-					sx={{ padding: { xs: '0 0', sm: '0 12px', md: '0 24px' } }}>
+					sx={{ padding: { xs: '0 0', sm: '0 12px', md: '0 24px' } }}
+				>
 					<Toolbar>
 						<Box sx={{ flexGrow: 1 }}>
 							<Logo />
@@ -39,8 +40,9 @@ const Navbar = () => {
 								display: 'flex',
 								gap: { xs: 1, md: 2 },
 								alignItems: 'center'
-							}}>
-							<SearchBar />
+							}}
+						>
+							{/* <SearchBar /> */}
 							{isLoggedIn ? (
 								<Stack direction="row" spacing={1}>
 									<Link className="link" to="/list">
@@ -52,7 +54,8 @@ const Navbar = () => {
 										<IconButton aria-label="notification">
 											<Badge
 												badgeContent={newNotificationCount}
-												color="success">
+												color="success"
+											>
 												<NotificationsOutlinedIcon />
 											</Badge>
 										</IconButton>
@@ -63,7 +66,8 @@ const Navbar = () => {
 								<Button
 									variant="outlined"
 									color="primary"
-									onClick={handleOpenAuthModal}>
+									onClick={handleOpenAuthModal}
+								>
 									Get Started
 								</Button>
 							)}
