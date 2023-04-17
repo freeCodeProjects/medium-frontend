@@ -99,6 +99,7 @@ body {
 
 .readerMode {
   word-break: break-word;
+  width     : 100%;
 }
 
 .readerMode .cdx-input:empty {

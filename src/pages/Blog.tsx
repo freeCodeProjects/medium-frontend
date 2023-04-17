@@ -74,7 +74,8 @@ const Blog = () => {
 							display: 'flex',
 							paddingY: '1rem',
 							flexDirection: { xs: 'column-reverse', md: 'unset' }
-						}}>
+						}}
+					>
 						<Box
 							sx={{
 								display: 'flex',
@@ -87,7 +88,8 @@ const Blog = () => {
 								maxWidth: { xs: '650px', md: '240px' },
 								alignSelf: 'center',
 								flexDirection: { xs: 'column-reverse', md: 'column' }
-							}}>
+							}}
+						>
 							<Box
 								sx={{
 									padding: '1rem',
@@ -95,7 +97,8 @@ const Blog = () => {
 									gap: { xs: '1rem', md: '0.5rem' },
 									flexDirection: { md: 'column' },
 									alignItems: 'center'
-								}}>
+								}}
+							>
 								<Avatar
 									alt={author?.data.name}
 									src={author?.data.photo}
@@ -110,15 +113,18 @@ const Blog = () => {
 										display: 'flex',
 										gap: '0.5rem',
 										flexDirection: 'column',
+
 										alignItems: { md: 'center' }
-									}}>
+									}}
+								>
 									<UserName
 										name={author?.data.name!}
 										userName={author?.data.userName!}
 									/>
 									<Typography
 										variant="subtitle2"
-										sx={{ textAlign: { md: 'center' } }}>
+										sx={{ textAlign: { md: 'center' } }}
+									>
 										{author?.data.bio}
 									</Typography>
 									<Box
@@ -129,7 +135,8 @@ const Blog = () => {
 											flexWrap: 'wrap',
 											gap: '0.5rem',
 											alignItems: 'center'
-										}}>
+										}}
+									>
 										<BoldTypography>{`${author?.data.followerCount} followers`}</BoldTypography>
 										<FollowButton userId={author?.data._id!} />
 									</Box>
@@ -141,7 +148,8 @@ const Blog = () => {
 									gap: '0.5rem',
 									width: '100%',
 									justifyContent: { xs: 'space-between', md: 'space-evenly' }
-								}}>
+								}}
+							>
 								{!isFetching ? (
 									<ClapButton
 										postId={blog.data._id}
@@ -153,7 +161,8 @@ const Blog = () => {
 									<Box
 										sx={{
 											width: '36px'
-										}}>
+										}}
+									>
 										<LinerLoader />
 									</Box>
 								)}
@@ -170,16 +179,23 @@ const Blog = () => {
 								justifyContent: 'center',
 								flex: 1,
 								marginLeft: { md: '240px' }
-							}}>
+							}}
+						>
 							<Box
 								sx={{
-									maxWidth: '650px',
+									width: 'min(100%, 650px)',
 									display: 'flex',
 									gap: '0.5rem',
 									flexDirection: 'column',
 									alignItems: 'start'
-								}}>
-								<Box sx={{ display: 'flex', gap: '1rem' }}>
+								}}
+							>
+								<Box
+									sx={{
+										display: 'flex',
+										gap: '1rem'
+									}}
+								>
 									<Typography variant="subtitle2" sx={{ whiteSpace: 'nowrap' }}>
 										{dayjs(blog?.data.publishedAt).format('DD MMM, YYYY')}
 									</Typography>
