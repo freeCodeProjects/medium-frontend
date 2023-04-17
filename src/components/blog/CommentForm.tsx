@@ -133,7 +133,8 @@ const CommentForm = ({
 							gap: '0.5rem',
 							width: 'min-content',
 							pb: '0.5rem'
-						}}>
+						}}
+					>
 						<Avatar
 							sx={{ width: 36, height: 36 }}
 							alt={user.name}
@@ -158,7 +159,9 @@ const CommentForm = ({
 				/>
 			</CardContent>
 			<CardActions
-				sx={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+				sx={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}
+			>
+				{/* @ts-ignore */}
 				<Button color="neutral" size="small" onClick={closeForm}>
 					Cancel
 				</Button>
@@ -168,7 +171,8 @@ const CommentForm = ({
 					onClick={addOrUpdateResponse}
 					color="success"
 					variant="contained"
-					size="small">
+					size="small"
+				>
 					{!isUpdating ? 'Respond' : 'Update'}
 				</LoadingButton>
 			</CardActions>

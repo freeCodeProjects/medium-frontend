@@ -30,12 +30,12 @@ const Comment = ({
 	postId,
 	responsesCount
 }: IProps) => {
-	const [sortBy, setSortBy] = useState<'top' | 'latest'>('top')
+	const [sortBy, setSortBy] = useState<'top' | 'recent'>('top')
 	const [formToggle, setFormToggle] = useState(true)
 	const queryClient = useQueryClient()
 
 	const handleChange = (event: SelectChangeEvent) => {
-		setSortBy(event.target.value as 'top' | 'latest')
+		setSortBy(event.target.value as 'top' | 'recent')
 	}
 
 	useEffect(() => {
@@ -54,13 +54,15 @@ const Comment = ({
 						sm: '480px'
 					}
 				}
-			}}>
+			}}
+		>
 			<Box sx={{ p: { xs: '0.5rem', sm: '1rem' }, position: 'relative' }}>
 				<Stack
 					direction="row"
 					justifyContent="space-between"
 					alignItems="center"
-					spacing={2}>
+					spacing={2}
+				>
 					<BoldTypography variant="h6">{`Responses (${responsesCount})`}</BoldTypography>
 					<IconButton aria-label="close" onClick={closeDrawer}>
 						<CloseOutlinedIcon />
@@ -76,7 +78,8 @@ const Comment = ({
 					) : (
 						<Paper
 							onClick={() => setFormToggle(true)}
-							sx={{ p: '1rem', cursor: 'pointer' }}>
+							sx={{ p: '1rem', cursor: 'pointer' }}
+						>
 							What are your thoughts?
 						</Paper>
 					)}
@@ -88,7 +91,8 @@ const Comment = ({
 								variant="standard"
 								value={sortBy}
 								onChange={handleChange}
-								disableUnderline>
+								disableUnderline
+							>
 								<MenuItem value={'top'}>Relevent</MenuItem>
 								<MenuItem value={'recent'}>Recent</MenuItem>
 							</Select>

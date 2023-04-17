@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addToBookmark, removeFromBookmark } from '../../api/userAPI'
 import { MouseEvent, useContext } from 'react'
 import { AppContext } from '../../context/AppContext'
+import { User } from '../../types/userTypes'
 
 const BookmarkIcon = () => (
 	<SvgIcon>
@@ -21,6 +22,10 @@ type IProps = {
 	blogId: string
 }
 
+interface PreviousUserDataType {
+	previousUserData: User
+}
+
 const Bookmark = ({ blogId }: IProps) => {
 	const { user, setUser } = useAppStore()
 	const { serverErrorHandler } = useContext(AppContext)
@@ -28,7 +33,7 @@ const Bookmark = ({ blogId }: IProps) => {
 
 	const { mutate: addBookmark } = useMutation(addToBookmark, {
 		onMutate: async (newTodo) => {
-			const previousUserData = user
+			const previousUserData = user!
 
 			setUser({ ...user!, bookmarks: [...user?.bookmarks!, blogId] })
 
@@ -36,13 +41,22 @@ const Bookmark = ({ blogId }: IProps) => {
 		},
 		onError: (err, newTodo, context) => {
 			serverErrorHandler(err)
-			setUser(context?.previousUserData!)
+			if (context) {
+				setUser((context as PreviousUserDataType).previousUserData)
+			} else {
+				console.log('Failed to reset USER on addBookmark(onError)')
+			}
+		},
+		onSuccess: () => {
+			//refetch when remove bookmark on bookmarks page
+			queryClient.invalidateQueries(['bookmarks-list'])
+			queryClient.invalidateQueries(['user'])
 		}
 	})
 
 	const { mutate: removeBookmark } = useMutation(removeFromBookmark, {
 		onMutate: async (newTodo) => {
-			const previousUserData = user
+			const previousUserData = user!
 
 			const newBookmarks = user?.bookmarks.filter(
 				(bookmark) => bookmark !== blogId
@@ -53,11 +67,16 @@ const Bookmark = ({ blogId }: IProps) => {
 		},
 		onError: (err, newTodo, context) => {
 			serverErrorHandler(err)
-			setUser(context?.previousUserData!)
+			if (context) {
+				setUser((context as PreviousUserDataType).previousUserData)
+			} else {
+				console.log('Failed to reset USER on removeBookmark(onError)')
+			}
 		},
 		onSuccess: () => {
 			//refetch when remove bookmark on bookmarks page
 			queryClient.invalidateQueries(['bookmarks-list'])
+			queryClient.invalidateQueries(['user'])
 		}
 	})
 
@@ -83,7 +102,8 @@ const Bookmark = ({ blogId }: IProps) => {
 				<Tooltip title="Add to bookmark">
 					<IconButton
 						aria-label="add to bookmark"
-						onClick={(e) => performAction(e, addBookmark)}>
+						onClick={(e) => performAction(e, addBookmark)}
+					>
 						<BookmarkIcon />
 					</IconButton>
 				</Tooltip>
@@ -91,7 +111,8 @@ const Bookmark = ({ blogId }: IProps) => {
 				<Tooltip title="Remove bookmark">
 					<IconButton
 						aria-label="remove bookmark"
-						onClick={(e) => performAction(e, removeBookmark)}>
+						onClick={(e) => performAction(e, removeBookmark)}
+					>
 						<BookmarkedIcon />
 					</IconButton>
 				</Tooltip>

@@ -69,7 +69,8 @@ const CommentList = ({ postId, sortBy, relatedTo }: IProps) => {
 					sx={{
 						width: '100%',
 						pt: '1rem'
-					}}>
+					}}
+				>
 					{data.pages.map((group, i) => (
 						<Box
 							sx={{
@@ -79,7 +80,8 @@ const CommentList = ({ postId, sortBy, relatedTo }: IProps) => {
 								width: '100%',
 								py: '0.5rem'
 							}}
-							key={i}>
+							key={i}
+						>
 							{group.data.map((comment, idx) => (
 								<Fragment key={comment._id}>
 									<CommentView comment={comment} />
@@ -101,7 +103,8 @@ const CommentList = ({ postId, sortBy, relatedTo }: IProps) => {
 				) : (
 					<Button
 						sx={{ width: '100%', mt: '1rem' }}
-						onClick={() => fetchNextPage()}>
+						onClick={() => fetchNextPage()}
+					>
 						Load More
 					</Button>
 				))}

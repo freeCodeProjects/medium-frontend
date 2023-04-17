@@ -8,6 +8,16 @@ type IProps = {
 	userId: string
 }
 
+interface FollowerDataType {
+	data: {
+		isFollowing: boolean
+	}
+}
+
+interface PreviousFollowerDataType {
+	previousFollowerData: FollowerDataType
+}
+
 const FollowButton = ({ userId }: IProps) => {
 	const { isLoggedIn, handleOpenAuthModal, user } = useAppStore()
 	const queryClient = useQueryClient()
@@ -27,10 +37,8 @@ const FollowButton = ({ userId }: IProps) => {
 			onMutate: async (newData) => {
 				await queryClient.cancelQueries(['following', userId])
 
-				const previousFollowerData = queryClient.getQueryData([
-					'following',
-					userId
-				])
+				const previousFollowerData: FollowerDataType | undefined =
+					queryClient.getQueryData(['following', userId])
 
 				queryClient.setQueryData(['following', userId], () => ({
 					data: {
@@ -41,10 +49,14 @@ const FollowButton = ({ userId }: IProps) => {
 				return { previousFollowerData }
 			},
 			onError: (err, newData, context) => {
-				queryClient.setQueryData(
-					['following', userId],
-					context?.previousFollowerData
-				)
+				if (context) {
+					queryClient.setQueryData(
+						['following', userId],
+						(context as PreviousFollowerDataType).previousFollowerData
+					)
+				} else {
+					console.log('Failed to reset FollowerData on follow(onError)')
+				}
 			},
 			onSettled: () => {
 				queryClient.invalidateQueries(['following', userId])
@@ -96,10 +108,14 @@ const FollowButton = ({ userId }: IProps) => {
 			},
 			// If the mutation fails, use the context returned from onMutate to roll back
 			onError: (err, newData, context) => {
-				queryClient.setQueryData(
-					['following', userId],
-					context?.previousFollowerData
-				)
+				if (context) {
+					queryClient.setQueryData(
+						['following', userId],
+						(context as PreviousFollowerDataType).previousFollowerData
+					)
+				} else {
+					console.log('Failed to reset FollowerData on unFollow(onError)')
+				}
 			},
 			onSettled: () => {
 				queryClient.invalidateQueries(['following', userId])
@@ -142,7 +158,8 @@ const FollowButton = ({ userId }: IProps) => {
 					className="roundedBtn"
 					variant="contained"
 					color="success"
-					onClick={() => completeAction(follow)}>
+					onClick={() => completeAction(follow)}
+				>
 					Follow
 				</Button>
 			) : (
@@ -150,7 +167,8 @@ const FollowButton = ({ userId }: IProps) => {
 					size="small"
 					className="roundedBtn"
 					color="success"
-					onClick={() => completeAction(unfollow)}>
+					onClick={() => completeAction(unfollow)}
+				>
 					Following
 				</Button>
 			)}

@@ -72,7 +72,8 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
 		<Stack spacing={1} sx={{ mb: '1rem' }}>
 			<Typography
 				onClick={() => navigate(`/update/${blog._id}`)}
-				sx={{ cursor: 'pointer', fontWeight: 600 }}>
+				sx={{ cursor: 'pointer', fontWeight: 600 }}
+			>
 				{blog.isPublished ? blog.publishedTitle : blog.title}
 			</Typography>
 			<Typography className="truncate" variant="subtitle1">
@@ -97,13 +98,15 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
 					onClose={handleClose}
 					onClick={handleClose}
 					transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-					anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
+					anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+				>
 					<MenuItem onClick={() => navigate(`/update/${blog._id}`)}>
 						Edit
 					</MenuItem>
 					<MenuItem
 						sx={{ color: 'error.main' }}
-						onClick={() => setOpenDeleteConfirmModal(true)}>
+						onClick={() => setOpenDeleteConfirmModal(true)}
+					>
 						Delete
 					</MenuItem>
 				</Menu>
@@ -120,7 +123,8 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
 				open={openDeleteConfirmModal}
 				onClose={closeDeleteConfirmModal}
 				TransitionComponent={Transition}
-				keepMounted>
+				keepMounted
+			>
 				<Box sx={{ display: 'flex', justifyContent: 'end' }}>
 					<IconButton aria-label="delete" onClick={closeDeleteConfirmModal}>
 						<CloseIcon />
@@ -135,25 +139,30 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
 						flexDirection: 'column',
 						gap: '0.5rem',
 						px: '2rem'
-					}}>
+					}}
+				>
 					<Typography variant="h4">Delete story</Typography>
 					<Typography>Are you sure you want to delete this story?</Typography>
 					<Stack
 						direction="row"
 						alignItems="center"
 						spacing={2}
-						sx={{ mt: '1rem' }}>
+						sx={{ mt: '1rem' }}
+					>
 						<Button
+							/* @ts-ignore */
 							color="neutral"
 							variant="outlined"
-							onClick={closeDeleteConfirmModal}>
+							onClick={closeDeleteConfirmModal}
+						>
 							Cancel
 						</Button>
 						<LoadingButton
 							loading={isLoading}
 							color="error"
 							variant="contained"
-							onClick={() => deleteBlogAction()}>
+							onClick={() => deleteBlogAction()}
+						>
 							Delete
 						</LoadingButton>
 					</Stack>
