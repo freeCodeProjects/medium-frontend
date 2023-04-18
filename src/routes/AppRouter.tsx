@@ -26,13 +26,13 @@ const Search = React.lazy(() => import('../pages/Search'))
 
 const AppRouter = () => {
 	return (
-		<Suspense fallback={<SuspenseLoader />}>
-			<BrowserRouter>
-				<CustomAlert />
-				<ScrollToTop />
-				<CheckNetworkStatus />
-				<Auth />
-				<Navbar />
+		<BrowserRouter>
+			<CustomAlert />
+			<ScrollToTop />
+			<CheckNetworkStatus />
+			<Auth />
+			<Navbar />
+			<Suspense fallback={<SuspenseLoader />}>
 				<Box
 					id="content"
 					sx={{
@@ -43,13 +43,15 @@ const AppRouter = () => {
 						color: 'text.primary',
 						height: { xs: 'calc(100% - 56px)', sm: 'calc(100% - 64px)' },
 						pt: { xs: '56px', sm: '64px' }
-					}}>
+					}}
+				>
 					<Container maxWidth="xl" sx={{ flexGrow: 1 }}>
 						<Box
 							sx={{
 								padding: { xs: '0 0', sm: '0 12px', md: '0 24px' },
 								height: '100%'
-							}}>
+							}}
+						>
 							<Routes>
 								<Route path="/" element={<Home />} />
 								<Route path="/profile/:userName" element={<UserProfile />} />
@@ -77,7 +79,8 @@ const AppRouter = () => {
 								<Route path="/search/" element={<Search />} />
 								<Route
 									path="stories"
-									element={<ProtectedRoute component={<Stories />} />}>
+									element={<ProtectedRoute component={<Stories />} />}
+								>
 									<Route
 										path="draft"
 										element={
@@ -96,7 +99,8 @@ const AppRouter = () => {
 								</Route>
 								<Route
 									path="list"
-									element={<ProtectedRoute component={<List />} />}>
+									element={<ProtectedRoute component={<List />} />}
+								>
 									<Route
 										path="bookmarks"
 										element={
@@ -123,8 +127,8 @@ const AppRouter = () => {
 					</Container>
 					<Footer />
 				</Box>
-			</BrowserRouter>
-		</Suspense>
+			</Suspense>
+		</BrowserRouter>
 	)
 }
 export default AppRouter
