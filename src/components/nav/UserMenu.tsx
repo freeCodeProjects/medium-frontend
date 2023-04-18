@@ -17,10 +17,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useAppStore } from '../../store/appStore'
 import { getLoggedInUser, logoutUser } from '../../api/userAPI'
 import { AppContext } from '../../context/AppContext'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const UserMenu = () => {
-	const navigate = useNavigate()
 	const { user, setUser, deleteUser } = useAppStore()
 	const { serverErrorHandler } = useContext(AppContext)
 
@@ -53,14 +52,6 @@ const UserMenu = () => {
 		setAnchorEl(null)
 	}
 
-	const navigateTo = (to: string) => {
-		handleClose()
-		//workaround to close menu when page is visited first time, this bug exist when using React.lazy for code splitting.
-		setTimeout(() => {
-			navigate(to)
-		}, 100)
-	}
-
 	const logout = () => {
 		logoutUserTrigger()
 		handleClose()
@@ -91,7 +82,8 @@ const UserMenu = () => {
 						onClose={handleClose}
 						MenuListProps={{
 							'aria-labelledby': 'basic-button'
-						}}>
+						}}
+					>
 						<Box sx={{ width: 200 }}>
 							<Box
 								sx={{
@@ -100,7 +92,8 @@ const UserMenu = () => {
 									display: 'flex',
 									gap: 1,
 									alignItems: 'center'
-								}}>
+								}}
+							>
 								<Avatar src={user.photo} alt={user.name} />
 								<Box>
 									<Box
@@ -109,7 +102,8 @@ const UserMenu = () => {
 										sx={{
 											width: 120,
 											mb: 0.5
-										}}>
+										}}
+									>
 										{user.name}
 									</Box>
 									<Box
@@ -118,25 +112,26 @@ const UserMenu = () => {
 										sx={{
 											width: 120,
 											fontSize: 10
-										}}>
+										}}
+									>
 										{user.userName}
 									</Box>
 								</Box>
 							</Box>
 							<Divider sx={{ my: 1 }} />
-							<MenuItem onClick={() => navigateTo('/add')}>
+							<MenuItem component={Link} to="/add">
 								<ListItemIcon>
 									<CreateOutlined fontSize="small" />
 								</ListItemIcon>
 								Write a story
 							</MenuItem>
-							<MenuItem onClick={() => navigateTo('/stories')}>
+							<MenuItem component={Link} to="/stories">
 								<ListItemIcon>
 									<MenuBookOutlined fontSize="small" />
 								</ListItemIcon>
 								Stories
 							</MenuItem>
-							<MenuItem onClick={() => navigateTo('/settings')}>
+							<MenuItem component={Link} to="/settings">
 								<ListItemIcon>
 									<SettingsOutlined fontSize="small" />
 								</ListItemIcon>
