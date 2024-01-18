@@ -27,7 +27,7 @@ interface PreviousUserDataType {
 }
 
 const Bookmark = ({ blogId }: IProps) => {
-	const { user, setUser } = useAppStore()
+	const { isLoggedIn, user, setUser, handleOpenAuthModal } = useAppStore()
 	const { serverErrorHandler } = useContext(AppContext)
 	const queryClient = useQueryClient()
 
@@ -93,6 +93,11 @@ const Bookmark = ({ blogId }: IProps) => {
 
 	const performAction = (event: MouseEvent, fn: Function) => {
 		event.stopPropagation()
+		if (!isLoggedIn) {
+			handleOpenAuthModal()
+			return
+		}
+
 		fn(blogId)
 	}
 
